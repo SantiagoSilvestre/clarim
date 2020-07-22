@@ -1,0 +1,13 @@
+<h1>Sobre Nos</h1>
+</hr><br>
+
+<?php
+    
+    foreach($this->view->dados as $atrizes => $infos)
+    {
+        echo "<h1>".$infos['titulo']."</h1>";        
+        echo "<p>".$infos['descricao']."</p>";
+        echo "</hr>";
+    }
+    
+?>

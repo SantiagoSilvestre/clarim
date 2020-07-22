@@ -1,0 +1,12 @@
+<h1>Index</h1>
+</hr><br>
+
+<?php
+
+    foreach($this->view->dados  as $indece => $produto)
+    {
+        echo $produto['id']. " - ". $produto['descricao']. " - ". $produto['preco'];
+        echo "</br>";
+    }
+
+?>
