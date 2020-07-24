@@ -2,7 +2,7 @@
     <div class="jumbotron contato">
         <div class="container">
             <h2 class="display-4 text-center" style="margin-bottom: 50px;">Faça seu orçamento</h2>                
-            <form method="POST" id="form-contato" name="form-contato" >
+            <form method="POST" id="form-contato" name="form-contato" action="/salvarContato" >
                 <div class="form-row">
                     <div class="form-group col-md-6 form-nome">
                         <label>Nome</label>
@@ -26,9 +26,19 @@
                 <div class="form-group mensagem">
                     <label>Mensagem</label>
                     <textarea name="mensagem" class="form-control" rows="5"></textarea>
+                    <small> * minimo 10 caracteres</small>
                 </div>
                 <input type="submit" name="SendCadCont" class="btn btn-primary" value="Enviar">
+                <?php
+                    if($this->view->erroCadastro){ 
+                        ?>
+                        <small class="form-text text-danger">*Erro ao tentar registrar a mensagem, 
+                            verifique se os campos foram preenchidos corretamente</small>
+                        <?php
+                    }
+                ?>
             </form>
+
         </div>
     </div>
 </main>

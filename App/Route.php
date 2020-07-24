@@ -28,6 +28,11 @@
                 'controller' => 'CampeonatoController',
                 'action' => 'campeonato'
             );
+            $routes['salvarContato'] = array(
+                'route' => '/salvarContato',
+                'controller' => 'ContatoController',
+                'action' => 'salvarContato'
+            );
             $this->setRoutes($routes);
         }
         
