@@ -1,58 +1,14 @@
+<?php
+    $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+    use MF\Model\Container;
+    $camp = Container::getModel('Campeonato');
+    $campAtivos = $camp->getCampeonato($id);
+?>
 <main role="main">
-     
     <?php
-        if (isset($_POST)) {
+        if(count($campAtivos) > 0 ){
     ?>
-
-        <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                <ol class="carousel-indicators">
-                    <li data-target='#myCarousel' data-slide-to='$cont_marc'></li>                 
-                </ol>
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <img class="featurette-image img-fluid mx-auto" src="/assets/imagens/index/clarim.jpg">
-                    </div>
-                    <div class="carousel-inner">
-                    <?php
-                    $cont_slide = 0;
-                    foreach ($this->view->dados as $dado) {
-                        ?>
-                        <div class="carousel-item <?php
-                        if ($cont_slide == 0) {
-                            echo 'active';
-                        }
-                        ?>">
-                            <img class="second-slide img-fluid"src="/assets/imagens/index/clarim.jpg" alt="<?php echo $dado['id']; ?>">
-                            <div class="container">
-                                <div class="carousel-caption <?php echo $dado['id']; ?>">
-                                    <h1 class="d-none d-md-block"><?php echo $dado['id']; ?></h1>
-                                    <p class="d-none d-md-block"><?php echo $dado['id']; ?></p>
-                                    <p class="d-none d-md-block"><a class="btn btn-lg btn-<?php echo $dado['id']; ?>" href="<?php echo $dado['id']; ?>" role="button"><?php echo $dado['Tabela']; ?></a></p>
-                                </div>
-                            </div>
-                        </div>
-                        <?php
-                        $cont_slide++;
-                    }
-                    ?>
-                </div>
-                <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </a>
-                </div>
-            </div>
-        <?php
-        } else {
-
-    ?>
-
-
-    <h1>Tabela</h1>
+    <h1><?= $campAtivos[0]['nome'] ?></h1>
     </hr><br>
     <table class="table">
     <thead>
@@ -65,32 +21,69 @@
         <th scope="col">GP</th>
         <th scope="col">GC</th>
         <th scope="col">SG</th>
+        <th scope="col">CV</th>
+        <th scope="col">CA</th>
         </tr>
     </thead>
     <tbody>
+        <?php
+            $classificacao = 1;
+            foreach($campAtivos as $time) {
+        ?>
         <tr>
             <th scope="row" cols="2">
                 <div class="row">
-                    <div class="classi"> 1 </div>
-                    <div> Time </div>
+                    <div class="classi"> <?=$classificacao?> </div>
+                    <div> <?=$time['time']?> </div>
                 </div>
             </th>                    
-            <td>30</td>
-            <td>7</td>
-            <td>6</td>
-            <td>5</td>
-            <td>4</td>
-            <td>3</td>
-            <td>2</td>
+            <td><?=$time['pontuacao']?></td>
+            <td><?=$time['vitorias']?></td>
+            <td><?=$time['derrotas']?></td>
+            <td><?=$time['empates']?></td>
+            <td><?=$time['gol_pro']?></td>
+            <td><?=$time['gol_contra']?></td>
+            <td><?=$time['saldo_gol']?></td>
+            <td><?=$time['cartao_ver']?></td>
+            <td><?=$time['cartao_amer']?></td>
         </tr>
-        </tr>
+        <?php
+            $classificacao ++;
+            }
+        ?>
     </tbody>
     </table>
     <div class="row">
-        <p>Legendas aqui</p>
+        <p class="lead">
+            <a class="btn btn-light btn-lg" href="#" role="button" data-toggle="modal" data-target="#regulamento">Regulamento</a>
+        </p>
     </div>
-</main>
-<?php
-    }
 
-?>
+    <!-- Modal -->
+    <div class="modal fade" id="regulamento" tabindex="-1" role="dialog" aria-labelledby="regulamentoLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="regulamentoLabel">Regulamento</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            <?= $campAtivos[0]['regulamento'] ?>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <?php
+        } else {
+            ?>
+            <div class="jumbotron">
+            <h1 class="display-4">Sentimos muito..</h1>
+            <p class="lead">Ainda não temos uma tabela para esse campeonato, fique ligado que em breve vamos disponíbilizar a tabela</p>
+            </div>
+            <?php
+        }
+    ?>
+</main>

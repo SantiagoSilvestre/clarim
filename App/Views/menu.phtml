@@ -1,6 +1,6 @@
 <header>
 <nav class="navbar navbar-expand-lg navbar-dark navbar-primary fixed-top bg-primary">
-  <a class="navbar-brand" href="#">Clarim</a>
+  <a class="navbar-brand" href="/">Clarim</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -10,9 +10,23 @@
       <li class="nav-item active">
         <a class="nav-link" href="/">Home </a>
       </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="/campeonato"> CAMPEONATOS </a>
-      </li>     
+      <?php
+        use MF\Model\Container;
+        $camp = Container::getModel('Campeonato');
+        $campAtivos = $camp->getCampeonatos();
+      ?>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          CAMPEONATOS
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <?php
+            foreach($campAtivos as $cam) {
+              echo '<a class="dropdown-item" href="/campeonato?id='.$cam['id'].'">'.$cam['nome'].'</a>';
+            }
+          ?>
+        </div>
+      </li>
       <li class="nav-item">
         <a class="nav-link" href="/sobreNos">SOBRE NÓS</a>
       </li>

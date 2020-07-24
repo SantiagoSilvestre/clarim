@@ -26,7 +26,7 @@
             $routes['campeonatos'] = array(
                 'route' => '/campeonato',
                 'controller' => 'CampeonatoController',
-                'action' => 'camAtivo'
+                'action' => 'campeonato'
             );
             $this->setRoutes($routes);
         }
