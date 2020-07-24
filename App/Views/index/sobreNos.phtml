@@ -1,13 +1,33 @@
-<h1>Sobre Nos</h1>
-</hr><br>
-
-<?php
-    
-    foreach($this->view->dados as $atrizes => $infos)
-    {
-        echo "<h1>".$infos['titulo']."</h1>";        
-        echo "<p>".$infos['descricao']."</p>";
-        echo "</hr>";
-    }
-    
-?>
+<main role="main">
+    <div class="jumbotron sobre-empresa" style="padding-bottom: 1rem; margin-bottom: 0px;">
+        <div class="container">
+            <h2 class="display-4 text-center">Sobre Nós</h2>
+        </div>
+    </div>
+    <div class="jumbotron sobre-empresa">
+        <div class="container">
+            <div class="row featurette">
+                <div class="col-md-7 order-md-2 emp-text-mod-um">
+                    <h2 class="featurette-heading">Daniel Nicastro</h2>
+                    <p class="lead">Descrição</p>
+                </div>
+                <div class="col-md-5 order-md-1 emp-img-mod-um">
+                <img class="featurette-image img-fluid mx-auto" src="/assets/imagens/sob_emp/1/empresa.jpg">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="jumbotron sobre-empresa">
+        <div class="container">
+            <div class="row featurette">
+                <div class="col-md-7 emp-text-mod-dois">
+                    <h2 class="featurette-heading">Alberto Rosa</h2>
+                    <p class="lead">Description Here</p>
+                </div>
+                <div class="col-md-5 emp-img-mod-dois">
+                <img class="featurette-image img-fluid mx-auto" src="/assets/imagens/sob_emp/1/empresa.jpg">
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

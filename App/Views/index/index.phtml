@@ -1,12 +1,49 @@
-<h1>Index</h1>
-</hr><br>
-
-<?php
-
-    foreach($this->view->dados  as $indece => $produto)
-    {
-        echo $produto['id']. " - ". $produto['descricao']. " - ". $produto['preco'];
-        echo "</br>";
-    }
-
-?>
+   <main role="main">
+        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target='#myCarousel' data-slide-to='$cont_marc'></li>                 
+            </ol>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img class="featurette-image img-fluid mx-auto" src="/assets/imagens/index/clarim.jpg">
+                </div>
+            </div>
+        </div>
+        <div class="jumbotron sobre-empresa">
+            <div class="container">
+                <div class="row featurette">
+                    <div class="col-md-7 order-md-2 emp-text-mod-um">
+                        <h2 class="featurette-heading">Clarim Esports</h2>
+                        <p class="lead">Aqui vai toda a apresentação da empresa pode escrever o texto </p>
+                    </div>
+                    <div class="col-md-5 order-md-1 emp-img-mod-um">
+                    <img class="featurette-image img-fluid mx-auto" src="/assets/imagens/index/logoClarim.jpg">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="jumbotron depoimento">
+            <div class="container">
+                <h2 class="display-4 text-center" style="margin-bottom: 40px; color: #FFF;">Conheça nosso trabalho</h2>
+                <p class="lead text-center" style="margin-bottom: 40px; color: #FFF;">Últimos conteúdos adicionados</p>
+                <div class="card-deck">
+                    <div class="card text-center dep-left">
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/5a1IGFG6NUE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    <div class="card text-center dep-center">
+                        <div class="embed-responsive embed-responsive-16by9">
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/IISA6t-9zzc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>							
+                    </div>
+                    <div class="card text-center dep-right">
+                        <div class="embed-responsive embed-responsive-16by9">
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/XTmz9ikVCHw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>							
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </main>

@@ -1,0 +1,96 @@
+<main role="main">
+     
+    <?php
+        if (isset($_POST)) {
+    ?>
+
+        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    <li data-target='#myCarousel' data-slide-to='$cont_marc'></li>                 
+                </ol>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img class="featurette-image img-fluid mx-auto" src="/assets/imagens/index/clarim.jpg">
+                    </div>
+                    <div class="carousel-inner">
+                    <?php
+                    $cont_slide = 0;
+                    foreach ($this->view->dados as $dado) {
+                        ?>
+                        <div class="carousel-item <?php
+                        if ($cont_slide == 0) {
+                            echo 'active';
+                        }
+                        ?>">
+                            <img class="second-slide img-fluid"src="/assets/imagens/index/clarim.jpg" alt="<?php echo $dado['id']; ?>">
+                            <div class="container">
+                                <div class="carousel-caption <?php echo $dado['id']; ?>">
+                                    <h1 class="d-none d-md-block"><?php echo $dado['id']; ?></h1>
+                                    <p class="d-none d-md-block"><?php echo $dado['id']; ?></p>
+                                    <p class="d-none d-md-block"><a class="btn btn-lg btn-<?php echo $dado['id']; ?>" href="<?php echo $dado['id']; ?>" role="button"><?php echo $dado['Tabela']; ?></a></p>
+                                </div>
+                            </div>
+                        </div>
+                        <?php
+                        $cont_slide++;
+                    }
+                    ?>
+                </div>
+                <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+                </div>
+            </div>
+        <?php
+        } else {
+
+    ?>
+
+
+    <h1>Tabela</h1>
+    </hr><br>
+    <table class="table">
+    <thead>
+        <tr>
+        <th scope="col">Classificação</th>
+        <th scope="col">P</th>
+        <th scope="col">V</th>
+        <th scope="col">D</th>
+        <th scope="col">E</th>
+        <th scope="col">GP</th>
+        <th scope="col">GC</th>
+        <th scope="col">SG</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row" cols="2">
+                <div class="row">
+                    <div class="classi"> 1 </div>
+                    <div> Time </div>
+                </div>
+            </th>                    
+            <td>30</td>
+            <td>7</td>
+            <td>6</td>
+            <td>5</td>
+            <td>4</td>
+            <td>3</td>
+            <td>2</td>
+        </tr>
+        </tr>
+    </tbody>
+    </table>
+    <div class="row">
+        <p>Legendas aqui</p>
+    </div>
+</main>
+<?php
+    }
+
+?>

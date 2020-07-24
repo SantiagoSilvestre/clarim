@@ -20,10 +20,14 @@
             );
             $routes['contato'] = array(
                 'route' =>'/contato',
-                'controller' => 'indexController',
+                'controller' => 'ContatoController',
                 'action' => 'contato'
             );
-
+            $routes['campeonatos'] = array(
+                'route' => '/campeonato',
+                'controller' => 'CampeonatoController',
+                'action' => 'camAtivo'
+            );
             $this->setRoutes($routes);
         }
         

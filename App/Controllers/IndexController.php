@@ -20,7 +20,7 @@
             
             $this->view->dados = $produtos;
             
-            $this->render('index', 'head', 'menu', 'body', 'footer');
+            $this->render('index', 'head', 'menu' ,'body', 'footer');
         }
         public function sobreNos()
         {
@@ -30,20 +30,22 @@
             $this->view->dados = $informacaos;
             
 
-            $this->render('sobreNos', 'head', 'menu', 'body', 'footer');
+            $this->render('sobreNos', 'head', 'menu' ,'body', 'footer');
         }
 
         public function contato()
         {
             $contato = Container::getModel('Contato');
             $contatos = $contato->getContatos();
+
+            $camp = Container::getModel('Campeonato');
+            $camps = $camp->getCampeonatos();
+            $this->view->dados['campeonatos'] = $camps;
             
-            $this->view->dados = $contatos;
+            $this->view->dados['contatos'] = $contatos;
             
             $this->render('contato', 'head', 'menu', 'body', 'footer');
-        }
-
-       
+        }      
 
     }
 

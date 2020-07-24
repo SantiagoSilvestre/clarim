@@ -11,7 +11,7 @@
             $this->view = new \stdClass();
         }
 
-        protected function render($view, $head, $menu, $body, $footer)
+        protected function render($view, $head, $menu ,$body, $footer)
         {
             $this->view->page = $view;    
             if(file_exists("../App/Views/".$head.".phtml"))
