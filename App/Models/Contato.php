@@ -7,7 +7,7 @@
 
         private $id;
         private $nome;
-        private $mail;
+        private $email;
         private $telefone;
         private $assunto;
         private $mensagem;

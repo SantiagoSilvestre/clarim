@@ -1,0 +1,83 @@
+<?php 
+session_start();
+if(isset($_SESSION)) {
+    if($_SESSION['logado']) {
+        $usuario = $this->view->dados;
+    ?>
+   <div class="d-flex">
+        <div class="content p-1">
+            <div class="list-group-item">
+                <div class="d-flex">
+                    <div class="mr-auto p-2">
+                        <h2 class="display-4 titulo">Editar Usuário</h2>
+                    </div>
+                    <div class="p-2">
+                        <a class="btn btn-outline-info btn-sm" href="/adm/usuarios"> Listar</a>
+                    </div>
+                </div>
+                <hr>
+                <?php
+                    if(isset($_SESSION['erros'])) {
+                        foreach($_SESSION['erros'] as $erro) {
+                            echo $erro . "<br>";
+                        }
+                        unset($_SESSION['erros']);
+                    }
+                ?>
+                <form method="POST" action="/adm/proc_edit_user">
+                    <input id="id" name="id" type="text" value="<?php
+                        if(isset($_SESSION['dados']['id'])) {
+                            echo $_SESSION['dados']['id'];
+                        } else {
+                            echo $usuario->__get('id');
+                        }?>                            
+                        " hidden>
+
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <span class="text-danger">* </span>
+                            <label>
+                                Nome:
+                            </label>
+                            <input name="nome" type="text" class="form-control" 
+                            value="<?php 
+                            if(isset($_SESSION['dados']['nome'])) { 
+                                echo $_SESSION['dados']['nome']; 
+                            } else {
+                                echo $usuario->__get('nome');
+                            }
+                            ?>"
+                            id="nome" placeholder="Nome do usuário" required>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <span class="text-danger">* </span>
+                            <label>
+                                E-mail:
+                            </label>
+                            <input name="email" type="email" class="form-control" 
+                            value="<?php 
+                                if(isset($_SESSION['dados']['email'])) {
+                                    echo $_SESSION['dados']['email']; 
+                                } else {
+                                    echo $usuario->__get('email');
+                                } 
+                            ?>"
+                            id="email" placeholder="Digite o e-mail do usuário" required>
+                        </div>
+                    </div>
+                    <p>
+                        <span class="text-danger">* </span>Campo obrigatório
+                    </p>
+                    <input name="SendCadUser" id="SendCadUser"  type="submit" class="btn btn-warning" value="Salvar"></input>
+                </form>
+            </div>
+        </div>
+    </div>
+    <?php
+     unset($_SESSION['dados']);    
+    } else {
+        header('Location: /adm/login');
+    }
+} else {
+    header('Location: /adm/login');
+}
