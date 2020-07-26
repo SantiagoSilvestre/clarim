@@ -75,6 +75,71 @@ if(isset($_SESSION)) {
                             </div>
                         </div>
                     </div>
+                    
+                </div>
+                <p>Mensagens    </p>
+                <?php
+                    $mensagens = Container::getModel('Contato');
+                    $naoLidas = $mensagens->getNaoLidas();
+                    $naoResp = $mensagens->getNaoResp();
+                    $msgTotal = $mensagens->getTotal();
+                    $lidaResp = $mensagens->getLidasResp();
+                ?>
+                <div class="row mb-3">
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card bg-success text-white">
+                            <div class="card-body">
+                                <i class="fas fa-users fa-3x"></i>
+                                <h6 class="card-title">Não lidas</h6>
+                                <h2 class="lead">
+                                <?php
+                                    echo $naoLidas[0]['qtd'];
+                                ?>
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card bg-danger text-white">
+                            <div class="card-body">
+                                <i class="fas fa-file fa-3x"></i>
+                                <h6 class="card-title">Não respondidas</h6>
+                                <h2 class="lead">
+                                <?php
+                                    echo $naoResp[0]['qtd'];
+                                ?>
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card bg-warning text-white">
+                            <div class="card-body">
+                                <i class="fas fa-eye fa-3x"></i>
+                                <h6 class="card-title">Total</h6>
+                                <h2 class="lead">
+                                <?php
+                                    echo $msgTotal[0]['qtd'];
+                                    
+                                ?>
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card bg-info text-white">
+                            <div class="card-body">
+                                <i class="fas fa-comments fa-3x"></i>
+                                <h6 class="card-title">lidas e respondidas</h6>
+                                <h2 class="lead">
+                                <?php
+                                    echo $lidaResp[0]['qtd'];
+                                ?>
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
         </div>  

@@ -126,6 +126,18 @@ use MF\Controller\Action;
            </button></div>";
            header('Location: /adm/campeonatos');
         }
+
+        public function jogo() 
+        {   
+            session_start();
+            $_SESSION['dados']['id'] = $_GET['id'];
+            $this->render('jogo', 'head', 'menu_adm', 'body', 'footer');
+        }
+
+        public function procJogo()
+        {
+           //Aqui aplicar toda a lógica para contabilizar vitorias e pontos
+        }
     }
 
 ?>

@@ -281,6 +281,18 @@
                 'controller' => 'ContatoController',
                 'action' => 'responderContato'
             );
+
+            $routes['jogo'] = array(
+                'route' => '/adm/campaonato/jogo',
+                'controller' => 'CampeonatoController',
+                'action' => 'jogo'
+            );
+
+            $routes['procJogo'] = array(
+                'route' => '/adm/proc_cad_jogo',
+                'controller' => 'CampeonatoController',
+                'action' => 'procJogo'
+            );
         
         
             $this->setRoutes($routes);

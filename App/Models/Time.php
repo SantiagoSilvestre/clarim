@@ -142,6 +142,11 @@
             return $erros;
         }
 
+        public function listarTodosTimes() {
+            $query = "SELECT * FROM time ORDER BY time";
+            return $this->db->query($query)->fetchAll();
+        }
+
 
     }
 

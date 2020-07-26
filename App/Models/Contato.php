@@ -106,6 +106,26 @@
             return $this;
         }
 
+        public function getNaoLidas() {
+            $query = "SELECT count(id) as qtd FROM contato WHERE visualizada = 0";
+            return $this->db->query($query)->fetchAll();
+        }
+
+        public function getNaoResp() {
+            $query = "SELECT count(id) as qtd FROM contato WHERE respondida = 0";
+            return $this->db->query($query)->fetchAll();
+        }
+
+        public function getTotal() {
+            $query = "SELECT count(id) as qtd FROM contato";
+            return $this->db->query($query)->fetchAll();
+        }
+
+        public function getLidasResp() {
+            $query = "SELECT count(id) as qtd FROM contato WHERE visualizada = 1 and respondida = 1";
+            return $this->db->query($query)->fetchAll();
+        }
+
 
     }
 

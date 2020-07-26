@@ -13,6 +13,7 @@ if(isset($_SESSION)) {
                     </div>
                     <div class="p-2">
                         <span class="d-none d-md-block">
+                            <a href="/adm/campaonato/jogo?id=<?=$campeonato->__get('id')?>" class='btn btn-outline-success btn-sm'>Novo Time</a>
                             <a class="btn btn-outline-info btn-sm" href="/adm/campeonatos"> Listar</a>
                             <a class="btn btn-outline-warning btn-sm" href="/adm/campeonatos/edit_campeonato?id=<?=$campeonato->__get('id')?>"> Editar</a>
                             <a class="btn btn-outline-danger btn-sm" href="/adm/campeonato/apagar_campeonato?id=<?=$campeonato->__get('id')?>" data-confirm="Tem certeza que deseja excluir o item seleconado?">Apagar</a>
