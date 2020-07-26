@@ -101,6 +101,61 @@
                 'action' => 'apagarUsuario'
             );
 
+            $routes['campeonatoAdm'] = array(
+                'route' => '/adm/campeonatos',
+                'controller' => 'CampeonatoController',
+                'action' => 'campeonatoAdm'
+            );
+
+            $routes['visualizarCampeonato'] = array(
+                'route' => '/adm/campeonatos/visualizar',
+                'controller' => 'CampeonatoController',
+                'action' => 'visualizarCampeonato'
+            );
+
+            $routes['cadastrarCampeonato'] = array(
+                'route' => '/adm/campeonatos/cadastrar',
+                'controller' => 'CampeonatoController',
+                'action' => 'cadastrarCampeonato'
+            );
+
+            $routes['cadCampeonatos'] = array(
+                'route' => '/adm/proc_cad_campeonato',
+                'controller' => 'CampeonatoController',
+                'action' => 'cadCampeonatos'
+            );
+
+            $routes['editCampeonato'] = array(
+                'route' => '/adm/campeonatos/edit_campeonato',
+                'controller' => 'CampeonatoController',
+                'action' => 'editCampeonato'
+            );
+
+            $routes['editCampeonato'] = array(
+                'route' => '/adm/campeonatos/edit_campeonato',
+                'controller' => 'CampeonatoController',
+                'action' => 'editCampeonato'
+            );
+            
+            $routes['procCampeonato'] = array(
+                'route' => '/adm/proc_edit_camp',
+                'controller' => 'CampeonatoController',
+                'action' => 'procCampeonato'
+            );
+
+            $routes['apagarCampeonato'] = array(
+                'route' => '/adm/campeonato/apagar_campeonato',
+                'controller' => 'CampeonatoController',
+                'action' => 'apagarCampeonato'
+            );
+
+            $routes['finalizarCampeonato'] = array(
+                'route' => '/adm/campeonato/finalizar_campeonato',
+                'controller' => 'CampeonatoController',
+                'action' => 'finalizarCampeonato'
+            );
+        
+
             $this->setRoutes($routes);
         }
         
