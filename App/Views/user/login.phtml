@@ -1,8 +1,15 @@
+<?php 
+    session_start();
+?>
 <body class="text-center corpoLogin">
     <form class="form-signin" method="POST" action="/adm/valida">
         <img class="mb-4" src="/assets/imagens/index/logoClarim.jpg" alt="Clarim" width="72" height="72">
         <h1 class="h3 mb-3 font-weight-normal">Área Restrita</h1>
         <?php
+            if (isset($_SESSION['msg'])) {
+                echo $_SESSION['msg'];
+                unset($_SESSION['msg']);
+            }
             if ($this->view->login == 'erro') {
         ?>
             <span class="text text-danger">*E-mail ou senha inválidos</span>    

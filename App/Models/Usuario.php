@@ -40,6 +40,9 @@
             if ($u['id'] != '' && $u['nome'] != '') {
                 $this->__set('id', $u['id']);
                 $this->__set('nome', $u['nome']);
+                $this->__set('email', $u['email']);
+                $this->__set('primeiroAcesso', $u['primeiro_acesso']);
+                $this->__set('senha', $u['senha']);
             }
             return $this;
         }
@@ -168,7 +171,15 @@
             return $this->db->query($query)->fetchAll();
         }
 
-        
+        public function atualizarSenha() {
+            $query = "UPDATE usuario SET senha = :senha, primeiro_acesso = 1 WHERE id = :id";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':id', $this->__get('id'));
+            $stmt->bindValue(':senha', $this->__get('senha'));
+            $stmt->execute();
+            $u = $stmt->fetch(\PDO::FETCH_ASSOC);
+            return $this;
+        }
 
 
     }

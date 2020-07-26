@@ -24,19 +24,26 @@
         }
 
         public function valida(){
+            $senha = $_POST['senha'];
+            $senha = $senha == '12345678' ? $senha : md5($senha);
             $user = Container::getModel('Usuario');
             $user->__set('email', $_POST['usuario']);
-            $user->__set('senha', $_POST['senha']);
-            $user->acessar();   
+            $user->__set('senha', $senha);
+            $user->acessar(); 
             if ( $user->__get('id') && $user->__get('nome')) {
                 session_start();
                 $_SESSION['id'] = $user->__get('id');
                 $_SESSION['nome'] = $user->__get('nome') ;
                 $_SESSION['logado'] = true;
-                header('Location: /adm/home');
+                if ($user->__get('primeiroAcesso') == 0) {
+                    header('Location: /adm/trocarSenha');
+                } else {
+                    header('Location: /adm/home');
+                }
+               
             } else {
                 header('Location: /adm/login?login=erro');
-            }           
+            }         
         }
 
         public function home()
@@ -147,6 +154,63 @@
                 <span aria-hidden='true'>&times;</span>
                 </button></div>";
             header('Location: /adm/usuarios');
+        }
+
+        public function trocarSenha() {
+            session_start();
+            $id = $_SESSION['id'];
+            $user = Container::getModel('Usuario');
+            $user->__set('id', $id);
+            $user->buscarPorId();
+            $this->view->dados = $user;
+            $this->render('trocarSenha', 'head', 'menu_login' ,'body', 'footer_login');
+        }
+
+        public function trocar() {
+            session_start();
+            $senha = $_POST['senha'];
+            $senhaRepetida = $_POST['senhaRepetida'];
+            $id = $_POST['id'];
+
+            if(strlen($senha) < 8 ){
+                $_SESSION['msg'] = "<div class='alert alert-danger'> A nova senha tem que ter no mínino 8 caracteres
+                <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+               <span aria-hidden='true'>&times;</span>
+               </button></div>";
+               header('Location: /adm/trocarSenha'); 
+            }
+
+            if($senha == '12345678' ){
+                $_SESSION['msg'] = "<div class='alert alert-danger'> A nova senha não pode ser igual a senha padrão
+                <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+               <span aria-hidden='true'>&times;</span>
+               </button></div>";
+               header('Location: /adm/trocarSenha'); 
+            }
+
+            if ($senha != $senhaRepetida) {
+                $_SESSION['msg'] = "<div class='alert alert-danger'> As senhas não são iguais
+                 <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                <span aria-hidden='true'>&times;</span>
+                </button></div>";
+                header('Location: /adm/trocarSenha');
+            } else {
+                $user = Container::getModel('Usuario');
+                $user->__set('id', $id);
+                $senhaCriptografada = md5($senha);
+                $user->__set('senha', $senhaCriptografada);
+                $user->atualizarSenha();
+                session_start();
+                unset($_SESSION['id']);
+                unset($_SESSION['nome']);
+                unset($_SESSION['logado']);
+                $_SESSION['msg'] = "<div class='alert alert-success'> Senha alterada com sucesso!
+                 <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                <span aria-hidden='true'>&times;</span>
+                </button></div>";
+                header('Location: /adm/login');
+            }
+
         }
 
     }

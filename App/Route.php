@@ -196,6 +196,18 @@
                 'controller' => 'TimesController',
                 'action' => 'procApagarTimes'
             );
+
+            $routes['trocarSenha'] = array(
+                'route' => '/adm/trocarSenha',
+                'controller' => 'UserController',
+                'action' => 'trocarSenha'
+            );
+
+            $routes['trocar'] = array(
+                'route' => '/adm/trocar',
+                'controller' => 'UserController',
+                'action' => 'trocar'
+            );
         
             $this->setRoutes($routes);
         }

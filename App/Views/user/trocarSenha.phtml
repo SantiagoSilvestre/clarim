@@ -1,0 +1,36 @@
+<?php
+
+use MF\Model\Container;
+
+if(isset($_SESSION)) {
+    if($_SESSION['logado']) {
+    ?>
+<body class="text-center corpoLogin">
+    <form class="form-signin" method="POST" action="/adm/trocar">
+        <input type="text" id="id" name="id" value="<?=$this->view->dados->__get('id') ?>" hidden>
+        <img class="mb-4" src="/assets/imagens/index/logoClarim.jpg" alt="Clarim" width="72" height="72">
+        <h1 class="h3 mb-3 font-weight-normal">Área Restrita</h1>
+        <?php
+            if (isset($_SESSION['msg'])) {
+            echo $_SESSION['msg'];
+            unset($_SESSION['msg']);
+        }
+        ?>
+        <div class="form-group">
+            <label>Nova senha</label>
+            <input name="senha" type="password" class="form-control" placeholder="Digite a senha" required>               
+        </div>
+        <div class="form-group">
+            <label>Repetir Senha</label>
+            <input name="senhaRepetida" type="password" class="form-control" placeholder="repita a senha" required>
+        </div>
+        <input type="submit" class="btn btn-lg btn-primary btn-block" value="Substituir" name="SendSenha">
+    </form>
+</body>
+<?php
+} else {
+        header('Location: /adm/login');
+    }
+} else {
+    header('Location: /adm/login');
+}
