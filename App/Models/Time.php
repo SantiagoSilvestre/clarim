@@ -47,7 +47,12 @@
             return $this->db->query($query)->fetchAll();
         }
 
-        public function otalgetTTime() {
+        public function getTotalTime() {
+            $query = "SELECT count(id) as qtd FROM time";
+            return $this->db->query($query)->fetchAll();
+        }
+
+        public function getTotal() {
             $query = "SELECT count(id) as qtd FROM time";
             return $this->db->query($query)->fetchAll();
         }

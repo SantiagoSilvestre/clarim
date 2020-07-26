@@ -51,10 +51,9 @@ if(isset($_SESSION)) {
                                 <h6 class="card-title">Times cadastrados</h6>
                                 <h2 class="lead">
                                 <?php
-                                    
                                     $time = Container::getModel('Time');
-                                    $qtd = $time->getTotalTime();
-                                    echo $t;
+                                    $t = $time->getTotal();
+                                    echo $t[0]['qtd'];
                                     
                                 ?>
                                 </h2>
