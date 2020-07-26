@@ -1,0 +1,87 @@
+<?php
+session_start();
+if(isset($_SESSION)) {
+    if($_SESSION['logado']) {
+        $contato = $this->view->dados;
+    ?>
+<div class="d-flex">
+        <div class="content p-1">
+            <div class="list-group-item">
+                <div class="d-flex">
+                    <div class="mr-auto p-2">
+                        <h2 class="display-4 titulo">Detalhes da Mensagem</h2>
+                    </div>
+                    <div class="p-2">
+                        <span class="d-none d-md-block">
+                            <a class="btn btn-outline-info btn-sm" href="/adm/contato"> Listar</a>
+                            <a class="btn btn-outline-secondary btn-sm" href="/adm/contato/visualizarMensagem?id=<?=$contato->__get('id')?>"> Visualizar</a>
+                            <a class="btn btn-outline-secondary btn-sm" href="/adm/contato/responderMensagem?id=<?=$contato->__get('id')?>"> Responder</a>
+                        </span>
+                        <div class="dropdown d-block d-md-none">
+                            <button class="btn btn-primary dropdown-toggle btn-sm" type="button" id="acoesListar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Ações
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="acoesListar">
+                                <a class="dropdown-item" href="/adm/contato">Listar</a>
+                                <a class="dropdown-item" href="/adm/contato/visualizarMensagem?id=<?=$contato->__get('id')?>"> Visualizar</a>
+                                <a class="dropdown-item" href="/adm/contato/responderMensagem?id=<?=$contato->__get('id')?>"> Visualizar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <dl class="row">
+                    <dt class="col-sm-3">ID</dt>
+                    <dd class="col-sm-9"><?= $contato->__get('id') ?></dd>
+
+                    <dt class="col-sm-3">Nome</dt>
+                    <dd class="col-sm-9">
+                        <?php                         
+                            echo $contato->__get('nome');
+                        ?></dd>
+                    <dt class="col-sm-3">Email</dt>
+                    <dd class="col-sm-9"><?= $contato->__get('email') ?></dd>
+
+                    <dt class="col-sm-3">Assunto</dt>
+                    <dd class="col-sm-9"><?= $contato->__get('assunto') ?></dd>
+
+                    <dt class="col-sm-3">Mensagem</dt>
+                    <dd class="col-sm-9"><?= $contato->__get('mensagem') ?></dd>
+
+                    <dt class="col-sm-3">Data</dt>
+                    <dd class="col-sm-9"><?= date('d/m/Y H:i:s', strtotime( $contato->__get('data'))) ?></dd>
+
+                    <dt class="col-sm-3">Visualizada</dt>
+                    <dd class="col-sm-9"> 
+                    <?php 
+                        if ($contato->__get('visualizada') == 0 ) {
+                            echo "<span class='badge badge-pill badge-danger'> Não </span>"; 
+
+                        } else {
+                            echo "<span class='badge badge-pill badge-success'> sim</span>"; 
+                        }
+                    ?>
+
+                    <dt class="col-sm-3">Respondida</dt>
+                    <dd class="col-sm-9"> 
+                    <?php 
+                        if ($contato->__get('respondida') == 0 ) {
+                            echo "<span class='badge badge-pill badge-danger'> não </span>"; 
+
+                        } else {
+                            echo "<span class='badge badge-pill badge-success'> sim </span>"; 
+                        }
+                    ?>
+                    </dd>
+                </dl> 
+            </div>
+        </div>
+    </div>
+
+<?php
+    } else {
+        header('Location: /adm/login');
+    }
+} else {
+    header('Location: /adm/login');
+}

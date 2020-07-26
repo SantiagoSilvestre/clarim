@@ -1,0 +1,60 @@
+<?php 
+session_start();
+if(isset($_SESSION)) {
+    if($_SESSION['logado']) {
+    ?>
+    <div class="d-flex">
+        <div class="content p-1">
+            <div class="list-group-item">
+                <div class="d-flex">
+                    <div class="mr-auto p-2">
+                        <h2 class="display-4 titulo">Cadastrar Vídeo</h2>
+                    </div>
+                    <div class="p-2">
+                        <a class="btn btn-outline-info btn-sm" href="/adm/videos"> Listar</a>
+                    </div>
+                </div>
+                <hr>
+                <?php
+                    if(isset($_SESSION['erros'])) {
+                        foreach($_SESSION['erros'] as $erro) {
+                            echo $erro . "<br>";
+                        }
+                        unset($_SESSION['erros']);
+                    }
+                ?>
+                <form method="POST" action="/adm/proc_cad_video">
+                    <div class="form-group col-md-12">
+                        <span class="text-danger">* </span>
+                        <label>
+                            Nome:
+                        </label>
+                        <input name="nome" type="text" class="form-control" 
+                        value="<?php if(isset($_SESSION['dados']['nome'])) { echo $_SESSION['dados']['nome']; } ?>"
+                        id="nome" placeholder="Nome do vídeo" required>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <span class="text-danger">* </span>
+                        <label>
+                           link:
+                        </label>
+                        <textarea name="link" rows="5" class="form-control" id="link"><?php if(isset($_SESSION['dados']['link'])) { echo $_SESSION['dados']['link']; } ?></textarea>
+                        
+                    </div>
+                    <p>
+                        <span class="text-danger">* </span>Campo obrigatório
+                    </p>
+                    <input name="SendCadVideo" id="SendCadVideo"  type="submit" class="btn btn-success" value="Cadastrar"></input>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<?php
+    unset($_SESSION['dados']);
+    } else {
+        header('Location: /adm/login');
+    }
+} else {
+    header('Location: /adm/login');
+}

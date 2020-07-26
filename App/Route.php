@@ -208,6 +208,80 @@
                 'controller' => 'UserController',
                 'action' => 'trocar'
             );
+
+            $routes['videos'] = array(
+                'route' => '/adm/videos',
+                'controller' => 'VideoController',
+                'action' => 'videos'
+            );
+
+            $routes['cadVideos'] = array(
+                'route' => '/adm/video/cadastrar',
+                'controller' => 'VideoController',
+                'action' => 'cadVideos'
+            );
+
+            $routes['proCadVideos'] = array(
+                'route' => '/adm/proc_cad_video',
+                'controller' => 'VideoController',
+                'action' => 'proCadVideos'
+            );
+
+            $routes['apagarVideos'] = array(
+                'route' => '/adm/video/apagar_video',
+                'controller' => 'VideoController',
+                'action' => 'apagarVideos'
+            );
+
+            $routes['editVideos'] = array(
+                'route' => '/adm/video/edit_video',
+                'controller' => 'VideoController',
+                'action' => 'editVideos'
+            );
+
+            $routes['procEditVideos'] = array(
+                'route' => '/adm/proc_edit_video',
+                'controller' => 'VideoController',
+                'action' => 'procEditVideos'
+            );
+
+            $routes['visVideos'] = array(
+                'route' => '/adm/video/visualizar',
+                'controller' => 'VideoController',
+                'action' => 'visVideos'
+            );
+
+            $routes['listContato'] = array(
+                'route' => '/adm/contato',
+                'controller' => 'ContatoController',
+                'action' => 'listContato'
+            );
+
+            $routes['apagarContato'] = array(
+                'route' => '/adm/contato/apagar_contato',
+                'controller' => 'ContatoController',
+                'action' => 'apagarContato'
+            );
+
+            $routes['visContato'] = array(
+                'route' => '/adm/contato/vis_contato',
+                'controller' => 'ContatoController',
+                'action' => 'visContato'
+            );
+
+            $routes['visualizarContato'] = array(
+                'route' => '/adm/contato/visualizarMensagem',
+                'controller' => 'ContatoController',
+                'action' => 'visualizarContato'
+            );
+
+            
+            $routes['responderContato'] = array(
+                'route' => '/adm/contato/responderMensagem',
+                'controller' => 'ContatoController',
+                'action' => 'responderContato'
+            );
+        
         
             $this->setRoutes($routes);
         }

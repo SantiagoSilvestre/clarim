@@ -27,20 +27,33 @@
                 <h2 class="display-4 text-center" style="margin-bottom: 40px; color: #FFF;">Conheça nosso trabalho</h2>
                 <p class="lead text-center" style="margin-bottom: 40px; color: #FFF;">Últimos conteúdos adicionados</p>
                 <div class="card-deck">
-                    <div class="card text-center dep-left">
-                        <div class="embed-responsive embed-responsive-16by9">
-                            <iframe width="560" height="315" src="https://www.youtube.com/embed/5a1IGFG6NUE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        </div>
-                    </div>
-                    <div class="card text-center dep-center">
-                        <div class="embed-responsive embed-responsive-16by9">
-                        <iframe width="560" height="315" src="https://www.youtube.com/embed/IISA6t-9zzc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        </div>							
-                    </div>
-                    <div class="card text-center dep-right">
-                        <div class="embed-responsive embed-responsive-16by9">
-                        <iframe width="560" height="315" src="https://www.youtube.com/embed/XTmz9ikVCHw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        </div>							
+                    <?php
+
+                        use MF\Model\Container;
+
+                        $contador = 1;
+                        $videos = Container::getModel('Video');
+                        $videos = $videos->listarUltimos();
+
+                        foreach ($videos as $v) {
+                            $aling ;
+                            if ($contador == 1 ){
+                                $aling = "left";
+                            } else if ($contador == 2) {
+                                $aling = "center";
+                            } else if ($contador == 3) {
+                                $aling = "right";
+                            }
+                            ?>
+                            <div class="card text-center dep-<?=$aling?>">
+                                <div class="embed-responsive embed-responsive-16by9">
+                                    <?=$v['link'] ?>
+                                </div>
+                            </div>
+                        <?php
+                        $contador ++;
+                        }
+                        ?>						
                     </div>
                 </div>
             </div>
