@@ -154,8 +154,49 @@
                 'controller' => 'CampeonatoController',
                 'action' => 'finalizarCampeonato'
             );
-        
 
+            $routes['times'] = array(
+                'route' => '/adm/times',
+                'controller' => 'TimesController',
+                'action' => 'times'
+            );
+
+            $routes['cadTimes'] = array(
+                'route' => '/adm/times/cadastrar',
+                'controller' => 'TimesController',
+                'action' => 'cadTimes'
+            );
+
+            $routes['procTimes'] = array(
+                'route' => '/adm/proc_cad_time',
+                'controller' => 'TimesController',
+                'action' => 'procTimes'
+            );
+
+            $routes['visTimes'] = array(
+                'route' => '/adm/times/visualizar',
+                'controller' => 'TimesController',
+                'action' => 'visTimes'
+            );
+
+            $routes['editTimes'] = array(
+                'route' => '/adm/times/edit_time',
+                'controller' => 'TimesController',
+                'action' => 'editTimes'
+            );
+
+            $routes['procEdiTimes'] = array(
+                'route' => '/adm/proc_edit_time',
+                'controller' => 'TimesController',
+                'action' => 'procEdiTimes'
+            );
+
+            $routes['procApagarTimes'] = array(
+                'route' => '/adm/time/apagar_time',
+                'controller' => 'TimesController',
+                'action' => 'procApagarTimes'
+            );
+        
             $this->setRoutes($routes);
         }
         

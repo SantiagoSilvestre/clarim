@@ -167,6 +167,11 @@
             $stmt->execute();
             return $this;
         }
+
+        public function getTotalCampFinalizado() {
+            $query = "select count(id) as qtd from campeonato where finalizado = 1";
+            return $this->db->query($query)->fetchAll();
+        }
     }
 
 

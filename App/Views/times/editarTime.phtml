@@ -2,17 +2,17 @@
 session_start();
 if(isset($_SESSION)) {
     if($_SESSION['logado']) {
-        $campeonato = $this->view->dados;
+        $time = $this->view->dados;
     ?>
     <div class="d-flex">
         <div class="content p-1">
             <div class="list-group-item">
                 <div class="d-flex">
                     <div class="mr-auto p-2">
-                        <h2 class="display-4 titulo">Editar Campeonato</h2>
+                        <h2 class="display-4 titulo">Editar Time</h2>
                     </div>
                     <div class="p-2">
-                        <a class="btn btn-outline-info btn-sm" href="/adm/campeonatos"> Listar</a>
+                        <a class="btn btn-outline-info btn-sm" href="/adm/times"> Listar</a>
                     </div>
                 </div>
                 <hr>
@@ -24,12 +24,12 @@ if(isset($_SESSION)) {
                         unset($_SESSION['erros']);
                     }
                 ?>
-                <form method="POST" action="/adm/proc_edit_camp">
+                <form method="POST" action="/adm/proc_edit_time">
                     <input id="id" name="id" type="text" value="<?php
                         if(isset($_SESSION['dados']['id'])) {
                             echo $_SESSION['dados']['id'];
                         } else {
-                            echo  $campeonato->__get('id');
+                            echo  $time->__get('id');
                         }?>                            
                         " hidden>
 
@@ -38,23 +38,16 @@ if(isset($_SESSION)) {
                         <label>
                             Nome:
                         </label>
-                        <input name="nome" type="text" class="form-control" 
-                        value="<?php if(isset($_SESSION['dados']['nome'])) { echo $_SESSION['dados']['nome']; } else {
-                            echo  $campeonato->__get("nome");
+                        <input name="time" type="text" class="form-control" 
+                        value="<?php if(isset($_SESSION['dados']['time'])) { echo $_SESSION['dados']['time']; } else {
+                            echo  $time->__get("time");
                         } ?>"
-                        id="nome" placeholder="Nome do campeonato" required>
-                    </div>
-                    <div class="form-group col-md-12">
-                        <label>
-                           Regulamento:
-                        </label>
-                        <textarea name="regulamento" rows="5" class="form-control" id="regulamento"><?php if(isset($_SESSION['dados']['regulamento'])) { echo $_SESSION['dados']['regulamento']; }else { echo $campeonato->__get('regulamento');} ?></textarea>
-                        
+                        id="time" placeholder="Nome do time" required>
                     </div>
                     <p>
                         <span class="text-danger">* </span>Campo obrigatório
                     </p>
-                    <input name="SendCadUser" id="SendCadUser"  type="submit" class="btn btn-warning" value="Salvar"></input>
+                    <input name="SendCadTime" id="SendCadTime"  type="submit" class="btn btn-warning" value="Salvar"></input>
                 </form>
             </div>
         </div>
