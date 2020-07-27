@@ -152,7 +152,8 @@ use MF\Controller\Action;
                     'vitoria' => 1,
                     'derrota' => 0,
                     'empate' => 0,
-                    'pontos' => 3
+                    'pontos' => 3,
+                    'golContra' => $_POST['gol2']
                 ];
             $times['time2'] = 
                 [
@@ -163,7 +164,8 @@ use MF\Controller\Action;
                     'vitoria' => 0,
                     'derrota' => 1,
                     'empate' => 0,
-                    'pontos' => 0
+                    'pontos' => 0,
+                    'golContra' => $_POST['gol1']
                 ];
            } else if ($_POST['gol1'] == $_POST['gol2'] ) {
             $times['time1'] = 
@@ -175,7 +177,8 @@ use MF\Controller\Action;
                 'vitoria' => 0,
                 'derrota' => 0,
                 'empate' => 1,
-                'pontos' => 1
+                'pontos' => 1,
+                'golContra' => $_POST['gol2']
 
             ];
             $times['time2'] = 
@@ -187,7 +190,8 @@ use MF\Controller\Action;
                 'vitoria' => 0,
                 'derrota' => 0,
                 'empate' => 1,
-                'pontos' => 1
+                'pontos' => 1,
+                'golContra' => $_POST['gol1']
 
             ];
            } else {
@@ -200,7 +204,8 @@ use MF\Controller\Action;
                 'vitoria' => 0,
                 'derrota' => 1,
                 'empate' => 0,
-                'pontos' => 0
+                'pontos' => 0,
+                'golContra' => $_POST['gol2']
 
             ];
             $times['time2'] = 
@@ -212,7 +217,8 @@ use MF\Controller\Action;
                 'vitoria' => 1,
                 'derrota' => 0,
                 'empate' => 1,
-                'pontos' => 3
+                'pontos' => 3,
+                'golContra' => $_POST['gol1']
 
             ];
            }
@@ -225,21 +231,51 @@ use MF\Controller\Action;
                     }
                 }
            }
-           if($valido) {
-                $_SESSION['msg'] = "<div class='alert alert-success'> Jogo gravado com sucesso!
-                <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-                <span aria-hidden='true'>&times;</span>
-                </button></div>";
-                header('Location: /adm/campeonatos');
-           } else {
-                $_SESSION['msg'] = "<div class='alert alert-danger'> Necessários preencher todos os campos
+
+           if($times['time1']['id'] == $times['time2']['id']) {
+                $_SESSION['msg'] = "<div class='alert alert-danger'> Não pode selecionar o mesmo time
                 <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                 <span aria-hidden='true'>&times;</span>
                 </button></div>";
                 header('Location: /adm/campaonato/jogo?id='.$_POST['id']); 
+           } else {
+
+                if($valido) {
+
+                        foreach($times as $time) {
+                            $camp->inserirJogo($time);
+                        }
+                        $_SESSION['msg'] = "<div class='alert alert-success'> Jogo gravado com sucesso!
+                        <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                        <span aria-hidden='true'>&times;</span>
+                        </button></div>";
+                        header('Location: /adm/campeonatos');
+                } else {
+                        $_SESSION['msg'] = "<div class='alert alert-danger'> Necessários preencher todos os campos
+                        <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                        <span aria-hidden='true'>&times;</span>
+                        </button></div>";
+                        header('Location: /adm/campaonato/jogo?id='.$_POST['id']); 
+                }
            }
 
            
+        }
+
+        public function timeCamp() {
+            session_start();
+            $idc = $_POST['idc'];
+            $idt = $_POST['idt'];
+           
+            $camp = Container::getModel('Campeonato');
+            $camp->__set('id', $_GET['idc']);
+            $camp->inserirTime($idt, $idc);
+            $_SESSION['msg'] = "<div class='alert alert-success'> Time Registrado com sucesso!
+            <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+           <span aria-hidden='true'>&times;</span>
+           </button></div>";
+           header('Location: /adm/campeonatos/visualizar?id='.$idc);
+
         }
     }
 

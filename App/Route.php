@@ -293,6 +293,12 @@
                 'controller' => 'CampeonatoController',
                 'action' => 'procJogo'
             );
+
+            $routes['timeCamp'] = array(
+                'route' => '/adm/campaonato/time',
+                'controller' => 'CampeonatoController',
+                'action' => 'timeCamp'
+            );
         
         
             $this->setRoutes($routes);

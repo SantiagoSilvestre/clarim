@@ -142,8 +142,19 @@
             return $erros;
         }
 
-        public function listarTodosTimes() {
-            $query = "SELECT * FROM time ORDER BY time";
+        public function listarTodosTimes($idc) {
+            $query = "SELECT t.*, c.id_campeonato FROM time t
+                      INNER JOIN cam_ativo c ON c.id_time = t.id
+                      WHERE c.id_campeonato = '".$idc."'
+                      ORDER BY time";
+            return $this->db->query($query)->fetchAll();
+        }
+
+        public function listarTimesSemFiltro() {
+            $query = "SELECT t.* FROM time t
+            left JOIN cam_ativo c on t.id = c.id_time 
+            WHERE c.id_time is null           
+            ORDER BY time";
             return $this->db->query($query)->fetchAll();
         }
 

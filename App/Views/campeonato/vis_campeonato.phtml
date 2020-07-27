@@ -1,4 +1,7 @@
 <?php
+
+use MF\Model\Container;
+
 session_start();
 if(isset($_SESSION)) {
     if($_SESSION['logado']) {
@@ -8,12 +11,14 @@ if(isset($_SESSION)) {
         <div class="content p-1">
             <div class="list-group-item">
                 <div class="d-flex">
+                
                     <div class="mr-auto p-2">
                         <h2 class="display-4 titulo">Detalhes do Campeonato</h2>
                     </div>
+                   
                     <div class="p-2">
                         <span class="d-none d-md-block">
-                            <a href="/adm/campaonato/jogo?id=<?=$campeonato->__get('id')?>" class='btn btn-outline-success btn-sm'>Novo Time</a>
+                            <a class='btn btn-outline-success btn-sm' role="button" data-toggle="modal" data-target="#cadTime">Novo Time</a>
                             <a class="btn btn-outline-info btn-sm" href="/adm/campeonatos"> Listar</a>
                             <a class="btn btn-outline-warning btn-sm" href="/adm/campeonatos/edit_campeonato?id=<?=$campeonato->__get('id')?>"> Editar</a>
                             <a class="btn btn-outline-danger btn-sm" href="/adm/campeonato/apagar_campeonato?id=<?=$campeonato->__get('id')?>" data-confirm="Tem certeza que deseja excluir o item seleconado?">Apagar</a>
@@ -23,6 +28,7 @@ if(isset($_SESSION)) {
                                 Ações
                             </button>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="acoesListar">
+                                <a class="dropdown-item" role="button" data-toggle="modal" data-target="#cadTime">Novo Time</a>
                                 <a class="dropdown-item" href="/adm/campeonatos">Listar</a>
                                 <a class="dropdown-item" href="/adm/campeonatos/edit_campeonato?id=<?=$campeonato->__get('id')?>">Editar</a>
                                 <a class="dropdown-item" href="/adm/campeonato/apagar_campeonato?id=<?=$campeonato->__get('id')?>"  data-confirm="Tem certeza que deseja excluir o item seleconado?">Apagar</a>
@@ -30,6 +36,13 @@ if(isset($_SESSION)) {
                         </div>
                     </div>
                 </div>
+                <hr>
+                <?php
+                        if (isset($_SESSION['msg'])) {
+                            echo $_SESSION['msg'];
+                            unset($_SESSION['msg']);
+                        }
+                    ?>
                 <hr>
                 <dl class="row">
                     <dt class="col-sm-3">ID</dt>
@@ -58,6 +71,48 @@ if(isset($_SESSION)) {
             </div>
         </div>
     </div>
+    <?php 
+        $time = Container::getModel('Time');
+        $times = $time->listarTimesSemFiltro();
+    ?>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="cadTime" tabindex="-1" role="dialog" aria-labelledby="regulamentoLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="regulamentoLabel">Cadastrar Novo Time</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                <form method="POST" action="/adm/campaonato/time">
+                    <input type="text" id="idc" name="idc" value="<?=$campeonato->__get('id')?>" hidden>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                    <label>
+                                        Time:
+                                    </label>
+                                    
+                                    <select class="custom-select" name="idt" id="inputGroupSelect01">
+                                        <option selected>Selecione o time</option>
+                                        <?php
+                                            
+                                            foreach($times as $t) {
+                                              echo "<option value='".$t['id']."'>".$t['time']."</option>";
+                                            }
+                                        ?>
+                                </select>
+                            </div>
+                        </div>
+                        <input name="SendCadTime" id="SendCadTime"  type="submit" class="btn btn-success" value="Registrar"></input>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+            
 
 <?php
     } else {

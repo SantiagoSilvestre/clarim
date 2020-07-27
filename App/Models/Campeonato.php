@@ -71,9 +71,61 @@
             return $this;
         }
 
-        public function inserirJogo() {
+        public function inserirJogo($time) 
+        {
+            $query = "SELECT vitorias from cam_ativo 
+            WHERE id_campeonato = '".$this->__get('id')."' AND id_time = '".$time['id']."'";
+            $vitorias =  $this->db->query($query)->fetchAll();
+            $vitorias = $vitorias[0]['vitorias'] + $time['vitoria'];
 
-            return $this;
+            $query = "SELECT derrotas from cam_ativo 
+            WHERE id_campeonato = '".$this->__get('id')."' AND id_time = '".$time['id']."'";
+            $derrotas =  $this->db->query($query)->fetchAll();
+            $derrotas = $derrotas[0]['derrotas'] + $time['derrota'];
+
+            $query = "SELECT empates from cam_ativo 
+            WHERE id_campeonato = '".$this->__get('id')."' AND id_time = '".$time['id']."'";
+            $empates =  $this->db->query($query)->fetchAll();
+            $empates = $empates[0]['empates'] + $time['empate'];
+
+            $query = "SELECT pontuacao from cam_ativo 
+            WHERE id_campeonato = '".$this->__get('id')."' AND id_time = '".$time['id']."'";
+            $pontuacao =  $this->db->query($query)->fetchAll();
+            $pontuacao = $pontuacao[0]['pontuacao'] + $time['pontos'];
+
+            $query = "SELECT gol_pro from cam_ativo 
+            WHERE id_campeonato = '".$this->__get('id')."' AND id_time = '".$time['id']."'";
+            $gol_pro =  $this->db->query($query)->fetchAll();
+            $gol_pro = $gol_pro[0]['gol_pro'] + $time['gol'];
+
+            $query = "SELECT gol_contra from cam_ativo 
+            WHERE id_campeonato = '".$this->__get('id')."' AND id_time = '".$time['id']."'";
+            $gol_contra =  $this->db->query($query)->fetchAll();
+            $gol_contra = $gol_contra[0]['gol_contra'] + $time['golContra'];
+
+            $saldo_gol = $gol_pro - $gol_contra;
+
+            $query = "SELECT cartao_ver from cam_ativo 
+            WHERE id_campeonato = '".$this->__get('id')."' AND id_time = '".$time['id']."'";
+            $cartao_ver =  $this->db->query($query)->fetchAll();
+            $cartao_ver = $cartao_ver[0]['cartao_ver'] + $time['vermelho'];
+
+            $query = "SELECT cartao_amer from cam_ativo 
+            WHERE id_campeonato = '".$this->__get('id')."' AND id_time = '".$time['id']."'";
+            $cartao_amer =  $this->db->query($query)->fetchAll();
+            $cartao_amer = $cartao_amer[0]['cartao_amer'] + $time['amarelo'];
+
+            
+            $query = "UPDATE cam_ativo SET vitorias = '".$vitorias."', derrotas = '".$derrotas."',
+                    empates = '".$empates."', pontuacao = '".$pontuacao."', saldo_gol = '".$saldo_gol."',
+                    gol_pro = '".$gol_pro."', gol_contra = '".$gol_contra."', cartao_ver = '".$cartao_ver."',
+                    cartao_amer = '".$cartao_amer."'
+                    WHERE id_campeonato = :idc AND id_time = :idt
+                ";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':idc', $this->__get('id') );
+            $stmt->bindValue(':idt', $time['id']);
+            $stmt->execute();
         }
 
         public function atualizar() {
@@ -177,6 +229,16 @@
             $query = "select count(id) as qtd from campeonato where finalizado = 1";
             return $this->db->query($query)->fetchAll();
         }
+
+        public function inserirTime($idt, $idc) {
+            $query = "INSERT INTO cam_ativo (id_campeonato, id_time, vitorias, derrotas,
+             empates, pontuacao, saldo_gol, gol_pro, gol_contra, cartao_ver, cartao_amer, created) 
+             VALUES ('".$idc."', '".$idt."', 0,0,0,0,0,0,0,0,0,NOW())";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute();
+
+        }
+
     }
 
 

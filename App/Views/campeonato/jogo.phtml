@@ -34,7 +34,7 @@ if(isset($_SESSION)) {
                     <div class="row">
                         <?php
                             $time = Container::getModel('Time');
-                            $times = $time->listarTodosTimes();
+                            $times = $time->listarTodosTimes($_SESSION['dados']['id']);
                         ?>
                         <div class="container col-md-6">
                             <div class="row">
