@@ -136,7 +136,110 @@ use MF\Controller\Action;
 
         public function procJogo()
         {
-           //Aqui aplicar toda a lógica para contabilizar vitorias e pontos
+           session_start();
+           $camp = Container::getModel('Campeonato');
+           $camp->__set('id', $_POST['id']);
+
+           $times = [];
+
+           if ($_POST['gol1'] > $_POST['gol2'] ) {
+            $times['time1'] = 
+                [
+                    'id' =>  $_POST['time1'],
+                    'gol' => $_POST['gol1'],
+                    'vermelho' =>  $_POST['vermelho1'],
+                    'amarelo' => $_POST['amarelo1'],
+                    'vitoria' => 1,
+                    'derrota' => 0,
+                    'empate' => 0,
+                    'pontos' => 3
+                ];
+            $times['time2'] = 
+                [
+                    'id' =>  $_POST['time2'],
+                    'gol' => $_POST['gol2'],
+                    'vermelho' =>  $_POST['vermelho2'],
+                    'amarelo' => $_POST['amarelo2'],
+                    'vitoria' => 0,
+                    'derrota' => 1,
+                    'empate' => 0,
+                    'pontos' => 0
+                ];
+           } else if ($_POST['gol1'] == $_POST['gol2'] ) {
+            $times['time1'] = 
+            [
+                'id' =>  $_POST['time1'],
+                'gol' => $_POST['gol1'],
+                'vermelho' =>  $_POST['vermelho1'],
+                'amarelo' => $_POST['amarelo1'],
+                'vitoria' => 0,
+                'derrota' => 0,
+                'empate' => 1,
+                'pontos' => 1
+
+            ];
+            $times['time2'] = 
+            [
+                'id' =>  $_POST['time2'],
+                'gol' => $_POST['gol2'],
+                'vermelho' =>  $_POST['vermelho2'],
+                'amarelo' => $_POST['amarelo2'],
+                'vitoria' => 0,
+                'derrota' => 0,
+                'empate' => 1,
+                'pontos' => 1
+
+            ];
+           } else {
+            $times['time1'] = 
+            [
+                'id' =>  $_POST['time1'],
+                'gol' => $_POST['gol1'],
+                'vermelho' =>  $_POST['vermelho1'],
+                'amarelo' => $_POST['amarelo1'],
+                'vitoria' => 0,
+                'derrota' => 1,
+                'empate' => 0,
+                'pontos' => 0
+
+            ];
+            $times['time2'] = 
+            [
+                'id' =>  $_POST['time2'],
+                'gol' => $_POST['gol2'],
+                'vermelho' =>  $_POST['vermelho2'],
+                'amarelo' => $_POST['amarelo2'],
+                'vitoria' => 1,
+                'derrota' => 0,
+                'empate' => 1,
+                'pontos' => 3
+
+            ];
+           }
+           $valido = true;
+           foreach($times as $time) {
+                foreach($time as $key => $value) {
+                    if ($key != 'vitoria' && $key != 'empate' && $key != 'pontos' && $key != 'derrota' && $value == '' ) {
+                        echo $key." - <br>";
+                        $valido = false;
+                    }
+                }
+           }
+           if($valido) {
+                $_SESSION['msg'] = "<div class='alert alert-success'> Jogo gravado com sucesso!
+                <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                <span aria-hidden='true'>&times;</span>
+                </button></div>";
+                header('Location: /adm/campeonatos');
+           } else {
+                $_SESSION['msg'] = "<div class='alert alert-danger'> Necessários preencher todos os campos
+                <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                <span aria-hidden='true'>&times;</span>
+                </button></div>";
+                header('Location: /adm/campaonato/jogo?id='.$_POST['id']); 
+           }
+
+           
         }
     }
 

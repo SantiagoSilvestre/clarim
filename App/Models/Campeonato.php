@@ -71,6 +71,11 @@
             return $this;
         }
 
+        public function inserirJogo() {
+
+            return $this;
+        }
+
         public function atualizar() {
             $query = "UPDATE campeonato SET nome = :nome, regulamento = :regulamento WHERE id = :id";
             $stmt = $this->db->prepare($query);
