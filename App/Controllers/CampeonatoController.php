@@ -266,15 +266,27 @@ use MF\Controller\Action;
             session_start();
             $idc = $_POST['idc'];
             $idt = $_POST['idt'];
-           
             $camp = Container::getModel('Campeonato');
-            $camp->__set('id', $_GET['idc']);
-            $camp->inserirTime($idt, $idc);
-            $_SESSION['msg'] = "<div class='alert alert-success'> Time Registrado com sucesso!
-            <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-           <span aria-hidden='true'>&times;</span>
-           </button></div>";
-           header('Location: /adm/campeonatos/visualizar?id='.$idc);
+            $camp->__set('id', $idc);
+            $time = Container::getModel('Time');
+            $time->__set('id', $idt);
+            
+            $teste = $time->validarTime($idc, $idt);
+            if (count($teste) > 0 ) {
+                $_SESSION['msg'] = "<div class='alert alert-danger'> Este time já pertence a esse campeonato
+                <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                <span aria-hidden='true'>&times;</span>
+                </button></div>";
+                header('Location: /adm/campeonatos/visualizar?id='.$idc);
+            } else {
+                $camp->inserirTime($idt, $idc);
+                $_SESSION['msg'] = "<div class='alert alert-success'> Time Registrado com sucesso!
+                <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                <span aria-hidden='true'>&times;</span>
+                </button></div>";
+                header('Location: /adm/campeonatos/visualizar?id='.$idc);
+            }
+            
 
         }
     }

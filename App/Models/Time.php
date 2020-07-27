@@ -151,9 +151,16 @@
         }
 
         public function listarTimesSemFiltro() {
-            $query = "SELECT t.* FROM time t
-            left JOIN cam_ativo c on t.id = c.id_time 
-            WHERE c.id_time is null           
+            $query = "SELECT * FROM time 
+            ORDER BY time";
+            return $this->db->query($query)->fetchAll();
+        }
+
+        public function validarTime($idc, $idt) {
+            $query = "SELECT c.* FROM cam_ativo c
+            INNER JOIN time t on t.id = c.id_time
+            INNER JOIN campeonato cp on c.id_campeonato = cp.id
+            WHERE id_campeonato = '".$idc."' and id_time =  '".$idt."'
             ORDER BY time";
             return $this->db->query($query)->fetchAll();
         }
