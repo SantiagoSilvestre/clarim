@@ -55,7 +55,25 @@ if(isset($_SESSION)) {
                         ?></dd>
 
                     <dt class="col-sm-3">Tipo</dt>
-                <dd class="col-sm-9"><?= $campeonato->__get('estilo') == 0 ? 'Pontos Corridos' : 'Mata-Mata' ?></dd>
+                <dd class="col-sm-9">
+                    <?php
+                    if($campeonato->__get('estilo') == 0 ) {
+                        echo 'Pontos Corridos'; 
+                    } else {
+                        echo  'Mata-Mata';
+                        echo '</dd>';
+                        ?>
+                        <dt class="col-sm-3">Fase</dt>
+                        <dd class="col-sm-9">
+                        <?php
+                            $fase = $campeonato->getFase();
+                            print_r($fase);
+                        echo "<a href='/adm/confrontos?id=".$campeonato->__get('id')."' class='badge badge-pill badge-success'> Definir Confrontos</a>"; 
+                        echo '</dd>';
+                    }
+                    ?>
+                
+            
 
                     <dt class="col-sm-3">Regulamento</dt>
                     <dd class="col-sm-9"><?= $campeonato->__get('regulamento') ?></dd>

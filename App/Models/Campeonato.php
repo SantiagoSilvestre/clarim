@@ -162,10 +162,31 @@
                     cartao_amer = '".$cartao_amer."'
                     WHERE id_campeonato = :idc AND id_time = :idt
                 ";
+
+            
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':idc', $this->__get('id') );
             $stmt->bindValue(':idt', $time['id']);
             $stmt->execute();
+
+            $query = "SELECT estilo from campeonato 
+            WHERE id = '".$this->__get('id')."'"; 
+            $camp =  $this->db->query($query)->fetchAll();
+            $camp = $camp[0]['estilo'];
+
+            if ($camp == 1) {
+                if($time['derrota'] == 1) {
+                    $query = "UPDATE cam_ativo SET eliminado = '1'
+                    WHERE id_campeonato = :idc AND id_time = :idt
+                ";            
+                    $stmt = $this->db->prepare($query);
+                    $stmt->bindValue(':idc', $this->__get('id') );
+                    $stmt->bindValue(':idt', $time['id']);
+                    $stmt->execute();
+                }
+            }
+
+            
         }
 
         public function jogoValido($times) {
@@ -313,6 +334,15 @@
             } else {
                 return true;
             }
+        }
+
+        public function getFase() {
+            $query = "SELECT * FROM fase_campeonato WHERE id_campeonato = : id order by id desc";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':id', $this->__get('id'));
+            $stmt->execute();
+            $u = $stmt->fetch((\PDO::FETCH_ASSOC));
+            return $u;
         }
 
     }

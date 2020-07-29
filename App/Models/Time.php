@@ -170,6 +170,33 @@
             return $this->db->query($query)->fetchAll();
         }
 
+        public function cadastrarJogoMata($jogo) {
+            $query = "INSERT INTO jogo_mata(id_time1, id_time2, id_fase)
+                    VALUES ('".$jogo[0]."','".$jogo[1]."', '".$jogo[3]."')
+                    ";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute();
+            return $this;
+        }
+
+        public function validarMata($jogo) {
+            $retorno = true;
+            $query = "SELECT * FROM jogo_mata 
+            WHERE id_time1 = '".$jogo[0]."' OR id_time1 = '".$jogo[1]."'
+            OR id_time2 = '".$jogo[0]."' OR id_time2 = '".$jogo[1]."' AND '".$jogo[3]."' > id_fase ";
+            return $query;
+            $result = $this->db->query($query)->fetchAll();
+            return $retorno;
+        }
+
+        public function listarTimesFase($id) {
+            $query = "SELECT t.* FROM time t
+                        JOIN cam_ativo c on c.id_time = t.id
+                        where id_campeonato = '".$id."' AND eliminado = 0
+                      ORDER BY time";
+            return $this->db->query($query)->fetchAll();
+        }
+
         
     }
 

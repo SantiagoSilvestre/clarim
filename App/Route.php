@@ -317,6 +317,12 @@
                 'controller' => 'CampeonatoController',
                 'action' => 'salvarJmata'
             );
+
+            $routes['confrontoMata'] = array(
+                'route' => '/adm/confrontos',
+                'controller' => 'CampeonatoController',
+                'action' => 'confrontoMata'
+            );
         
             
             $this->setRoutes($routes);

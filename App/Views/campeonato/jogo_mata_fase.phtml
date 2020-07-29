@@ -1,0 +1,183 @@
+<?php
+
+use MF\Model\Container;
+
+if(isset($_SESSION)) {
+    if($_SESSION['logado']) {
+    ?>
+<div class="d-flex">
+        <div class="content p-1">
+            <div class="list-group-item">
+                <div class="d-flex">
+                    <div class="mr-auto p-2">
+                        <h2 class="display-4 titulo">Novo Jogo</h2>
+                    </div>
+                    <div class="p-2">
+                        <a class="btn btn-outline-info btn-sm" href="/adm/campeonatos"> Listar</a>
+                    </div>
+                </div>
+                <hr>
+                <?php
+                if (isset($_SESSION['msg'])) {
+                    echo $_SESSION['msg'];
+                    unset($_SESSION['msg']);
+                }
+                    if(isset($_SESSION['erros'])) {
+                        foreach($_SESSION['erros'] as $erro) {
+                            echo $erro . "<br>";
+                        }
+                        unset($_SESSION['erros']);
+                    }
+                ?>
+                <form method="POST" action="/adm/proc_cad_jogo">
+                    <input type="text" id="id" name="id" value="<?=$_SESSION['dados']['id']?>" hidden>
+                    <div class="row">
+                        <?php
+                            $time = Container::getModel('Time');
+                            $times = $time->listarTimesFase($_SESSION['dados']['id']);
+                        ?>
+                        <div class="container col-md-6">
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <span class="text-danger">* </span>
+                                    <label>
+                                        Time:
+                                    </label>
+                                    <select class="custom-select" name="time1" id="inputGroupSelect01">
+                                        <option selected>Selecione o time</option>
+                                        <?php
+                                            
+                                            foreach($times as $t) {
+                                                echo "<option value='".$t['id']."'>".$t['time']."</option>";
+                                            }
+                                        ?>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <span class="text-danger">* </span>
+                                    <label>
+                                        Gols:
+                                    </label>
+                                    <input name="gol1" type="number" class="form-control" 
+                                    value="<?php if(isset($_SESSION['dados']['gol1'])) { echo $_SESSION['dados']['gol1']; } ?>"
+                                    id="gol1" placeholder="qtd Gol" >
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <span class="text-danger">* </span>
+                                    <label>
+                                        Cartão Vermelho:
+                                    </label>
+                                    <input name="vermelho1" type="number" class="form-control" 
+                                    value="<?php if(isset($_SESSION['dados']['vermelho1'])) { echo $_SESSION['dados']['vermelho1']; } ?>"
+                                    id="vermelho1" placeholder="qtd vermelho1" required>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <span class="text-danger">* </span>
+                                    <label>
+                                        Cartão Amarelo:
+                                    </label>
+                                    <input name="amarelo1" type="number" class="form-control" 
+                                    value="<?php if(isset($_SESSION['dados']['amarelo1'])) { echo $_SESSION['dados']['amarelo1']; } ?>"
+                                    id="amarelo1" placeholder="qtd amarelo1" required>
+                                </div>
+                            </div>
+                            <div class ="row">
+                                <div class="form-group col-md-6">
+                                    <label>
+                                        Craque do time:
+                                    </label>
+                                    <input name="craque1" type="text" class="form-control" 
+                                    value="<?php if(isset($_SESSION['dados']['craque1'])) { echo $_SESSION['dados']['craque1']; } ?>"
+                                    id="craque1" placeholder="craque do time" >
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>
+                                        Pontuação do monstro:
+                                    </label>
+                                    <input name="pcraque1" type="number" class="form-control" 
+                                    value="<?php if(isset($_SESSION['dados']['pcraque1'])) { echo $_SESSION['dados']['pcraque1']; } ?>"
+                                    id="pcraque1" placeholder="pontuação do craque" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container col-md-6">
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <span class="text-danger">* </span>
+                                    <label>
+                                        Time:
+                                    </label>
+                                    <select class="custom-select" name="time2" id="inputGroupSelect01" required>
+                                        <option selected>Selecione o time</option>
+                                        <?php
+                                            
+                                            foreach($times as $t) {
+                                                echo "<option value='".$t['id']."'>".$t['time']."</option>";
+                                            }
+                                        ?>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <span class="text-danger">* </span>
+                                    <label>
+                                        Gols:
+                                    </label>
+                                    <input name="gol2" type="number" class="form-control" 
+                                    value="<?php if(isset($_SESSION['dados']['gol2'])) { echo $_SESSION['dados']['gol2']; } ?>"
+                                    id="gol2" placeholder="qtd Gol" required>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <span class="text-danger">* </span>
+                                    <label>
+                                        Cartão Vermelho:
+                                    </label>
+                                    <input name="vermelho2" type="number" class="form-control" 
+                                    value="<?php if(isset($_SESSION['dados']['vermelho2'])) { echo $_SESSION['dados']['vermelho2']; } ?>"
+                                    id="vermelho2" placeholder="qtd vermelho" required>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <span class="text-danger">* </span>
+                                    <label>
+                                        Cartão Amarelo:
+                                    </label>
+                                    <input name="amarelo2" type="number" class="form-control" 
+                                    value="<?php if(isset($_SESSION['dados']['amarelo'])) { echo $_SESSION['dados']['amarelo']; } ?>"
+                                    id="amarelo" placeholder="qtd amarelo" required>
+                                </div>
+                            </div>
+                            <div class ="row">
+                                <div class="form-group col-md-6">
+                                    <label>
+                                        Craque do time:
+                                    </label>
+                                    <input name="craque2" type="text" class="form-control" 
+                                    value="<?php if(isset($_SESSION['dados']['craque2'])) { echo $_SESSION['dados']['craque2']; } ?>"
+                                    id="craque2" placeholder="craque do time" >
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>
+                                        Pontuação do monstro:
+                                    </label>
+                                    <input name="pcraque2" type="number" class="form-control" 
+                                    value="<?php if(isset($_SESSION['dados']['pcraque2'])) { echo $_SESSION['dados']['pcraque2']; } ?>"
+                                    id="pcraque2" placeholder="pontuação do craque" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p>
+                        <span class="text-danger">* </span>Campo obrigatório
+                    </p>
+                    <input name="SendCadJog" id="SendCadJog"  type="submit" class="btn btn-success" value="Registrar"></input>
+                </form>
+            </div>
+        </div>
+    </div>
+    <?php
+    } else {
+        header('Location: /adm/login');
+    }
+} else {
+    header('Location: /adm/login');
+}

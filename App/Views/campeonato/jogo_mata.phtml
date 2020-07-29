@@ -65,6 +65,7 @@ if(isset($_SESSION)) {
                 <form method="POST" id="formJogos">
                     <input type="text" id="id_cam" name="id_cam" value="<?=$_SESSION['dados']['id']?>" hidden>
                     <input type="text" id="contador" name="contador" value="<?=$contador?>" hidden>
+                    <input type="text" id="fase" name="fase" value="<?=$fase?>" hidden>
                     <?php 
                         while ($contador > 0 ){
                     ?>

@@ -146,9 +146,11 @@ use MF\Controller\Action;
             $camp = Container::getModel('Campeonato');
             $camp->__set('id', $_GET['id']);
             $campeonato = $camp->buscarPorId();
+            
             if ($campeonato->__get('estilo') == 1 ) {
-                $this->render('jogo_mata', 'head', 'menu_adm', 'body', 'footer');
+                $this->render('jogo_mata_fase', 'head', 'menu_adm', 'body', 'footer');
             }
+            
             $this->render('jogo', 'head', 'menu_adm', 'body', 'footer');
             
         }
@@ -352,6 +354,13 @@ use MF\Controller\Action;
                 
                 echo json_encode($times);
             }
+            if(isset($_GET['id'])) {
+                $id = $_GET['id'];
+                $time = Container::getModel('Time');
+                $times = $time->buscarPorIdFiltro($id);
+                
+                echo json_encode($times);
+            }
             if(isset($_GET['id_cam'])) {
                 $idc = $_GET['id_cam'];
                 $time = Container::getModel('Time');
@@ -377,12 +386,10 @@ use MF\Controller\Action;
             $valido = true;
             $erros = [];
             foreach($jogos as $key => $jogo){
-                
                 if($jogo[0] == $jogo[1] ){
                     $valido = false;
                     $erros['primeira'] = "Existe times iguais se enfrentado, verifique os confrontos";
                 }
-                
                 foreach($jogos as $chave => $j) {
                     if($key == $chave) {
                         continue;
@@ -393,26 +400,62 @@ use MF\Controller\Action;
                     }
                     if($j[1] == $jogo[0] || $j[1] == $jogo[1]) {
                         $valido = false;
-                        $erros['segunda'] = "Um time só podejogar um jogo nessa fase";
+                        $erros['segunda'] = "Um time só pode jogar um jogo nessa fase";
                     }
                     
                 }
             }
 
             if ($valido) {
-                
-            } else {
+                $time = Container::getModel('Time');
+
+                foreach($jogos as $jogo){
+                    $retorno = $time->validarMata($jogo);
+                    echo json_encode($retorno);
+                    die();
+                    if(!$retorno) {
+                        $_SESSION['dados']['id'] = $jogos[0][2];
+                        $_SESSION['msg'] = "<div class='alert alert-danger'> existe time com jogo cadastrado nessa fase
+                            <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                            <span aria-hidden='true'>&times;</span>
+                            </button></div>";
+                        echo json_encode(0);
+                    }
+                }
+
+                foreach($jogos as $jogo){
+                    $time->cadastrarJogoMata($jogo); 
+                }
+                $_SESSION['msg'] = "<div class='alert alert-success'> Jogos cadastrados com sucesso!
+                    <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                    <span aria-hidden='true'>&times;</span>
+                    </button></div>";
+                echo json_encode(1);
+            } else{
                 $erro = null;
                 foreach($erros as $e) {
                     $erro .=$e."<span> -  </span>";
                 }
-                $_SESSION['dados']['id'] = $jogos[count($jogos)-1];
+                $_SESSION['dados']['id'] = $jogos[0][2];
                 $_SESSION['msg'] = "<div class='alert alert-danger'> ". $erro."
                     <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                     <span aria-hidden='true'>&times;</span>
                     </button></div>";
                 echo json_encode(0);
             }
+        }
+
+        public function confrontoMata() {
+            session_start();
+            $_SESSION['dados']['id'] = $_GET['id'];
+            $camp = Container::getModel('Campeonato');
+            $camp->__set('id', $_GET['id']);
+            $campeonato = $camp->buscarPorId();
+            
+            if ($campeonato->__get('estilo') == 1 ) {
+                $this->render('jogo_mata', 'head', 'menu_adm', 'body', 'footer');
+            }
+            
         }
 
     }
