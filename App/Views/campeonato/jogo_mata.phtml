@@ -1,0 +1,119 @@
+<?php
+
+use MF\Model\Container;
+
+if(isset($_SESSION)) {
+    if($_SESSION['logado']) {
+        $camp = Container::getModel('Campeonato');
+        $camp->__set('id', $_GET['id']);
+        $camp->buscarPorId();
+
+        $fase = null;
+        $etapa = null;
+        $contador = null;
+
+        switch($camp->__get('qtdtimes')) {
+            case 32:
+                $fase = 1;
+                $contador = 16;
+                $etapa = "Primeira fase";
+            break;
+            case 16:
+                $fase = 2;
+                $contador = 8;
+                $etapa = "Oitavas de final";
+            break;
+            case 8:
+                $fase = 3;
+                $contador = 4;
+                $etapa = "Quartas de final";
+            break;
+            case 4:
+                $fase = 4;
+                $contador = 2;
+                $etapa = "Semi-final";
+            break;
+            default:
+            $contador = 1;
+            $etapa = "final";
+        }
+    ?>
+<div class="d-flex">
+        <div class="content p-1">
+            <div class="list-group-item">
+                <div class="d-flex">
+                    <div class="mr-auto p-2">
+                        <h2 class="display-4 titulo">Novo Jogo - <?= $etapa ?></h2>
+                    </div>
+                    <div class="p-2">
+                        <a class="btn btn-outline-info btn-sm" href="/adm/campeonatos"> Listar</a>
+                    </div>
+                </div>
+                <hr>
+                <?php
+                if (isset($_SESSION['msg'])) {
+                    echo $_SESSION['msg'];
+                    unset($_SESSION['msg']);
+                }
+                    if(isset($_SESSION['erros'])) {
+                        foreach($_SESSION['erros'] as $erro) {
+                            echo $erro . "<br>";
+                        }
+                        unset($_SESSION['erros']);
+                    }
+                ?>
+                <form method="POST" id="formJogos">
+                    <input type="text" id="id_cam" name="id_cam" value="<?=$_SESSION['dados']['id']?>" hidden>
+                    <input type="text" id="contador" name="contador" value="<?=$contador?>" hidden>
+                    <?php 
+                        while ($contador > 0 ){
+                    ?>
+                        <div class="row">
+                            <div class="container col-md-6">
+                                <div class="row">
+                                    <div class="form-group col-md-12">
+                                        <span class="text-danger">* </span>
+                                        <label>
+                                            Time:
+                                        </label>
+                                        <select class="custom-select" name="time1_<?=$contador?>" id="time1_<?=$contador?>">
+                                            <option selected>Selecione o time</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container col-md-6">
+                                <div class="row">
+                                    <div class="form-group col-md-12">
+                                        <span class="text-danger">* </span>
+                                        <label>
+                                            Time:
+                                        </label>
+                                        <select class="custom-select" name="time2_" id="time2_<?=$contador?>" >
+                                            <option selected>Selecione o time</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php
+                        $contador --;
+                        }
+                    ?>
+
+                    <p>
+                        <span class="text-danger">* </span>Campo obrigatório
+                    </p>
+                    <input name="SendCadJog" id="SendCadJog"  type="button" class="btn btn-success" value="Registrar"></input>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script  src="/assets/js/jogo_mata.js" ></script>
+    <?php
+    } else {
+        header('Location: /adm/login');
+    }
+} else {
+    header('Location: /adm/login');
+}

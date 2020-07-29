@@ -81,6 +81,24 @@ if(isset($_SESSION)) {
                                     id="amarelo1" placeholder="qtd amarelo1" required>
                                 </div>
                             </div>
+                            <div class ="row">
+                                <div class="form-group col-md-6">
+                                    <label>
+                                        Craque do time:
+                                    </label>
+                                    <input name="craque1" type="text" class="form-control" 
+                                    value="<?php if(isset($_SESSION['dados']['craque1'])) { echo $_SESSION['dados']['craque1']; } ?>"
+                                    id="craque1" placeholder="craque do time" >
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>
+                                        Pontuação do monstro:
+                                    </label>
+                                    <input name="pcraque1" type="number" class="form-control" 
+                                    value="<?php if(isset($_SESSION['dados']['pcraque1'])) { echo $_SESSION['dados']['pcraque1']; } ?>"
+                                    id="pcraque1" placeholder="pontuação do craque" required>
+                                </div>
+                            </div>
                         </div>
                         <div class="container col-md-6">
                             <div class="row">
@@ -125,6 +143,24 @@ if(isset($_SESSION)) {
                                     <input name="amarelo2" type="number" class="form-control" 
                                     value="<?php if(isset($_SESSION['dados']['amarelo'])) { echo $_SESSION['dados']['amarelo']; } ?>"
                                     id="amarelo" placeholder="qtd amarelo" required>
+                                </div>
+                            </div>
+                            <div class ="row">
+                                <div class="form-group col-md-6">
+                                    <label>
+                                        Craque do time:
+                                    </label>
+                                    <input name="craque2" type="text" class="form-control" 
+                                    value="<?php if(isset($_SESSION['dados']['craque2'])) { echo $_SESSION['dados']['craque2']; } ?>"
+                                    id="craque2" placeholder="craque do time" >
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>
+                                        Pontuação do monstro:
+                                    </label>
+                                    <input name="pcraque2" type="number" class="form-control" 
+                                    value="<?php if(isset($_SESSION['dados']['pcraque2'])) { echo $_SESSION['dados']['pcraque2']; } ?>"
+                                    id="pcraque2" placeholder="pontuação do craque" required>
                                 </div>
                             </div>
                         </div>

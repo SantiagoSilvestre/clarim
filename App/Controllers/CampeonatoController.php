@@ -12,7 +12,15 @@ use MF\Controller\Action;
         
         public function campeonato() 
         {
-            $this->render('campeonato', 'head','menu' , 'body', 'footer');
+            $camp = Container::getModel('Campeonato');
+            $camp->__set("id", $_GET['id']);
+            $campeonatos = $camp->buscarPorId();
+            if ($campeonatos->__get('estilo') == 0) {
+                $this->render('campeonato', 'head','menu' , 'body', 'footer');
+            } else {
+                $this->view->dados = $campeonatos;
+                $this->render('campeonato_mata', 'head','menu' , 'body', 'footer');
+            }
         }
         
         public function campeonatoAdm()
@@ -43,10 +51,12 @@ use MF\Controller\Action;
             $camp = Container::getModel('Campeonato');
             $camp->__set('nome', $_POST['nome']);
             $camp->__set('regulamento', $_POST['regulamento']);
+            $camp->__set('estilo', $_POST['estilo']);
+            $camp->__set('qtdtimes', $_POST['qtdtimes']);
             $retorno = $camp->validarDados();
 
             if($retorno['valido']) {
-                $camp->salvar();
+               $camp->salvar();
                 $_SESSION['msg'] = "<div class='alert alert-success'> Campeonato cadastrado com sucesso!
                  <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                 <span aria-hidden='true'>&times;</span>
@@ -57,6 +67,8 @@ use MF\Controller\Action;
                 $_SESSION['erros'] = $retorno;
                 $_SESSION['dados']['nome'] = $camp->__get('nome');
                 $_SESSION['dados']['regulamento'] = $camp->__get('regulamento');
+                $_SESSION['dados']['estilo'] = $camp->__get('estilo');
+                $_SESSION['dados']['qtdtimes'] = $camp->__get('qtdtimes');
                 header('Location: /adm/campeonatos/cadastrar');
             }
 
@@ -131,7 +143,14 @@ use MF\Controller\Action;
         {   
             session_start();
             $_SESSION['dados']['id'] = $_GET['id'];
+            $camp = Container::getModel('Campeonato');
+            $camp->__set('id', $_GET['id']);
+            $campeonato = $camp->buscarPorId();
+            if ($campeonato->__get('estilo') == 1 ) {
+                $this->render('jogo_mata', 'head', 'menu_adm', 'body', 'footer');
+            }
             $this->render('jogo', 'head', 'menu_adm', 'body', 'footer');
+            
         }
 
         public function procJogo()
@@ -153,7 +172,9 @@ use MF\Controller\Action;
                     'derrota' => 0,
                     'empate' => 0,
                     'pontos' => 3,
-                    'golContra' => $_POST['gol2']
+                    'golContra' => $_POST['gol2'],
+                    'craque' => $_POST['craque1'],
+                    'pcraque' => $_POST['pcraque1']
                 ];
             $times['time2'] = 
                 [
@@ -165,7 +186,9 @@ use MF\Controller\Action;
                     'derrota' => 1,
                     'empate' => 0,
                     'pontos' => 0,
-                    'golContra' => $_POST['gol1']
+                    'golContra' => $_POST['gol1'],
+                    'craque' => $_POST['craque2'],
+                    'pcraque' => $_POST['pcraque2']
                 ];
            } else if ($_POST['gol1'] == $_POST['gol2'] ) {
             $times['time1'] = 
@@ -219,7 +242,6 @@ use MF\Controller\Action;
                 'empate' => 1,
                 'pontos' => 3,
                 'golContra' => $_POST['gol1']
-
             ];
            }
            $valido = true;
@@ -231,7 +253,6 @@ use MF\Controller\Action;
                     }
                 }
            }
-
            if($times['time1']['id'] == $times['time2']['id']) {
                 $_SESSION['msg'] = "<div class='alert alert-danger'> Não pode selecionar o mesmo time
                 <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
@@ -241,10 +262,24 @@ use MF\Controller\Action;
            } else {
 
                 if($valido) {
-
+                        
                         foreach($times as $time) {
                             $camp->inserirJogo($time);
                         }
+
+                        if ($_POST['craque1'] != '' || $_POST['craque2'] != '' ) {
+                            if ($times['time1']['pcraque'] > $times['time2']['pcraque'] ) {
+                                $times['craque'] = $_POST['craque1'];
+                            } else {
+                                $times['craque'] = $_POST['craque2'];
+                            }
+                        }
+                        $times['craque1'] = $_POST['craque1'];
+                        $times['craque2'] = $_POST['craque2'];
+                        $times['pcraque1'] =  $_POST['pcraque1'];
+                        $times['pcraque2'] =  $_POST['pcraque2'] ;
+
+                        $camp->jogoValido($times);
                         $_SESSION['msg'] = "<div class='alert alert-success'> Jogo gravado com sucesso!
                         <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                         <span aria-hidden='true'>&times;</span>
@@ -271,24 +306,115 @@ use MF\Controller\Action;
             $time = Container::getModel('Time');
             $time->__set('id', $idt);
             
+            
             $teste = $time->validarTime($idc, $idt);
-            if (count($teste) > 0 ) {
-                $_SESSION['msg'] = "<div class='alert alert-danger'> Este time já pertence a esse campeonato
+            $qtdTimes = $camp->validaQtdTimes($idc);
+            if ($qtdTimes[0]['times_cadastrados'] == $qtdTimes[0]['qtd_times'] ) {
+                $_SESSION['msg'] = "<div class='alert alert-danger'> Este campeonato já atingiu o número máximo de equipes
                 <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                 <span aria-hidden='true'>&times;</span>
                 </button></div>";
                 header('Location: /adm/campeonatos/visualizar?id='.$idc);
             } else {
-                $camp->inserirTime($idt, $idc);
-                $_SESSION['msg'] = "<div class='alert alert-success'> Time Registrado com sucesso!
-                <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-                <span aria-hidden='true'>&times;</span>
-                </button></div>";
-                header('Location: /adm/campeonatos/visualizar?id='.$idc);
+                if (count($teste) > 0 ) {
+                    $_SESSION['msg'] = "<div class='alert alert-danger'> Este time já pertence a esse campeonato
+                    <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                    <span aria-hidden='true'>&times;</span>
+                    </button></div>";
+                    header('Location: /adm/campeonatos/visualizar?id='.$idc);
+                } else {
+                    $camp->inserirTime($idt, $idc);
+                    $_SESSION['msg'] = "<div class='alert alert-success'> Time Registrado com sucesso!
+                    <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                    <span aria-hidden='true'>&times;</span>
+                    </button></div>";
+                    header('Location: /adm/campeonatos/visualizar?id='.$idc);
+                }
             }
-            
 
         }
+
+        public function buscarMata() {
+            $idc = $_GET['id'];
+            $camp = Container::getModel('Campeonato');
+            $camp->__set('id', $idc);
+            $campeonato = $camp->buscarPorIdArray();
+            echo json_encode($campeonato);
+        }
+
+        public function buscarTimesMataMata() {
+            session_start();
+            $id = null;
+            if(isset($_GET['id_time'])) {
+                $id = $_GET['id_time'];
+                $time = Container::getModel('Time');
+                $times = $time->buscarPorIdFiltro($id);
+                
+                echo json_encode($times);
+            }
+            if(isset($_GET['id_cam'])) {
+                $idc = $_GET['id_cam'];
+                $time = Container::getModel('Time');
+                $cam = Container::getModel('Campeonato');
+                $cam->__set('id', $idc);
+                $retorno = $cam->verificarQtdTimes();
+                if($retorno) {
+                    $times = $time->listarTodosTimes($idc);
+                    echo json_encode($times);
+                } else {
+                    $_SESSION['msg'] = "<div class='alert alert-danger'> O campeonato ainda não atigiu a quantidade de times nessa fase
+                    <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                    <span aria-hidden='true'>&times;</span>
+                    </button></div>";
+                    echo json_encode($retorno);
+                }
+            }
+        }
+
+        public function salvarJmata() {
+            session_start();
+            $jogos = $_POST['times'];
+            $valido = true;
+            $erros = [];
+            foreach($jogos as $key => $jogo){
+                
+                if($jogo[0] == $jogo[1] ){
+                    $valido = false;
+                    $erros['primeira'] = "Existe times iguais se enfrentado, verifique os confrontos";
+                }
+                
+                foreach($jogos as $chave => $j) {
+                    if($key == $chave) {
+                        continue;
+                    }
+                    if($j[0] == $jogo[0] || $j[0] == $jogo[1]) {
+                        $valido = false;
+                        $erros['segunda'] = "Um time só pode jogar um jogo nessa fase";
+                    }
+                    if($j[1] == $jogo[0] || $j[1] == $jogo[1]) {
+                        $valido = false;
+                        $erros['segunda'] = "Um time só podejogar um jogo nessa fase";
+                    }
+                    
+                }
+            }
+
+            if ($valido) {
+                
+            } else {
+                $erro = null;
+                foreach($erros as $e) {
+                    $erro .=$e."<span> -  </span>";
+                }
+                $_SESSION['dados']['id'] = $jogos[count($jogos)-1];
+                $_SESSION['msg'] = "<div class='alert alert-danger'> ". $erro."
+                    <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                    <span aria-hidden='true'>&times;</span>
+                    </button></div>";
+                echo json_encode(0);
+            }
+        }
+
     }
 
 ?>

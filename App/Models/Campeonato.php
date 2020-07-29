@@ -9,6 +9,9 @@
         private $nome;
         private $finalizado = 0;
         private $regulamento;
+        private $estilo = 0;
+        private $qtdtimes = null;
+        private $timesCadastrados = null;
         private $created;
 
         public function __get($atributo) {
@@ -56,18 +59,55 @@
             if($c['nome'] != '' && $c['finalizado'] == 0) {
                 $this->__set('nome', $c['nome']);
                 $this->__set('finalizado', $c['finalizado']);
+                $this->__set('estilo', $c['estilo']);
                 $this->__set('regulamento', $c['regulamento']);
+                $this->__set('qtdtimes', $c['qtd_times']);
             } 
             return $this;
         }
 
+        public function buscarPorIdArray() {
+            $query = "SELECT * FROM campeonato where id = :id";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':id', $this->__get('id'));
+            $stmt->execute();
+            $c = $stmt->fetch(\PDO::FETCH_ASSOC);
+            
+            return $c;
+        }
+
         public function salvar() {
-            $query = "INSERT INTO campeonato(nome, regulamento, created) 
-            VALUES (:nome, :regulamento, NOW()) ";
+            $query = "INSERT INTO campeonato(nome, regulamento, estilo, qtd_times, created) 
+            VALUES (:nome, :regulamento, :estilo, :qtd_times, NOW()) ";
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':nome', $this->__get('nome'));
             $stmt->bindValue(':regulamento', $this->__get('regulamento'));
+            $stmt->bindValue(':estilo', $this->__get('estilo'));
+            $stmt->bindValue(':qtd_times', $this->__get('qtdtimes'));
             $stmt->execute();
+            if ($this->__get('qtdtimes') != null ) {
+                $fase = null;
+
+                switch($this->__get('qtdtimes')) {
+                    case 32:
+                        $fase = 1;
+                    break;
+                    case 16:
+                        $fase = 2;
+                    break;
+                    case 8:
+                        $fase = 3;
+                    break;
+                    case 4:
+                        $fase = 4;
+                }
+    
+                $query = "INSERT INTO fase_campeonato (id_campeonato, id_fase) values 
+                        ((select id from campeonato order by id desc limit 1), '".$fase."')";
+                $stmt = $this->db->prepare($query);
+                $stmt->execute();
+                return $query;
+            }
             return $this;
         }
 
@@ -126,6 +166,16 @@
             $stmt->bindValue(':idc', $this->__get('id') );
             $stmt->bindValue(':idt', $time['id']);
             $stmt->execute();
+        }
+
+        public function jogoValido($times) {
+            $query = "INSERT INTO jogos (id_time1, id_time2, gol_time1 ,gol_time2, data,
+             id_campeonato, craque_do_jogo, craque_time1, craque_time2, pcraque1, pcraque2) 
+            values ('".$times['time1']['id']."','".$times['time2']['id']."', '".$times['time1']['gol']."', 
+            '".$times['time2']['gol']."', NOW(), '".$this->__get('id') ."','".$times['craque']."',
+            '".$times['craque1']."','".$times['craque2']."','".$times['pcraque1']."','".$times['pcraque2']."') ";
+             $stmt = $this->db->prepare($query);
+             $stmt->execute();
         }
 
         public function atualizar() {
@@ -230,6 +280,11 @@
             return $this->db->query($query)->fetchAll();
         }
 
+        public function validaQtdTimes($idc) {
+            $query = "select estilo,times_cadastrados, qtd_times from campeonato WHERE id = '".$idc."' ";
+            return $this->db->query($query)->fetchAll();
+        }
+
         public function inserirTime($idt, $idc) {
             $query = "INSERT INTO cam_ativo (id_campeonato, id_time, vitorias, derrotas,
              empates, pontuacao, saldo_gol, gol_pro, gol_contra, cartao_ver, cartao_amer, created) 
@@ -237,6 +292,27 @@
             $stmt = $this->db->prepare($query);
             $stmt->execute();
 
+            $query = "select times_cadastrados from campeonato WHERE id = '".$idc."' ";
+            $result = $this->db->query($query)->fetchAll();
+
+            $qtd = $result['0']['times_cadastrados'] + 1;
+            $query = "UPDATE campeonato SET times_cadastrados = '".$qtd."' WHERE id = '".$idc."' ";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute();
+
+        }
+
+        public function verificarQtdTimes() {
+            $query = "SELECT times_cadastrados, qtd_times from campeonato WHERE id = :id ";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':id', $this->__get('id'));
+            $stmt->execute();
+            $u = $stmt->fetch((\PDO::FETCH_ASSOC));
+            if($u['times_cadastrados'] != $u['qtd_times'] ) {
+                return false;
+            } else {
+                return true;
+            }
         }
 
     }

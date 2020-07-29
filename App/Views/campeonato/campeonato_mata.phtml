@@ -1,0 +1,72 @@
+<?php
+    $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+    use MF\Model\Container;
+    $camp = Container::getModel('Campeonato');
+    $campAtivos = $camp->getCampeonato($id);
+?>
+
+<input type="text" value="<?=$id?>" id="id" name="id" hidden>
+<main role="main">
+    <?php
+        if(count($campAtivos) > 0 ){
+    ?>
+    <h1><?= $campAtivos[0]['nome'] ?></h1>
+    </hr><br>
+    <div class="row">
+        <div class="container col-md-5" id="chave1">
+            <table>
+                <th>1º Fase</th>
+                <th>8º</th>
+                <th>4º</th>
+                <th>2º</th>
+                <th>1º</th>
+                <tr></tr>
+            </table>
+        </div>
+        <div class="container col-md-2" id="">
+            <p>Chapiao</p>
+        </div>
+        <div class="container col-md-5" id="chave2">
+            <table>
+                <th>1º</th>
+                <th>2º</th>
+                <th>4º</th>
+                <th>8º</th>
+                <th>1º Fase</th>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <p class="lead">
+            <a class="btn btn-light btn-lg" href="#" role="button" data-toggle="modal" data-target="#regulamento">Regulamento</a>
+        </p>
+
+    <!-- Modal -->
+    <div class="modal fade" id="regulamento" tabindex="-1" role="dialog" aria-labelledby="regulamentoLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="regulamentoLabel">Regulamento</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            <?= $campAtivos[0]['regulamento'] ?>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <?php
+        } else {
+            ?>
+            <div class="jumbotron">
+            <h1 class="display-4">Sentimos muito..</h1>
+            <p class="lead">Ainda não temos uma tabela para esse campeonato, fique ligado que em breve vamos disponíbilizar a tabela</p>
+            </div>
+            <?php
+        }
+    ?>
+</main>
+<script  src="/assets/js/campeonato_mata.js" ></script>

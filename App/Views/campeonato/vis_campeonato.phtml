@@ -53,6 +53,10 @@ if(isset($_SESSION)) {
                         <?php                         
                             echo $campeonato->__get('nome');
                         ?></dd>
+
+                    <dt class="col-sm-3">Tipo</dt>
+                <dd class="col-sm-9"><?= $campeonato->__get('estilo') == 0 ? 'Pontos Corridos' : 'Mata-Mata' ?></dd>
+
                     <dt class="col-sm-3">Regulamento</dt>
                     <dd class="col-sm-9"><?= $campeonato->__get('regulamento') ?></dd>
 

@@ -143,9 +143,9 @@
         }
 
         public function listarTodosTimes($idc) {
-            $query = "SELECT t.*, c.id_campeonato FROM time t
-                      INNER JOIN cam_ativo c ON c.id_time = t.id
-                      WHERE c.id_campeonato = '".$idc."'
+            $query = "SELECT t.* FROM time t
+                        JOIN cam_ativo c on c.id_time = t.id
+                        where id_campeonato = '".$idc."'
                       ORDER BY time";
             return $this->db->query($query)->fetchAll();
         }
@@ -165,7 +165,12 @@
             return $this->db->query($query)->fetchAll();
         }
 
+        public function buscarPorIdFiltro($id) {
+            $query = "SELECT * FROM time where id != '".$id."'";
+            return $this->db->query($query)->fetchAll();
+        }
 
+        
     }
 
 ?>

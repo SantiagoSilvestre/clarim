@@ -299,8 +299,26 @@
                 'controller' => 'CampeonatoController',
                 'action' => 'timeCamp'
             );
+
+            $routes['buscarMata'] = array(
+                'route' => '/campeonato/ajax',
+                'controller' => 'CampeonatoController',
+                'action' => 'buscarMata'
+            );
+
+            $routes['buscarTimesMataMata'] = array(
+                'route' => '/campeonato/ajaxTime',
+                'controller' => 'CampeonatoController',
+                'action' => 'buscarTimesMataMata'
+            );
+
+            $routes['salvarJmata'] = array(
+                'route' => '/adm/proc_cad_mata',
+                'controller' => 'CampeonatoController',
+                'action' => 'salvarJmata'
+            );
         
-        
+            
             $this->setRoutes($routes);
         }
         
