@@ -458,6 +458,14 @@ use MF\Controller\Action;
             
         }
 
+        public function ultimasEdicao() {
+            $camp = Container::getModel('Campeonato');
+            $campeonato = $camp->getUltimasEdicoes();
+            $this->view->dados = $campeonato[0];
+            $this->render('ultimas_edicoes', 'head', 'menu', 'body', 'footer');
+            
+        }
+
     }
 
 ?>

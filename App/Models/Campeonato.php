@@ -50,6 +50,16 @@
             return $this->db->query($query)->fetchAll();
         }
 
+        public function listarCampeonatosFinalizados($inicio, $qnt_result_pg) {
+            $query = "SELECT cf.data_finalizado, t.time, c.nome FROM 
+            campeonato_finalizado cf 
+            INNER JOIN campeonato c ON c.id = cf.id_campeonato
+            INNER JOIN time t ON t.id = cf.id_time_camp
+            ORDER BY cf.data_finalizado LIMIT $inicio, $qnt_result_pg ";
+            return $this->db->query($query)->fetchAll();
+        }
+
+
         public function buscarPorId() {
             $query = "SELECT * FROM campeonato where id = :id";
             $stmt = $this->db->prepare($query);
@@ -293,6 +303,18 @@
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':id', $this->__get('id'));
             $stmt->execute();
+
+            $query = "SELECT id_time FROM cam_ativo where id_campeonato ='".$this->__get('id')."' 
+            ORDER BY pontuacao DESC, vitorias DESC, saldo_gol DESC, gol_pro DESC,
+             gol_contra, derrotas, cartao_ver, cartao_amer  LIMIT 1";
+            $result = $this->db->query($query)->fetchAll();
+            $time = $result[0]['id_time'];
+
+            $query = "INSERT INTO  campeonato_finalizado(id_campeonato, id_time_camp, data_finalizado)
+            VALUES ('".$this->__get('id')."', '".$time."', NOW())";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute();
+
             return $this;
         }
 
@@ -343,6 +365,11 @@
             $stmt->execute();
             $u = $stmt->fetch((\PDO::FETCH_ASSOC));
             return $u;
+        }
+
+        public function getUltimasEdicoes() {
+            $query = "SELECT * FROM campeonato_finalizado ORDER BY data_finalizado";
+            return  $this->db->query($query)->fetchAll();
         }
 
     }

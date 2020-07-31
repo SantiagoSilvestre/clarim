@@ -323,8 +323,13 @@
                 'controller' => 'CampeonatoController',
                 'action' => 'confrontoMata'
             );
-        
-            
+
+            $routes['ultimasEdicao'] = array(
+                'route' => '/campeonato/ultimos',
+                'controller' => 'CampeonatoController',
+                'action' => 'ultimasEdicao'
+            );
+
             $this->setRoutes($routes);
         }
         
