@@ -231,6 +231,14 @@
             return $this->db->query($query)->fetchAll();
         }
 
+        public function buscarJogosMata($id) {
+            $query = "SELECT DISTINCT(jm.id_fase), f.nome FROM jogo_mata jm
+            INNER JOIN fase f ON f.id = jm.id_fase 
+            WHERE id_campeonato = '".$id."' 
+            ORDER BY id_fase ASC ";
+            return $this->db->query($query)->fetchAll();
+        }
+
         
     }
 

@@ -56,7 +56,7 @@
             campeonato_finalizado cf 
             INNER JOIN campeonato c ON c.id = cf.id_campeonato
             INNER JOIN time t ON t.id = cf.id_time_camp
-            ORDER BY cf.data_finalizado LIMIT $inicio, $qnt_result_pg ";
+            ORDER BY cf.data_finalizado desc LIMIT $inicio, $qnt_result_pg ";
             return $this->db->query($query)->fetchAll();
         }
 
@@ -401,6 +401,11 @@
             return $u;
         }
 
+        public function getFases() {
+            $query = "SELECT * FROM fases";
+            return $this->db->query($query)->fetchAll();
+        }
+
         public function getUltimasEdicoes() {
             $query = "SELECT * FROM campeonato_finalizado ORDER BY data_finalizado";
             return  $this->db->query($query)->fetchAll();
@@ -448,6 +453,26 @@
                 
             }
             
+        }
+
+        public function buscarMataMata($fase, $id_camp) {
+            $query = "SELECT jm.*, f.qtd_jogos, t1.time as time1, t2.time as time2, t3.time as vencedor
+            FROM jogo_mata jm
+            INNER JOIN fases f on f.id = jm.id_fase
+            INNER JOIN time t1 on t1.id = jm.id_time1
+            INNER JOIN time t2 on t2.id = jm.id_time2
+            LEFT JOIN time t3 on jm.resultado = t3.id
+            WHERE id_fase = '".$fase."' AND id_campeonato = '".$id_camp."'";
+           $result = $this->db->query($query)->fetchAll();
+
+           if(count($result) > 0) {
+               return $result;
+           }
+           else {
+            $query = "SELECT qtd_jogos FROM fases
+            WHERE id = '".$fase."'";
+            return $this->db->query($query)->fetchAll();
+           }
         }
 
     }

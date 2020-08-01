@@ -3,6 +3,7 @@
     namespace App\Controllers;
     // Recursos do miniframewor
 
+use App\Models\Contato;
 use CompileError;
 use MF\Controller\Action;
     use MF\Model\Container;
@@ -356,6 +357,14 @@ use MF\Controller\Action;
 
         }
 
+        public function buscarJogosFase() {
+           $fase = $_POST['id_fase'];
+           $id_camp = $_POST['id_camp'];
+           $camp = Container::getModel('Campeonato');
+           $result = $camp->buscarMataMata($fase, $id_camp);
+           echo json_encode($result);
+        }
+
         public function buscarMata() {
             $idc = $_GET['id'];
             $camp = Container::getModel('Campeonato');
@@ -377,7 +386,7 @@ use MF\Controller\Action;
             if(isset($_GET['id'])) {
                 $id = $_GET['id'];
                 $time = Container::getModel('Time');
-                $times = $time->buscarPorIdFiltro($id);
+                $times = $time->buscarJogosMata($id);
                 
                 echo json_encode($times);
             }

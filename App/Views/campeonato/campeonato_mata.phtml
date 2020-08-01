@@ -3,6 +3,7 @@
     use MF\Model\Container;
     $camp = Container::getModel('Campeonato');
     $campAtivos = $camp->getCampeonato($id);
+    $fases = $camp->getFases();    
 ?>
 
 <input type="text" value="<?=$id?>" id="id" name="id" hidden>
@@ -12,30 +13,32 @@
     ?>
     <h1><?= $campAtivos[0]['nome'] ?></h1>
     </hr><br>
-    <div class="row">
-        <div class="container col-md-5" id="chave1">
-            <table>
-                <th>1º Fase</th>
-                <th>8º</th>
-                <th>4º</th>
-                <th>2º</th>
-                <th>1º</th>
-                <tr></tr>
-            </table>
-        </div>
-        <div class="container col-md-2" id="">
-            <p>Chapiao</p>
-        </div>
-        <div class="container col-md-5" id="chave2">
-            <table>
-                <th>1º</th>
-                <th>2º</th>
-                <th>4º</th>
-                <th>8º</th>
-                <th>1º Fase</th>
-            </table>
+    <div class="container">
+        <div class="row">
+            <div class="form-group">
+                <label>Selecione a fase</label>
+                    <select class="custom-select" name="time1" id="id-fase">
+                        <option>Selecione</option>
+                        <?php
+                            foreach($fases as $fase) {
+                                echo "<option value='".$fase['id']."'> ".$fase['nome']." </option>";
+                            }
+
+                        ?>
+                    </select>
+            </div>
         </div>
     </div>
+    <?php 
+        //while ($contador > 0 ){
+    ?>
+        <div class="row" id="html-aqui">
+            
+        </div>
+    <?php
+        //$contador --;
+       // }
+    ?>
     <div class="row">
         <p class="lead">
             <a class="btn btn-light btn-lg" href="#" role="button" data-toggle="modal" data-target="#regulamento">Regulamento</a>

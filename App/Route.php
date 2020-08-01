@@ -342,6 +342,11 @@
                 'action' => 'registrarJogoMata'
             );
 
+            $routes['buscarJogosFase'] = array(
+                'route' => '/campeonato/ajax/buscaFase',
+                'controller' => 'CampeonatoController',
+                'action' => 'buscarJogosFase'
+            );
 
             $this->setRoutes($routes);
         }
