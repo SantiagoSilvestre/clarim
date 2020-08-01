@@ -12,6 +12,7 @@
         private $estilo = 0;
         private $qtdtimes = null;
         private $timesCadastrados = null;
+        private $faseInicial;
         private $created;
 
         public function __get($atributo) {
@@ -72,6 +73,7 @@
                 $this->__set('estilo', $c['estilo']);
                 $this->__set('regulamento', $c['regulamento']);
                 $this->__set('qtdtimes', $c['qtd_times']);
+                $this->__set('faseInicial', $c['fase_inicial']);
             } 
             return $this;
         }
@@ -87,16 +89,8 @@
         }
 
         public function salvar() {
-            $query = "INSERT INTO campeonato(nome, regulamento, estilo, qtd_times, created) 
-            VALUES (:nome, :regulamento, :estilo, :qtd_times, NOW()) ";
-            $stmt = $this->db->prepare($query);
-            $stmt->bindValue(':nome', $this->__get('nome'));
-            $stmt->bindValue(':regulamento', $this->__get('regulamento'));
-            $stmt->bindValue(':estilo', $this->__get('estilo'));
-            $stmt->bindValue(':qtd_times', $this->__get('qtdtimes'));
-            $stmt->execute();
+            $fase = null;
             if ($this->__get('qtdtimes') != null ) {
-                $fase = null;
 
                 switch($this->__get('qtdtimes')) {
                     case 32:
@@ -111,13 +105,16 @@
                     case 4:
                         $fase = 4;
                 }
-    
-                $query = "INSERT INTO fase_campeonato (id_campeonato, id_fase) values 
-                        ((select id from campeonato order by id desc limit 1), '".$fase."')";
-                $stmt = $this->db->prepare($query);
-                $stmt->execute();
-                return $query;
             }
+            $query = "INSERT INTO campeonato(nome, regulamento, estilo, qtd_times, fase_inicial, created) 
+            VALUES (:nome, :regulamento, :estilo, :qtd_times, :fase ,NOW()) ";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':nome', $this->__get('nome'));
+            $stmt->bindValue(':regulamento', $this->__get('regulamento'));
+            $stmt->bindValue(':estilo', $this->__get('estilo'));
+            $stmt->bindValue(':qtd_times', $this->__get('qtdtimes'));
+            $stmt->bindValue(':fase', $fase);
+            $stmt->execute();
             return $this;
         }
 
@@ -182,13 +179,12 @@
             $query = "SELECT estilo from campeonato 
             WHERE id = '".$this->__get('id')."'"; 
             $camp =  $this->db->query($query)->fetchAll();
-            $camp = $camp[0]['estilo'];
+            $camp = $camp['estilo'];
 
             if ($camp == 1) {
                 if($time['derrota'] == 1) {
                     $query = "UPDATE cam_ativo SET eliminado = '1'
-                    WHERE id_campeonato = :idc AND id_time = :idt
-                ";            
+                    WHERE id_campeonato = :idc AND id_time = :idt ";            
                     $stmt = $this->db->prepare($query);
                     $stmt->bindValue(':idc', $this->__get('id') );
                     $stmt->bindValue(':idt', $time['id']);
@@ -197,6 +193,31 @@
             }
 
             
+        }
+
+        public function buscarJogos() {
+            $query = "SELECT jm.*, t1.time as time1, t2.time as time2 from jogo_mata jm 
+            inner join time t1 on t1.id = jm.id_time1 
+            inner join time t2 on t2.id = jm.id_time2
+            where id_campeonato = '".$this->__get('id')."' and resultado is null";
+            $jogos = $this->db->query($query)->fetchAll();
+            if(count($jogos) > 0) {
+                return $jogos;
+               
+            } else {
+                return false;
+            }
+        }
+
+        public function buscarJogo() {
+            $query = "SELECT jm.id_time1, jm.id_time2 , t1.time as time1, t2.time as time2 
+            from jogo_mata jm 
+            inner join time t1 on t1.id = jm.id_time1 
+            inner join time t2 on t2.id = jm.id_time2
+            where jm.id = '".$this->__get('id')."' and resultado is null";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute();
+            return  $stmt->fetch(\PDO::FETCH_ASSOC);             
         }
 
         public function jogoValido($times) {
@@ -319,8 +340,21 @@
         }
 
         public function getTotalCampFinalizado() {
-            $query = "select count(id) as qtd from campeonato where finalizado = 1";
+            $query = "select count(id) as qtd from campeonato_finalizado";
             return $this->db->query($query)->fetchAll();
+        }
+
+        public function validarFinalizacao() {
+
+            $query = "SELECT id_time FROM cam_ativo where id_campeonato ='".$this->__get('id')."' 
+            ORDER BY pontuacao DESC, vitorias DESC, saldo_gol DESC, gol_pro DESC,
+             gol_contra, derrotas, cartao_ver, cartao_amer  LIMIT 1";
+            $result = $this->db->query($query)->fetchAll();
+            if(count($result) > 0) {
+                return true;
+            } else {
+                return false;
+            }
         }
 
         public function validaQtdTimes($idc) {
@@ -370,6 +404,50 @@
         public function getUltimasEdicoes() {
             $query = "SELECT * FROM campeonato_finalizado ORDER BY data_finalizado";
             return  $this->db->query($query)->fetchAll();
+        }
+
+        public function registrarJogoMata($id, $resultado, $id_camp) {
+
+            $query = "UPDATE jogo_mata set resultado = '".$resultado."'
+            WHERE id = '".$id."'";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute();
+
+            $query = "SELECT resultado FROM jogo_mata WHERE id_campeonato = '".$id_camp."' ";
+            $result = $this->db->query($query)->fetchAll();
+            $valido = true;
+            foreach($result as $r) {
+                if($r['resultado'] == null ){
+                    $valido = false;
+                }
+            }
+            $vencedor = $result[0]['resultado'];
+            
+            if($valido){
+                $query = "SELECT fase_inicial FROM campeonato WHERE id = '".$id_camp."' ";
+                $result = $this->db->query($query)->fetchAll();
+                $fase = $result[0]['fase_inicial'];
+                //return $fase;
+                if($fase == 5) {
+                    $query = "UPDATE campeonato set finalizado = 1
+                    WHERE id = '".$id_camp."'";
+                    $stmt = $this->db->prepare($query);
+                    $stmt->execute();
+                    $query = "INSERT INTO campeonato_finalizado (id_campeonato, id_time_camp, data_finalizado)
+                                VALUES ('".$id_camp."', '".$vencedor."', NOW())";
+                    $stmt = $this->db->prepare($query);
+                    $stmt->execute();
+                    
+                } else {
+                    $fase += 1;
+                    $query = "UPDATE campeonato set fase_inicial = '".$fase."'
+                    WHERE id = '".$id_camp."'";
+                    $stmt = $this->db->prepare($query);
+                    $stmt->execute();
+                }
+                
+            }
+            
         }
 
     }

@@ -45,6 +45,7 @@ if(isset($_SESSION)) {
                                     <tr>
                                         <th>ID</th>
                                         <th>Nome</th>
+                                        <th>Estilo</th>
                                         <th class="text-center">Ações</th>
                                     </tr>
                                 </thead>
@@ -54,9 +55,13 @@ if(isset($_SESSION)) {
                                         ?>
                                         <tr>
                                             <th><?php echo $campeonato['id']; ?></th>
-                                            <td><?php 
+                                            <td>
+                                                <?php 
                                                     echo $campeonato['nome']; 
-                                                ?></td>
+                                                ?>
+                                            </td>
+                                            <td><?= $campeonato['estilo'] == 1 ? 'Mata-Mata' : 'Pontos Corridos' ?>
+                                            </td>
                                             
                                             <td class="text-center">
                                                 <span class="d-none d-md-block">
@@ -64,7 +69,7 @@ if(isset($_SESSION)) {
                                                     <a href="/adm/campeonato/finalizar_campeonato?id=<?=$campeonato['id']?>" class='btn btn-outline-secondary btn-sm'>Finalizar</a>
                                                     <a href="/adm/campeonatos/visualizar?id=<?=$campeonato['id']?>" class='btn btn-outline-primary btn-sm'>Visualizar</a>
                                                     <a href='/adm/campeonatos/edit_campeonato?id=<?=$campeonato['id']?>' class='btn btn-outline-warning btn-sm'>Editar </a>
-                                                    <a href='/adm/campeonato/apagar_campeonato?id=<?=$campeonato['id']?>' class='btn btn-outline-danger btn-sm' data-confirm='Tem certeza de que deseja excluir o item selecionado?'>Apagar</a>
+                                                    <a href='/adm/campeonato/apagar_campeonato?id=<?=$campeonato['id']?>' class='btn btn-outline-danger btn-sm apagar' data-confirm='Tem certeza de que deseja excluir o item selecionado?'>Apagar</a>
                                                 </span>
                                                 <div class="dropdown d-block d-md-none">
                                                     <button class="btn btn-primary dropdown-toggle btn-sm" type="button" id="acoesListar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

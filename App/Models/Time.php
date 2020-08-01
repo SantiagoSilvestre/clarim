@@ -143,11 +143,40 @@
         }
 
         public function listarTodosTimes($idc) {
-            $query = "SELECT t.* FROM time t
+                $query = "SELECT id_fase FROM jogo_mata
+                where id_campeonato = '".$idc."'
+                ORDER BY id_fase desc LIMIT 1";
+                $result = $this->db->query($query)->fetchAll();
+            $limite = 0;
+            if(count($result) > 0) {
+                switch ($result[0]['id_fase'] + 1) {
+                    case 1:
+                        $limite = 32;
+                    break;
+                    case 2:
+                        $limite = 16;
+                    case 3:
+                        $limite = 8;
+                    break;
+                    case 4:
+                        $limite = 4;
+                    break;
+                    case 5:
+                        $limite = 2;
+                }
+                $query = "SELECT t.* FROM time t
+                        JOIN jogo_mata jm on jm.resultado = t.id
+                        where id_campeonato = '".$idc."'
+                      ORDER BY id_fase desc, time LIMIT ".$limite."";
+                $result = $this->db->query($query)->fetchAll();
+                return $result;
+            }else {
+                $query = "SELECT t.* FROM time t
                         JOIN cam_ativo c on c.id_time = t.id
                         where id_campeonato = '".$idc."'
                       ORDER BY time";
-            return $this->db->query($query)->fetchAll();
+                return $this->db->query($query)->fetchAll();
+            }
         }
 
         public function listarTimesSemFiltro() {
@@ -171,8 +200,8 @@
         }
 
         public function cadastrarJogoMata($jogo) {
-            $query = "INSERT INTO jogo_mata(id_time1, id_time2, id_fase)
-                    VALUES ('".$jogo[0]."','".$jogo[1]."', '".$jogo[3]."')
+            $query = "INSERT INTO jogo_mata(id_time1, id_time2, id_fase, id_campeonato)
+                    VALUES ('".$jogo[0]."','".$jogo[1]."', '".$jogo[3]."', '".$jogo[2]."')
                     ";
             $stmt = $this->db->prepare($query);
             $stmt->execute();
@@ -180,13 +209,18 @@
         }
 
         public function validarMata($jogo) {
-            $retorno = true;
             $query = "SELECT * FROM jogo_mata 
-            WHERE id_time1 = '".$jogo[0]."' OR id_time1 = '".$jogo[1]."'
-            OR id_time2 = '".$jogo[0]."' OR id_time2 = '".$jogo[1]."' AND '".$jogo[3]."' > id_fase ";
-            return $query;
+            WHERE (id_time1 = '".$jogo[0]."' OR id_time1 = '".$jogo[1]."'
+            OR id_time2 = '".$jogo[0]."' OR id_time2 = '".$jogo[1]."') 
+            AND '".$jogo[3]."' = id_fase 
+            AND id_campeonato = '".$jogo['2']."'";
             $result = $this->db->query($query)->fetchAll();
-            return $retorno;
+            if(count($result) > 0 ){
+                return false;
+            } else {
+                return true;
+            }
+           
         }
 
         public function listarTimesFase($id) {

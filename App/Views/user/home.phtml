@@ -88,7 +88,7 @@ if(isset($_SESSION)) {
                 <div class="row mb-3">
                     <div class="col-lg-3 col-sm-6">
                         <div class="card bg-success text-white">
-                            <div class="card-body">
+                            <div class="card-body" id="link-mensagens">
                                 <i class="fas fa-users fa-3x"></i>
                                 <h6 class="card-title">Não lidas</h6>
                                 <h2 class="lead">
@@ -144,6 +144,11 @@ if(isset($_SESSION)) {
             </div>
         </div>  
     </div>
+    <script>
+        $("#link-mensagens").on('click', function () {
+            window.location.href = "/adm/contato";
+        });
+    </script>
     <?php
     } else {
         header('Location: /adm/login');

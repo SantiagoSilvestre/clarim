@@ -12,24 +12,20 @@ if(isset($_SESSION)) {
         $etapa = null;
         $contador = null;
 
-        switch($camp->__get('qtdtimes')) {
-            case 32:
-                $fase = 1;
+        switch($camp->__get('faseInicial')) {
+            case 1:
                 $contador = 16;
                 $etapa = "Primeira fase";
             break;
-            case 16:
-                $fase = 2;
+            case 2:
                 $contador = 8;
                 $etapa = "Oitavas de final";
             break;
-            case 8:
-                $fase = 3;
+            case 3:
                 $contador = 4;
                 $etapa = "Quartas de final";
             break;
             case 4:
-                $fase = 4;
                 $contador = 2;
                 $etapa = "Semi-final";
             break;
@@ -37,6 +33,7 @@ if(isset($_SESSION)) {
             $contador = 1;
             $etapa = "final";
         }
+        $fase = $camp->__get('faseInicial');
     ?>
 <div class="d-flex">
         <div class="content p-1">

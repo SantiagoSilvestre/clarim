@@ -66,6 +66,12 @@ if(isset($_SESSION)) {
                         <dt class="col-sm-3">Fase</dt>
                         <dd class="col-sm-9">
                         <?php
+                            /*
+                            Modificar o método para pegar a fase do jogo mata certo.
+                            adicionar mais um tópico com o botão de definir 
+                            confrontos de preferencia ainda hoje, por enquanto permanecer assim.
+                            */
+
                             $fase = $campeonato->getFase();
                             print_r($fase);
                         echo "<a href='/adm/confrontos?id=".$campeonato->__get('id')."' class='badge badge-pill badge-success'> Definir Confrontos</a>"; 

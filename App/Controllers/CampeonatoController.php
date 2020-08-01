@@ -52,6 +52,9 @@ use MF\Controller\Action;
             $camp->__set('nome', $_POST['nome']);
             $camp->__set('regulamento', $_POST['regulamento']);
             $camp->__set('estilo', $_POST['estilo']);
+            
+
+
             $camp->__set('qtdtimes', $_POST['qtdtimes']);
             $retorno = $camp->validarDados();
 
@@ -72,6 +75,13 @@ use MF\Controller\Action;
                 header('Location: /adm/campeonatos/cadastrar');
             }
 
+        }
+
+        public function buscarJogoMata() {
+            $camp = Container::getModel('Campeonato');
+            $camp->__set('id', $_GET['id']);
+            $dados = $camp->buscarJogo();
+            echo json_encode($dados);
         }
 
         public function editCampeonato() 
@@ -131,12 +141,22 @@ use MF\Controller\Action;
             session_start();
             $camp = Container::getModel('Campeonato');
             $camp->__set('id', $_GET['id']);
-            $camp->finalizar();
-            $_SESSION['msg'] = "<div class='alert alert-success'> Campeonato finalizado com sucesso!
-            <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-           <span aria-hidden='true'>&times;</span>
-           </button></div>";
-           header('Location: /adm/campeonatos');
+            $result = $camp->validarFinalizacao();
+            if($result) {
+                $camp->finalizar();
+                $_SESSION['msg'] = "<div class='alert alert-success'> Campeonato finalizado com sucesso!
+                <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+               <span aria-hidden='true'>&times;</span>
+               </button></div>";
+               header('Location: /adm/campeonatos');
+            } else {
+                $_SESSION['msg'] = "<div class='alert alert-danger'> O campeonato não teve jogos, logo não é possível finalizar
+                <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                <span aria-hidden='true'>&times;</span>
+                </button></div>";
+                header('Location: /adm/campeonatos');
+            }
+            
         }
 
         public function jogo() 
@@ -408,29 +428,32 @@ use MF\Controller\Action;
 
             if ($valido) {
                 $time = Container::getModel('Time');
-
+                $flag = true;
                 foreach($jogos as $jogo){
                     $retorno = $time->validarMata($jogo);
-                    echo json_encode($retorno);
-                    die();
                     if(!$retorno) {
                         $_SESSION['dados']['id'] = $jogos[0][2];
                         $_SESSION['msg'] = "<div class='alert alert-danger'> existe time com jogo cadastrado nessa fase
                             <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                             <span aria-hidden='true'>&times;</span>
                             </button></div>";
-                        echo json_encode(0);
+                            $flag = false;
                     }
                 }
-
-                foreach($jogos as $jogo){
-                    $time->cadastrarJogoMata($jogo); 
+                if(!$flag) {
+                    echo json_encode(1);
+                }else {
+                    foreach($jogos as $jogo){
+                        $time->cadastrarJogoMata($jogo); 
+                    }
+                    $_SESSION['msg'] = "<div class='alert alert-success'> Jogos cadastrados com sucesso!
+                        <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                        <span aria-hidden='true'>&times;</span>
+                        </button></div>";
+                    echo json_encode(1);
                 }
-                $_SESSION['msg'] = "<div class='alert alert-success'> Jogos cadastrados com sucesso!
-                    <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-                    <span aria-hidden='true'>&times;</span>
-                    </button></div>";
-                echo json_encode(1);
+
+                
             } else{
                 $erro = null;
                 foreach($erros as $e) {
@@ -459,11 +482,19 @@ use MF\Controller\Action;
         }
 
         public function ultimasEdicao() {
-            $camp = Container::getModel('Campeonato');
-            $campeonato = $camp->getUltimasEdicoes();
-            $this->view->dados = $campeonato[0];
             $this->render('ultimas_edicoes', 'head', 'menu', 'body', 'footer');
             
+        }
+
+        public function registrarJogoMata() {
+            session_start();
+            $camp = Container::getModel('Campeonato');
+            $retorno = $camp->registrarJogoMata($_POST['id'], $_POST['resul'], $_POST['id_camp']);
+            $_SESSION['msg'] = "<div class='alert alert-success'> O jogo foi registrado
+                    <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                    <span aria-hidden='true'>&times;</span>
+                    </button></div>";
+            echo json_encode(1);
         }
 
     }

@@ -9,7 +9,7 @@ $(document).ready(function () {
         url: '/campeonato/ajaxTime?id_cam='+idc,
         error: function error(data) {
             console.log(data);
-            window.location.href = "/adm/campeonatos";
+            //window.location.href = "/adm/campeonatos";
         },
         success: function success(data) {
             console.log(data);
@@ -31,9 +31,8 @@ $(document).ready(function () {
 
     
     $("#SendCadJog").on('click', function(){
+        console.log(fase);
         var times = montaArray(idc, fase);
-        //times.push(idc);
-        console.log(times);
         $.ajax({
             type: 'POST',
             url: '/adm/proc_cad_mata',
@@ -45,7 +44,7 @@ $(document).ready(function () {
             success: function success(data) {
                 console.log(data);
                if(data == 0) {
-                window.location.href = "/adm/campaonato/jogo?id="+idc;
+                window.location.href = "/adm/confrontos?id="+idc;
                } else if(data == 1) {
                 window.location.href = "/adm/campeonatos";
                }

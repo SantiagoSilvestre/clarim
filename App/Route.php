@@ -330,6 +330,19 @@
                 'action' => 'ultimasEdicao'
             );
 
+            $routes['buscarJogoMata'] = array(
+                'route' => '/campeonato/jogo/buscar',
+                'controller' => 'CampeonatoController',
+                'action' => 'buscarJogoMata'
+            );
+
+            $routes['registrarJogoMata'] = array(
+                'route' => '/adm/jogo/cad_mata',
+                'controller' => 'CampeonatoController',
+                'action' => 'registrarJogoMata'
+            );
+
+
             $this->setRoutes($routes);
         }
         
