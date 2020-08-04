@@ -36,13 +36,13 @@
                 $_SESSION['nome'] = $user->__get('nome') ;
                 $_SESSION['logado'] = true;
                 if ($user->__get('primeiroAcesso') == 0) {
-                    header('Location: /adm/trocarSenha');
+                    header('Location: /clarim/adm/trocarSenha');
                 } else {
-                    header('Location: /adm/home');
+                    header('Location: /clarim/adm/home');
                 }
                
             } else {
-                header('Location: /adm/login?login=erro');
+                header('Location: /clarim/adm/login?login=erro');
             }         
         }
 
@@ -57,7 +57,7 @@
             unset($_SESSION['id']);
             unset($_SESSION['nome']);
             unset($_SESSION['logado']);
-            header('Location: /adm/login');
+            header('Location: /clarim/adm/login');
         }
 
         public function usuarios() {
@@ -84,13 +84,13 @@
                  <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                 <span aria-hidden='true'>&times;</span>
                 </button></div>";
-                header('Location: /adm/usuarios');
+                header('Location: /clarim/adm/usuarios');
             } else {
                 unset($retorno['valido']);
                 $_SESSION['dados']['nome'] = $user->__get('nome');
                 $_SESSION['dados']['email'] = $user->__get('email');
                 $_SESSION['erros'] = $retorno;
-                header('Location: /adm/cadastrar/cad_usuario');
+                header('Location: /clarim/adm/cadastrar/cad_usuario');
             }
         }
 
@@ -121,14 +121,14 @@
                  <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                 <span aria-hidden='true'>&times;</span>
                 </button></div>";
-                header('Location: /adm/usuarios');
+                header('Location: /clarim/adm/usuarios');
             } else {
                 unset($retorno['valido']);
                 $_SESSION['dados']['id'] = $user->__get('id');
                 $_SESSION['dados']['nome'] = $user->__get('nome');
                 $_SESSION['dados']['email'] = $user->__get('email');
                 $_SESSION['erros'] = $retorno;
-                header('Location: /adm/usuarios/edit_user');
+                header('Location: /clarim/adm/usuarios/edit_user');
             }
         }
 
@@ -141,7 +141,7 @@
                  <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                 <span aria-hidden='true'>&times;</span>
                 </button></div>";
-            header('Location: /adm/usuarios');
+            header('Location: /clarim/adm/usuarios');
         }
 
         public function apagarUsuario() {
@@ -153,7 +153,7 @@
                  <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                 <span aria-hidden='true'>&times;</span>
                 </button></div>";
-            header('Location: /adm/usuarios');
+            header('Location: /clarim/adm/usuarios');
         }
 
         public function trocarSenha() {
@@ -177,7 +177,7 @@
                 <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                <span aria-hidden='true'>&times;</span>
                </button></div>";
-               header('Location: /adm/trocarSenha'); 
+               header('Location: /clarim/adm/trocarSenha'); 
             }
 
             if($senha == '12345678' ){
@@ -185,7 +185,7 @@
                 <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                <span aria-hidden='true'>&times;</span>
                </button></div>";
-               header('Location: /adm/trocarSenha'); 
+               header('Location: /clarim/adm/trocarSenha'); 
             }
 
             if ($senha != $senhaRepetida) {
@@ -193,7 +193,7 @@
                  <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                 <span aria-hidden='true'>&times;</span>
                 </button></div>";
-                header('Location: /adm/trocarSenha');
+                header('Location: /clarim/adm/trocarSenha');
             } else {
                 $user = Container::getModel('Usuario');
                 $user->__set('id', $id);
@@ -208,7 +208,7 @@
                  <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                 <span aria-hidden='true'>&times;</span>
                 </button></div>";
-                header('Location: /adm/login');
+                header('Location: /clarim/adm/login');
             }
 
         }

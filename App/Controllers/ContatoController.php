@@ -55,7 +55,7 @@
             <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
            <span aria-hidden='true'>&times;</span>
            </button></div>";
-           header('Location: /adm/contato');
+           header('Location: /clarim/adm/contato');
         }
 
         public function visContato()
@@ -77,7 +77,7 @@
             <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
            <span aria-hidden='true'>&times;</span>
            </button></div>";
-           header('Location: /adm/contato');
+           header('Location: /clarim/contato');
         }
 
         
@@ -91,7 +91,7 @@
             <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
            <span aria-hidden='true'>&times;</span>
            </button></div>";
-           header('Location: /adm/contato');
+           header('Location: /clarim/contato');
         }
         
         

@@ -146,13 +146,13 @@ if(isset($_SESSION)) {
     </div>
     <script>
         $("#link-mensagens").on('click', function () {
-            window.location.href = "/adm/contato";
+            window.location.href = "/clarim/adm/contato";
         });
     </script>
     <?php
     } else {
-        header('Location: /adm/login');
+        header('Location: /clarim/adm/login');
     }
 } else {
-    header('Location: /adm/login');
+    header('Location: /clarim/adm/login');
 }

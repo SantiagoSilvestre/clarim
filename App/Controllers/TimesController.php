@@ -48,12 +48,12 @@ use MF\Controller\Action;
                  <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                 <span aria-hidden='true'>&times;</span>
                 </button></div>";
-                header('Location: /adm/times');
+                header('Location: /clarim/adm/times');
             } else {
                 unset($retorno['valido']);
                 $_SESSION['erros'] = $retorno;
                 $_SESSION['dados']['nome'] = $time->__get('nome');
-                header('Location: /adm/times/cadastrar');
+                header('Location: /clarim/adm/times/cadastrar');
             }
 
         }
@@ -84,7 +84,7 @@ use MF\Controller\Action;
             <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
            <span aria-hidden='true'>&times;</span>
            </button></div>";
-           header('Location: /adm/times');
+           header('Location: /clarim/adm/times');
         }
 
         public function procEdiTimes()
@@ -100,12 +100,12 @@ use MF\Controller\Action;
                  <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                 <span aria-hidden='true'>&times;</span>
                 </button></div>";
-                header('Location: /adm/times');
+                header('Location: /clarim/adm/times');
             } else {
                 unset($retorno['valido']);
                 $_SESSION['erros'] = $retorno;
                 $_SESSION['dados']['time'] = $tim->__get('time');
-                header('Location: /adm/times/edit_time');
+                header('Location: /clarim/adm/times/edit_time');
             }
             
         }

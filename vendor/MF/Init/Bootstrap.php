@@ -24,11 +24,12 @@
 
         protected function run($url)
         {
-            
+            $valido = false;
             foreach($this->getRoutes() as $key => $route)
             {
                 if($url == $route['route'])
                 {
+                    $valido = true;
                     $class = "App\\Controllers\\".ucfirst($route['controller']);
 
                     $controller = new $class;
@@ -36,8 +37,11 @@
                     $action = $route['action'];
                     $controller->$action();
 
-                }
+                } 
                 
+            }
+            if(!$valido){
+                $this->run('/clarim/contato');
             }
         }
 

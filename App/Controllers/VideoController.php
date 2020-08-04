@@ -38,13 +38,13 @@ use MF\Controller\Action;
                  <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                 <span aria-hidden='true'>&times;</span>
                 </button></div>";
-                header('Location: /adm/videos');
+                header('Location: /clarim/adm/videos');
             } else {
                 unset($retorno['valido']);
                 $_SESSION['erros'] = $retorno;
                 $_SESSION['dados']['nome'] = $video->__get('nome');
                 $_SESSION['dados']['link'] = $video->__get('link');
-                header('Location: /adm/video/cadastrar');
+                header('Location: /clarim/adm/video/cadastrar');
             }
 
         }
@@ -59,7 +59,7 @@ use MF\Controller\Action;
             <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
            <span aria-hidden='true'>&times;</span>
            </button></div>";
-           header('Location: /adm/videos');
+           header('Location: /clarim/adm/videos');
         }
 
         public function editVideos() 
@@ -91,12 +91,12 @@ use MF\Controller\Action;
                  <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                 <span aria-hidden='true'>&times;</span>
                 </button></div>";
-                header('Location: /adm/videos');
+                header('Location: /clarim/adm/videos');
             } else {
                 unset($retorno['valido']);
                 $_SESSION['erros'] = $retorno;
                 $_SESSION['dados']['nome'] = $video->__get('nome');
-                header('Location: /adm/video/edit_video');
+                header('Location: /clarim/adm/video/edit_video');
             }
             
         }

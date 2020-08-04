@@ -43,7 +43,7 @@ if(isset($_SESSION)) {
                         <h2 class="display-4 titulo">Novo Jogo - <?= $etapa ?></h2>
                     </div>
                     <div class="p-2">
-                        <a class="btn btn-outline-info btn-sm" href="/adm/campeonatos"> Listar</a>
+                        <a class="btn btn-outline-info btn-sm" href="/clarim/adm/campeonatos"> Listar</a>
                     </div>
                 </div>
                 <hr>
@@ -107,11 +107,11 @@ if(isset($_SESSION)) {
             </div>
         </div>
     </div>
-    <script  src="/assets/js/jogo_mata.js" ></script>
+    <script  src="/clarim/public/assets/js/jogo_mata.js" ></script>
     <?php
     } else {
-        header('Location: /adm/login');
+        header('Location: /clarim/adm/login');
     }
 } else {
-    header('Location: /adm/login');
+    header('Location: /clarim/adm/login');
 }

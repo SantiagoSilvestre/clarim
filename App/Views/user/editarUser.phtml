@@ -12,7 +12,7 @@ if(isset($_SESSION)) {
                         <h2 class="display-4 titulo">Editar Usuário</h2>
                     </div>
                     <div class="p-2">
-                        <a class="btn btn-outline-info btn-sm" href="/adm/usuarios"> Listar</a>
+                        <a class="btn btn-outline-info btn-sm" href="/clarim/adm/usuarios"> Listar</a>
                     </div>
                 </div>
                 <hr>
@@ -24,7 +24,7 @@ if(isset($_SESSION)) {
                         unset($_SESSION['erros']);
                     }
                 ?>
-                <form method="POST" action="/adm/proc_edit_user">
+                <form method="POST" action="/clarim/adm/proc_edit_user">
                     <input id="id" name="id" type="text" value="<?php
                         if(isset($_SESSION['dados']['id'])) {
                             echo $_SESSION['dados']['id'];
@@ -76,8 +76,8 @@ if(isset($_SESSION)) {
     <?php
      unset($_SESSION['dados']);    
     } else {
-        header('Location: /adm/login');
+        header('Location: /clarim/adm/login');
     }
 } else {
-    header('Location: /adm/login');
+    header('Location: /clarim/adm/login');
 }

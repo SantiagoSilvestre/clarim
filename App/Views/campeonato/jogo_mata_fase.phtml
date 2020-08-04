@@ -4,6 +4,18 @@ use MF\Model\Container;
 
 if(isset($_SESSION)) {
     if($_SESSION['logado']) {
+        $camp = Container::getModel('Campeonato');
+                    $camp->__set('id', $_GET['id']);
+                    $jogos = $camp->buscarJogos();
+                    if(!$jogos) {
+                        $_SESSION['msg'] = "<div class='alert alert-danger'> Defina confrontos os confrontos antes
+                        <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                        <span aria-hidden='true'>&times;</span>
+                        </button></div>";
+                        header('Location: /clarim/adm/campeonatos');
+                        die();
+                    }
+                    
     ?>
     <div class="d-flex">
         <div class="content p-1">
@@ -13,7 +25,7 @@ if(isset($_SESSION)) {
                         <h2 class="display-4 titulo">Novo Jogo</h2>
                     </div>
                     <div class="p-2">
-                        <a class="btn btn-outline-info btn-sm" href="/adm/campeonatos"> Listar</a>
+                        <a class="btn btn-outline-info btn-sm" href="/clarim/adm/campeonatos"> Listar</a>
                     </div>
                 </div>
                 <hr>
@@ -27,18 +39,6 @@ if(isset($_SESSION)) {
                             echo $erro . "<br>";
                         }
                         unset($_SESSION['erros']);
-                    }
-                ?>
-                <?php
-                    $camp = Container::getModel('Campeonato');
-                    $camp->__set('id', $_GET['id']);
-                    $jogos = $camp->buscarJogos();
-                    if(!$jogos) {
-                        $_SESSION['msg'] = "<div class='alert alert-danger'> Defina confrontos os confrontos antes
-                        <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-                        <span aria-hidden='true'>&times;</span>
-                        </button></div>";
-                        header('Location: /adm/campeonatos');
                     }
                 ?>
                 <div class="container">
@@ -130,11 +130,11 @@ if(isset($_SESSION)) {
             </div>
         </div>
     </div>
-    <script  src="/assets/js/jogo_mata_fase.js" ></script>
+    <script  src="/clarim/public/assets/js/jogo_mata_fase.js" ></script>
     <?php
     } else {
-        header('Location: /adm/login');
+        header('Location: /clarim/adm/login');
     }
 } else {
-    header('Location: /adm/login');
+    header('Location: /clarim/adm/login');
 }

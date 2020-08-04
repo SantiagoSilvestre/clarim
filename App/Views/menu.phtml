@@ -1,6 +1,6 @@
 <header>
 <nav class="navbar navbar-expand-lg navbar-dark navbar-primary fixed-top bg-primary">
-  <a class="navbar-brand" href="/">Clarim</a>
+  <a class="navbar-brand" href="/clarim/">Clarim</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -8,7 +8,7 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="/">Home </a>
+        <a class="nav-link" href="/clarim/">Home </a>
       </li>
       <?php
         use MF\Model\Container;
@@ -22,17 +22,17 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <?php
             foreach($campAtivos as $cam) {
-              echo '<a class="dropdown-item" href="/campeonato?id='.$cam['id'].'">'.$cam['nome'].'</a>';
+              echo '<a class="dropdown-item" href="/clarim/campeonato?id='.$cam['id'].'">'.$cam['nome'].'</a>';
             }
           ?>
-          <a class="dropdown-item" href="/campeonato/ultimos">Últimas Edições</a>
+          <a class="dropdown-item" href="/clarim/campeonato/listarUltimas">Últimas Edições</a>
         </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/sobreNos">SOBRE NÓS</a>
+        <a class="nav-link" href="/clarim/sobreNos">SOBRE NÓS</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/contato">CONTATO</a>
+        <a class="nav-link" href="/clarim/contato">CONTATO</a>
       </li>
     </ul>
   </div>

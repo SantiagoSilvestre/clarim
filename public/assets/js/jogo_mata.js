@@ -6,10 +6,9 @@ $(document).ready(function () {
     contador2 = contador;
     $.ajax({
         type: 'GET',
-        url: '/campeonato/ajaxTime?id_cam='+idc,
+        url: '/clarim/campeonato/ajaxTime?id_cam='+idc,
         error: function error(data) {
             console.log(data);
-            //window.location.href = "/adm/campeonatos";
         },
         success: function success(data) {
             console.log(data);
@@ -23,7 +22,7 @@ $(document).ready(function () {
                     contador --;
                } 
             } else {
-                window.location.href = "/adm/campeonatos";
+                window.location.href = "/clarim/adm/campeonatos";
             }
         },
         dataType: 'json'
@@ -35,18 +34,17 @@ $(document).ready(function () {
         var times = montaArray(idc, fase);
         $.ajax({
             type: 'POST',
-            url: '/adm/proc_cad_mata',
+            url: '/clarim/adm/proc_cad_mata',
             data : { times },
             error: function error(data) {
                 //console.log(data)
                //window.location.href = "/adm/campeonatos";
             },
             success: function success(data) {
-                console.log(data);
                if(data == 0) {
-                window.location.href = "/adm/confrontos?id="+idc;
+                window.location.href = "/clarim/adm/confrontos?id="+idc;
                } else if(data == 1) {
-                window.location.href = "/adm/campeonatos";
+                window.location.href = "/clarim/adm/campeonatos";
                }
             },
             dataType: 'json'

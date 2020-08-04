@@ -13,7 +13,7 @@ if(isset($_SESSION)) {
                         <h2 class="display-4 titulo">Novo Jogo</h2>
                     </div>
                     <div class="p-2">
-                        <a class="btn btn-outline-info btn-sm" href="/adm/campeonatos"> Listar</a>
+                        <a class="btn btn-outline-info btn-sm" href="/clarim/adm/campeonatos"> Listar</a>
                     </div>
                 </div>
                 <hr>
@@ -29,7 +29,7 @@ if(isset($_SESSION)) {
                         unset($_SESSION['erros']);
                     }
                 ?>
-                <form method="POST" action="/adm/proc_cad_jogo">
+                <form method="POST" action="/clarim/adm/proc_cad_jogo">
                     <input type="text" id="id" name="id" value="<?=$_SESSION['dados']['id']?>" hidden>
                     <div class="row">
                         <?php
@@ -176,8 +176,8 @@ if(isset($_SESSION)) {
     </div>
     <?php
     } else {
-        header('Location: /adm/login');
+        header('Location: /clarim/adm/login');
     }
 } else {
-    header('Location: /adm/login');
+    header('Location: /clarim/adm/login');
 }

@@ -6,9 +6,9 @@ if(isset($_SESSION)) {
     if($_SESSION['logado']) {
     ?>
 <body class="text-center corpoLogin">
-    <form class="form-signin" method="POST" action="/adm/trocar">
+    <form class="form-signin" method="POST" action="/clarim/adm/trocar">
         <input type="text" id="id" name="id" value="<?=$this->view->dados->__get('id') ?>" hidden>
-        <img class="mb-4" src="/assets/imagens/index/logoClarim.jpg" alt="Clarim" width="72" height="72">
+        <img class="mb-4" src="/clarim/public/assets/imagens/index/logoClarim.jpg" alt="Clarim" width="72" height="72">
         <h1 class="h3 mb-3 font-weight-normal">Área Restrita</h1>
         <?php
             if (isset($_SESSION['msg'])) {
@@ -29,8 +29,8 @@ if(isset($_SESSION)) {
 </body>
 <?php
 } else {
-        header('Location: /adm/login');
+        header('Location: /clarim/adm/login');
     }
 } else {
-    header('Location: /adm/login');
+    header('Location: /clarim/adm/login');
 }

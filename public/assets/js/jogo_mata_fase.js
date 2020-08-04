@@ -7,7 +7,7 @@ $(document).ready(function () {
         var id_current  = $("#jogo").val();
         $.ajax({
             type: 'GET',
-            url: '/campeonato/jogo/buscar?id='+id_current,
+            url: '/clarim/campeonato/jogo/buscar?id='+id_current,
             error: function error(data) {
                 console.log(data);
                 //window.location.href = "/adm/campeonatos";
@@ -41,7 +41,7 @@ $(document).ready(function () {
         }
         $.ajax({
             type: 'POST',
-            url: '/adm/jogo/cad_mata',
+            url: '/clarim/adm/jogo/cad_mata',
             data : { 'id' : id_current,
                       'resul' : resultado,
                       'id_camp' :camp                 },
@@ -52,7 +52,7 @@ $(document).ready(function () {
             success: function success(data) {
                 console.log(data);
                if(data == 1) {
-                window.location.href = "/adm/campeonatos";
+                window.location.href = "/clarim/adm/campeonatos";
                } 
             },
             dataType: 'json'

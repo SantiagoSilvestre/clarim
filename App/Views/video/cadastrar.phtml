@@ -11,7 +11,7 @@ if(isset($_SESSION)) {
                         <h2 class="display-4 titulo">Cadastrar Vídeo</h2>
                     </div>
                     <div class="p-2">
-                        <a class="btn btn-outline-info btn-sm" href="/adm/videos"> Listar</a>
+                        <a class="btn btn-outline-info btn-sm" href="/clarim/adm/videos"> Listar</a>
                     </div>
                 </div>
                 <hr>
@@ -23,7 +23,7 @@ if(isset($_SESSION)) {
                         unset($_SESSION['erros']);
                     }
                 ?>
-                <form method="POST" action="/adm/proc_cad_video">
+                <form method="POST" action="/clarim/adm/proc_cad_video">
                     <div class="form-group col-md-12">
                         <span class="text-danger">* </span>
                         <label>
@@ -53,8 +53,8 @@ if(isset($_SESSION)) {
 <?php
     unset($_SESSION['dados']);
     } else {
-        header('Location: /adm/login');
+        header('Location: /clarim/adm/login');
     }
 } else {
-    header('Location: /adm/login');
+    header('Location: /clarim/adm/login');
 }

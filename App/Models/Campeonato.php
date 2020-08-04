@@ -1,7 +1,9 @@
 <?php
 
     namespace App\Models;
-    use MF\Model\Model;
+
+use Exception;
+use MF\Model\Model;
 
     Class Campeonato extends Model {
 
@@ -246,6 +248,7 @@
             $stmt->bindValue(':id', $this->__get('id'));
             $stmt->execute();
             return $this;
+            
         }
 
         public function validarDados() {
@@ -392,13 +395,11 @@
             }
         }
 
-        public function getFase() {
-            $query = "SELECT * FROM fase_campeonato WHERE id_campeonato = : id order by id desc";
-            $stmt = $this->db->prepare($query);
-            $stmt->bindValue(':id', $this->__get('id'));
-            $stmt->execute();
-            $u = $stmt->fetch((\PDO::FETCH_ASSOC));
-            return $u;
+        public function getFase($id) {
+            $query = "SELECT f.nome FROM campeonato c
+            INNER JOIN fases f ON f.id = c.fase_inicial
+            where c.id = '".$id."' ";
+            return $this->db->query($query)->fetchAll();
         }
 
         public function getFases() {
@@ -418,7 +419,7 @@
             $stmt = $this->db->prepare($query);
             $stmt->execute();
 
-            $query = "SELECT resultado FROM jogo_mata WHERE id_campeonato = '".$id_camp."' ";
+            $query = "SELECT resultado FROM jogo_mata WHERE id_campeonato = '".$id_camp."' order by id desc";
             $result = $this->db->query($query)->fetchAll();
             $valido = true;
             foreach($result as $r) {

@@ -3,9 +3,8 @@
     namespace App\Controllers;
     // Recursos do miniframewor
 
-use App\Models\Contato;
-use CompileError;
-use MF\Controller\Action;
+
+    use MF\Controller\Action;
     use MF\Model\Container;
     // os Models
     class CampeonatoController extends Action 
@@ -65,7 +64,7 @@ use MF\Controller\Action;
                  <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                 <span aria-hidden='true'>&times;</span>
                 </button></div>";
-                header('Location: /adm/campeonatos');
+                header('Location: /clarim/adm/campeonatos');
             } else {
                 unset($retorno['valido']);
                 $_SESSION['erros'] = $retorno;
@@ -73,7 +72,7 @@ use MF\Controller\Action;
                 $_SESSION['dados']['regulamento'] = $camp->__get('regulamento');
                 $_SESSION['dados']['estilo'] = $camp->__get('estilo');
                 $_SESSION['dados']['qtdtimes'] = $camp->__get('qtdtimes');
-                header('Location: /adm/campeonatos/cadastrar');
+                header('Location: /clarim/adm/campeonatos/cadastrar');
             }
 
         }
@@ -114,13 +113,13 @@ use MF\Controller\Action;
                  <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                 <span aria-hidden='true'>&times;</span>
                 </button></div>";
-                header('Location: /adm/campeonatos');
+                header('Location: /clarim/adm/campeonatos');
             } else {
                 unset($retorno['valido']);
                 $_SESSION['erros'] = $retorno;
                 $_SESSION['dados']['nome'] = $camp->__get('nome');
                 $_SESSION['dados']['regulamento'] = $camp->__get('regulamento');
-                header('Location: /adm/campeonatos/edit_campeonato');
+                header('Location: /clarim/adm/campeonatos/edit_campeonato');
             }
         }
 
@@ -130,11 +129,12 @@ use MF\Controller\Action;
             $camp = Container::getModel('Campeonato');
             $camp->__set('id', $_GET['id']);
             $camp->apagar();
+            
             $_SESSION['msg'] = "<div class='alert alert-success'> Campeonato apagado com sucesso!
             <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
            <span aria-hidden='true'>&times;</span>
            </button></div>";
-           header('Location: /adm/campeonatos');
+           header('Location: /clarim/adm/campeonatos');
         }
 
         public function finalizarCampeonato()
@@ -149,13 +149,13 @@ use MF\Controller\Action;
                 <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                <span aria-hidden='true'>&times;</span>
                </button></div>";
-               header('Location: /adm/campeonatos');
+               header('Location: /clarim/adm/campeonatos');
             } else {
                 $_SESSION['msg'] = "<div class='alert alert-danger'> O campeonato não teve jogos, logo não é possível finalizar
                 <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                 <span aria-hidden='true'>&times;</span>
                 </button></div>";
-                header('Location: /adm/campeonatos');
+                header('Location: /clarim/adm/campeonatos');
             }
             
         }
@@ -281,7 +281,7 @@ use MF\Controller\Action;
                 <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                 <span aria-hidden='true'>&times;</span>
                 </button></div>";
-                header('Location: /adm/campaonato/jogo?id='.$_POST['id']); 
+                header('Location: /clarim/adm/campaonato/jogo?id='.$_POST['id']); 
            } else {
 
                 if($valido) {
@@ -307,13 +307,13 @@ use MF\Controller\Action;
                         <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                         <span aria-hidden='true'>&times;</span>
                         </button></div>";
-                        header('Location: /adm/campeonatos');
+                        header('Location: /clarim/adm/campeonatos');
                 } else {
                         $_SESSION['msg'] = "<div class='alert alert-danger'> Necessários preencher todos os campos
                         <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                         <span aria-hidden='true'>&times;</span>
                         </button></div>";
-                        header('Location: /adm/campaonato/jogo?id='.$_POST['id']); 
+                        header('Location: /clarim/adm/campaonato/jogo?id='.$_POST['id']); 
                 }
            }
 
@@ -337,21 +337,21 @@ use MF\Controller\Action;
                 <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                 <span aria-hidden='true'>&times;</span>
                 </button></div>";
-                header('Location: /adm/campeonatos/visualizar?id='.$idc);
+                header('Location: /clarim/adm/campeonatos/visualizar?id='.$idc);
             } else {
                 if (count($teste) > 0 ) {
                     $_SESSION['msg'] = "<div class='alert alert-danger'> Este time já pertence a esse campeonato
                     <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                     <span aria-hidden='true'>&times;</span>
                     </button></div>";
-                    header('Location: /adm/campeonatos/visualizar?id='.$idc);
+                    header('Location: /clarim/adm/campeonatos/visualizar?id='.$idc);
                 } else {
                     $camp->inserirTime($idt, $idc);
                     $_SESSION['msg'] = "<div class='alert alert-success'> Time Registrado com sucesso!
                     <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                     <span aria-hidden='true'>&times;</span>
                     </button></div>";
-                    header('Location: /adm/campeonatos/visualizar?id='.$idc);
+                    header('Location: /clarim/adm/campeonatos/visualizar?id='.$idc);
                 }
             }
 
@@ -492,7 +492,6 @@ use MF\Controller\Action;
 
         public function ultimasEdicao() {
             $this->render('ultimas_edicoes', 'head', 'menu', 'body', 'footer');
-            
         }
 
         public function registrarJogoMata() {
@@ -504,6 +503,10 @@ use MF\Controller\Action;
                     <span aria-hidden='true'>&times;</span>
                     </button></div>";
             echo json_encode(1);
+        }
+
+        public function listarUltimas() {
+            $this->render('ultimas_edicoes', 'head', 'menu', 'body', 'footer');
         }
 
     }

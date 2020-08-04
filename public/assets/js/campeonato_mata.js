@@ -2,7 +2,7 @@ $(document).ready(function () {
     var id = $("#id").val();
     $.ajax({
         type: 'GET',
-        url: '/campeonato/ajax?id='+id,
+        url: '/clarim/campeonato/ajax?id='+id,
         error: function error(data) {
             console.log(data);
         },
@@ -25,7 +25,7 @@ $(document).ready(function () {
         var idCamp = $("#id").val();
         $.ajax({
             type: 'POST',
-            url: '/campeonato/ajax/buscaFase',
+            url: '/clarim/campeonato/ajax/buscaFase',
             data: {
                 'id_fase' : idFase,
                 'id_camp' : idCamp
