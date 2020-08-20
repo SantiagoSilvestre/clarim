@@ -354,6 +354,18 @@
                 'action' => 'listarUltimas'
             );
 
+            $routes['esqueceuSenha'] = array(
+                'route' => '/clarim/adm/esqueceuSenha',
+                'controller' => 'UserController',
+                'action' => 'esqueceuSenha'
+            );
+
+            $routes['solicitarSenha'] = array(
+                'route' => '/clarim/UserController/ajax/solicitarSenha',
+                'controller' => 'UserController',
+                'action' => 'solicitarSenha'
+            );
+
             $this->setRoutes($routes);
         }
         

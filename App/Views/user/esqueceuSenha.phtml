@@ -1,0 +1,30 @@
+<?php 
+    session_start();
+?>
+<body class="text-center corpoLogin">
+    
+        <img class="mb-4" src="/clarim/public/assets/imagens/index/logoClarim.jpg" alt="Clarim" width="72" height="72">
+        <h1 class="h3 mb-3 font-weight-normal">Área Restrita</h1>
+        <div class="form-group col-12 float-right">
+            <label>E-mail</label>
+            <input name="usuario" type="text" id="email" class="form-control" placeholder="Digite seu e-mail" required>               
+        </div>
+        <section class="row float-right">
+            <div class="col md-12">
+                <input type="button" class="btn btn-lg btn-danger btn-block" value="Cancelar" id="btn-cancelar">
+            </div>
+            <span>
+
+            </span>
+            <div class="col md-12">
+                <input type="button" class="btn btn-lg btn-primary btn-block" value="Confirmar" id="btn-confirmar">
+            </div>
+        </section>
+        <div id="emailVazio" class="text-danger" title="Solicitação de Senha" style="display:none">
+            <p>O E-mail não pode ficar em branco</p>
+        </div>
+        <div id="emailInvalido" class="text-danger" title="Solicitação de Senha" style="display:none">
+            <p>O E-mail não foi encontrado, digite um e-mail válido</p>
+        </div>
+</body>
+<script  src="/clarim/public/assets/js/user/esqueceuSenha.js" ></script>

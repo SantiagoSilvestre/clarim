@@ -15,7 +15,27 @@
         public function login()
         {       
             $this->view->login = isset($_GET['login']) ? $_GET['login'] : '';
-            $this->render('login', 'head', 'menu_login' ,'body', 'footer_login');
+            $this->render('login', 'head', 'menu' ,'body', 'footer_login');
+        }
+
+        public function esqueceuSenha()
+        {
+            $this->render('esqueceuSenha', 'head', 'menu_login' ,'body', 'footer_login');
+        }
+
+        public function solicitarSenha()
+        {
+            $user = Container::getModel('Usuario');
+            $user->__set('email', $_POST['email']);
+            $result = $user->buscarPorEmail();
+            if($result) {
+                session_start();
+                $_SESSION['msg'] = "<div class='alert alert-success'> Solicitação de nova senha concluída, aguarde nosso contato!
+                 <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                <span aria-hidden='true'>&times;</span>
+                </button></div>";
+            }
+            echo json_encode($result);
         }
 
         public function cadastrarUsuarios()

@@ -67,6 +67,39 @@
 
         }
 
+        public function buscarPorEmail()
+        {
+            $query = "SELECT * FROM usuario where email = :email";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':email', $this->__get('email'));
+            $stmt->execute();
+            $u = $stmt->fetch(\PDO::FETCH_ASSOC);
+            if ($u != null) {
+
+                
+                $query = "SELECT * FROM solicitacao_senha  where id_usuario = :id_user AND resetado = 0";
+                $stmt = $this->db->prepare($query);
+                $stmt->bindValue(':id_user', $u['id']);
+                $stmt->execute();
+                $user = $stmt->fetch(\PDO::FETCH_ASSOC);
+                if($user['id'] != null || $user['id'] != '') {
+                    return true;
+                }
+                
+                $query = "INSERT INTO solicitacao_senha (id_usuario) VALUES (:id_user)";
+                $stmt = $this->db->prepare($query);
+                $stmt->bindValue(':id_user', $u['id']);
+                $stmt->execute();
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        public function solicitacaoReset() {
+            $query = "SELECT count(id) as qtd FROM solicitacao_senha WHERE resetado = 0";
+            return $this->db->query($query)->fetchAll();
+        }
         
         public function validarCadastro(){
             $valido = true;
