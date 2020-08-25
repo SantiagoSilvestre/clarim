@@ -43,6 +43,12 @@
             $this->render('cad_usuario', 'head', 'menu_adm' ,'body', 'footer');
         }
 
+        public function listarSolicitacaoSenha()
+        {
+            $this->render('listarSolicitacaoSenha', 'head', 'menu_adm' ,'body', 'footer');
+        }
+
+
         public function valida(){
             $senha = $_POST['senha'];
             $senha = $senha == '12345678' ? $senha : md5($senha);
@@ -97,6 +103,7 @@
             $user = Container::getModel('Usuario');
             $user->__set('nome', $_POST['nome']);
             $user->__set('email', $_POST['email']);
+            $user->__set('perfil', $_POST['perfil']);
             $retorno = $user->validarCadastro();
             if ($retorno['valido']) {
                 $user->salvar();
@@ -109,6 +116,7 @@
                 unset($retorno['valido']);
                 $_SESSION['dados']['nome'] = $user->__get('nome');
                 $_SESSION['dados']['email'] = $user->__get('email');
+                $_SESSION['dados']['perfil'] = $user->__get('perfil');
                 $_SESSION['erros'] = $retorno;
                 header('Location: /clarim/adm/cadastrar/cad_usuario');
             }
@@ -134,6 +142,7 @@
             $user->__set('nome', $_POST['nome']);
             $user->__set('email', $_POST['email']);
             $user->__set('id', $_POST['id']);
+            $user->__set('perfil', $_POST['perfil']);
             $retorno = $user->validarAtualizacao();
             if ($retorno['valido']) {
                 $user->atualizar();

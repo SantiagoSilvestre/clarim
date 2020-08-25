@@ -15,7 +15,7 @@ if(isset($_SESSION)) {
                         <span class="d-none d-md-block">
                             <a class="btn btn-outline-info btn-sm" href="/clarim/adm/usuarios"> Listar</a>
                             <a class="btn btn-outline-warning btn-sm" href="/clarim/adm/usuarios/edit_user?id=<?=$user->__get('id')?>"> Editar</a>
-                            <a href="/clarim/adm/usuarios/resetar?id=<?=$usuario['id']?>" class='btn btn-outline-secondary btn-sm'>Resetar</a>
+                            <a href="/clarim/adm/usuarios/resetar?id=<?=$user->__get('id')?>" class='btn btn-outline-secondary btn-sm'>Resetar</a>
                             <a class="btn btn-outline-danger btn-sm disabled" href="/clarim/adm/apagar_user?id=<?=$user->__get('id')?>" data-confirm="Tem certeza que deseja excluir o item seleconado?">Apagar</a>
                         </span>
                         <div class="dropdown d-block d-md-none">
@@ -25,7 +25,7 @@ if(isset($_SESSION)) {
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="acoesListar">
                                 <a class="dropdown-item" href="/clarim/adm/usuarios">Listar</a>
                                 <a class="dropdown-item" href="/clarim/adm/usuarios/edit_user?id=<?=$user->__get('id')?>">Editar</a>
-                                <a class='dropdown-item' href='/clarim/adm/usuarios/resertar?id=<?=$usuario['id']?>'>Resetar</a>
+                                <a class='dropdown-item' href='/clarim/adm/usuarios/resertar?id=<?=$user->__get('id')?>'>Resetar</a>
                                 <a class="dropdown-item disabled" href="/clarim/adm/apagar_user?id=<?=$user->__get('id')?>"  data-confirm="Tem certeza que deseja excluir o item seleconado?">Apagar</a>
                             </div>
                         </div>
@@ -55,6 +55,8 @@ if(isset($_SESSION)) {
                         }
                     ?>
                     </dd>
+                    <dt class="col-sm-3">Perfil</dt>
+                    <dd class="col-sm-9"><?= $user->__get('perfil') ?></dd>
                 </dl> 
             </div>
         </div>

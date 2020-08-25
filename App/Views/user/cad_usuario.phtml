@@ -1,5 +1,6 @@
 <?php 
 session_start();
+use MF\Model\Container;
 if(isset($_SESSION)) {
     if($_SESSION['logado']) {
     ?>
@@ -34,7 +35,7 @@ if(isset($_SESSION)) {
                             value="<?php if(isset($_SESSION['dados']['nome'])) { echo $_SESSION['dados']['nome']; } ?>"
                             id="nome" placeholder="Nome do usuário" required>
                         </div>
-                        <div class="form-group col-md-8">
+                        <div class="form-group col-md-4">
                             <span class="text-danger">* </span>
                             <label>
                                 E-mail:
@@ -42,6 +43,27 @@ if(isset($_SESSION)) {
                             <input name="email" type="email" class="form-control" 
                             value="<?php if(isset($_SESSION['dados']['email'])) { echo $_SESSION['dados']['email']; } ?>"
                             id="email" placeholder="Digite o e-mail do usuário" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <span class="text-danger">* </span>
+                            <label>
+                                Perfil:
+                            </label>
+                            <select class="custom-select" name="perfil" id="perfil">
+                                <?php
+                                    $perfis = Container::getModel('Usuario');
+                                    $list_perfis = $perfis->getPerfils();
+                                    echo "<option value='0' selected>Selecione uma opção</option>";
+                                    foreach($list_perfis as $p){
+                                        if (isset($_SESSION['dados']['perfil']) && $_SESSION['dados']['perfil'] == $p['id']){
+                                            echo "<option value='".$p['id']."' selected >" .$p['nome']. "</option>";
+                                        }else {
+                                            echo "<option value='".$p['id']."'>" .$p['nome']. "</option>";
+                                        }
+                                        
+                                    }
+                                ?>
+                            </select>
                         </div>
                     </div>
                     <p>

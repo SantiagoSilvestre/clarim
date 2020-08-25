@@ -10,6 +10,7 @@
         private $email;
         private $senha = '12345678';
         private $primeiroAcesso;
+        private $perfil;
 
         public function __get($atributo) {
             return $this->$atributo;
@@ -20,11 +21,12 @@
 
         //salvar
         public function salvar() {
-            $query = "INSERT INTO usuario(nome, email) 
-                      VALUES (:nome, :email) ";
+            $query = "INSERT INTO usuario(nome, email, id_perfil) 
+                      VALUES (:nome, :email, :perfil) ";
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':nome', $this->__get('nome'));
             $stmt->bindValue(':email', $this->__get('email'));
+            $stmt->bindValue(':perfil', $this->__get('perfil'));
             $stmt->execute();
             return $this;
         }
@@ -52,8 +54,18 @@
             return $this->db->query($query)->fetchAll();
         }
 
+        public function listarUsuariosSenha($inicio, $qnt_result_pg){
+            $query = "SELECT u.* FROM usuario u
+            INNER JOIN solicitacao_senha s on u.id = s.id_usuario
+            WHERE resetado = 0
+            ORDER BY nome LIMIT $inicio, $qnt_result_pg";
+            return $this->db->query($query)->fetchAll();
+        }
+
         public function buscarPorId(){
-            $query = "SELECT * FROM usuario where id = :id";
+            $query = "SELECT u.*, p.nome as perfil FROM usuario u 
+            INNER JOIN perfil p on u.id_perfil = p.id
+            where u.id = :id";
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':id', $this->__get('id'));
             $stmt->execute();
@@ -62,6 +74,7 @@
                 $this->__set('nome', $u['nome']);
                 $this->__set('email', $u['email']);
                 $this->__set('primeiro_acesso', $u['primeiro_acesso']);
+                $this->__set('perfil', $u['perfil']);
             } 
             return $this;
 
@@ -130,6 +143,14 @@
             </button></div>";
                 $valido = false;
             }
+
+            if($this->__get('perfil') == 0) {
+                
+                $erros[] = "<div class='alert alert-danger'>Selecione um perfil para o usuário <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                <span aria-hidden='true'>&times;</span>
+            </button></div>";
+                $valido = false;
+            }
             $erros['valido'] = $valido;
 
             return $erros;
@@ -145,6 +166,12 @@
                 </button></div>";
             }
 
+            if ($this->__get('perfil') == 0) {
+                $erros[] = "<div class='alert alert-danger'>Necessário selecionar um perfil <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                <span aria-hidden='true'>&times;</span>
+                </button></div>";
+            }
+ 
             if(strlen($this->__get('nome')) < 3 ) {
                 $erros[] = "<div class='alert alert-danger'>O nome de usuário está muito curto <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                 <span aria-hidden='true'>&times;</span>
@@ -171,11 +198,12 @@
         }
 
         public function atualizar() {
-            $query = "UPDATE usuario SET nome = :nome, email = :email WHERE id = :id";
+            $query = "UPDATE usuario SET nome = :nome, email = :email, id_perfil = :perfil WHERE id = :id";
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':id', $this->__get('id'));
             $stmt->bindValue(':nome', $this->__get('nome'));
             $stmt->bindValue(':email', $this->__get('email'));
+            $stmt->bindValue(':perfil', $this->__get('perfil'));
             $stmt->execute();
             $u = $stmt->fetch(\PDO::FETCH_ASSOC);
             return $this;
@@ -183,6 +211,12 @@
 
         public function resetar() {
             $query = "UPDATE usuario SET senha = '12345678', primeiro_acesso = '0' WHERE id = :id";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':id', $this->__get('id'));
+            $stmt->execute();
+            $stmt->fetch(\PDO::FETCH_ASSOC);
+
+            $query = "UPDATE solicitacao_senha SET resetado = '1' WHERE id_usuario = :id and resetado = 0";
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':id', $this->__get('id'));
             $stmt->execute();
@@ -197,6 +231,11 @@
             $stmt->execute();
             $stmt->fetch(\PDO::FETCH_ASSOC);
             return $this;
+        }
+
+        public function getPerfils() {
+            $query = "SELECT * FROM perfil";
+            return $this->db->query($query)->fetchAll();
         }
 
         public function getTotalRegistros(){

@@ -32,7 +32,7 @@ if(isset($_SESSION)) {
                     </div>
                     <div class="col-lg-3 col-sm-6">
                         <div class="card bg-danger text-white">
-                            <div class="card-body">
+                            <div class="card-body" id="link-senha">
                                 <i class="fas fa-file fa-3x"></i>
                                 <h6 class="card-title">Solicitação de senha</h6>
                                 <h2 class="lead">
@@ -168,6 +168,10 @@ if(isset($_SESSION)) {
     <script>
         $("#link-mensagens").on('click', function () {
             window.location.href = "/clarim/adm/contato";
+        });
+
+        $("#link-senha").on('click', function () {
+            window.location.href = "/clarim/adm/listarSolicitacaoSenha";
         });
     </script>
     <?php

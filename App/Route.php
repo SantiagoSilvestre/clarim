@@ -366,6 +366,12 @@
                 'action' => 'solicitarSenha'
             );
 
+            $routes['listarSolicitacaoSenha'] = array(
+                'route' => '/clarim/adm/listarSolicitacaoSenha',
+                'controller' => 'UserController',
+                'action' => 'listarSolicitacaoSenha'
+            );
+
             $this->setRoutes($routes);
         }
         
