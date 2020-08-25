@@ -2,7 +2,9 @@
 
 use MF\Model\Container;
 
-session_start();
+if (!in_array("list_campeonato", $_SESSION['permissoes']['permissao'])) { 
+    die("permissao de acesso negada");
+}
 if(isset($_SESSION)) {
     if($_SESSION['logado']) {
         $qtd = $this->view->dados;

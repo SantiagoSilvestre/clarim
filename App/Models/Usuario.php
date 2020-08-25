@@ -253,6 +253,22 @@
             return $this;
         }
 
+        public function getPermissoes() {
+            $query = "SELECT p.nome as permissao 
+            FROM perfil_permissao pf
+            INNER JOIN permissao p on pf.id_permissao = p.id
+            WHERE pf.id_perfil = :id";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':id', $this->__get('id'));
+            $stmt->execute();
+            $u = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            $permissoes['permissao'] = [];
+            foreach ($u as $p) {
+                array_push($permissoes['permissao'], $p['permissao']);
+            }
+            return $permissoes;
+        }
+
 
     }
 

@@ -57,10 +57,13 @@
             $user->__set('senha', $senha);
             $user->acessar(); 
             if ( $user->__get('id') && $user->__get('nome')) {
+                $permissoes = $user->getPermissoes();
+
                 session_start();
                 $_SESSION['id'] = $user->__get('id');
                 $_SESSION['nome'] = $user->__get('nome') ;
                 $_SESSION['logado'] = true;
+                $_SESSION['permissoes'] = $permissoes;
                 if ($user->__get('primeiroAcesso') == 0) {
                     header('Location: /clarim/adm/trocarSenha');
                 } else {
@@ -193,6 +196,10 @@
             $user->buscarPorId();
             $this->view->dados = $user;
             $this->render('trocarSenha', 'head', 'menu_login' ,'body', 'footer_login');
+        }
+
+        public function perfil() {
+            $this->render('perfil', 'head', 'menu_adm', 'body', 'footer');
         }
 
         public function trocar() {

@@ -2,7 +2,6 @@
 
 use MF\Model\Container;
 
-session_start();
 if(isset($_SESSION)) {
     if($_SESSION['logado']) {
         $campeonato = $this->view->dados;

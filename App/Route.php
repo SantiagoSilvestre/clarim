@@ -372,6 +372,12 @@
                 'action' => 'listarSolicitacaoSenha'
             );
 
+            $routes['perfil'] = array(
+                'route' => '/clarim/perfil',
+                'controller' => 'UserController',
+                'action' => 'perfil'
+            );
+
             $this->setRoutes($routes);
         }
         
