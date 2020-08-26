@@ -378,6 +378,18 @@
                 'action' => 'perfil'
             );
 
+            $routes['agenda'] = array(
+                'route' => '/clarim/adm/agenda',
+                'controller' => 'UserController',
+                'action' => 'agenda'
+            );
+
+            $routes['eventos'] = array(
+                'route' => '/clarim/eventos',
+                'controller' => 'UserController',
+                'action' => 'eventos'
+            );
+
             $this->setRoutes($routes);
         }
         

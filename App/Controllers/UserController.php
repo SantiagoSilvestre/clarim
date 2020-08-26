@@ -86,11 +86,22 @@
             unset($_SESSION['id']);
             unset($_SESSION['nome']);
             unset($_SESSION['logado']);
+            unset($_SESSION['permissoes']);
             header('Location: /clarim/adm/login');
         }
 
         public function usuarios() {
             $this->render('listarUsuarios', 'head', 'menu_adm', 'body', 'footer');
+        }
+
+        public function agenda() {
+            $this->render('agenda', 'head', 'menu_adm', 'body', 'footer');
+        }
+
+        public function eventos() {
+            $usuario = Container::getModel('Usuario');
+            $eventos = $usuario->getEvents();
+            echo json_encode($eventos);
         }
 
         public function visualizarUsuarios() {

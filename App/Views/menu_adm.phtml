@@ -22,49 +22,63 @@
 <div class="d-flex">
     <nav class="sidebar">
         <ul class="list-unstyled">
-            <?php session_start(); ?>
-            <?php 
-                if (in_array("dashboard", $_SESSION['permissoes']['permissao'])) { 
+            <?php session_start();
+                if(isset($_SESSION['logado'])) { 
                 ?>
-                <li><a href="/clarim/adm/home"> Dashboard</a></li>
                 <?php 
-                } 
-            ?>
-            <?php 
-                if (in_array("list_campeonato", $_SESSION['permissoes']['permissao'])) { 
+                    if (in_array("dashboard", $_SESSION['permissoes']['permissao'])) { 
+                    ?>
+                    <li><a href="/clarim/adm/home"> Dashboard</a></li>
+                    <?php 
+                    } 
                 ?>
-                <li><a href="/clarim/adm/campeonatos"> Campeonatos</a></li>
                 <?php 
-                } 
-            ?>
-            <?php 
-                if (in_array("list_mensagens", $_SESSION['permissoes']['permissao'])) { 
+                    if (in_array("agenda", $_SESSION['permissoes']['permissao'])) { 
+                    ?>
+                    <li><a href="/clarim/adm/agenda"> Agenda</a></li>
+                    <?php 
+                    } 
                 ?>
-                <li><a href="/clarim/adm/contato"> Mensagens</a></li>
                 <?php 
-                } 
-            ?>
-            <?php 
-                if (in_array("list_times", $_SESSION['permissoes']['permissao'])) { 
+                    if (in_array("list_campeonato", $_SESSION['permissoes']['permissao'])) { 
+                    ?>
+                    <li><a href="/clarim/adm/campeonatos"> Campeonatos</a></li>
+                    <?php 
+                    } 
                 ?>
-                <li><a href="/clarim/adm/times"> Times</a></li>
                 <?php 
-                } 
-            ?>
-            <?php 
-                if (in_array("list_usuario", $_SESSION['permissoes']['permissao'])) { 
+                    if (in_array("list_mensagens", $_SESSION['permissoes']['permissao'])) { 
+                    ?>
+                    <li><a href="/clarim/adm/contato"> Mensagens</a></li>
+                    <?php 
+                    } 
                 ?>
-                <li><a href="/clarim/adm/usuarios"> Usuários</a></li>
                 <?php 
-                } 
-            ?>
-            <?php 
-                if (in_array("list_video", $_SESSION['permissoes']['permissao'])) { 
+                    if (in_array("list_times", $_SESSION['permissoes']['permissao'])) { 
+                    ?>
+                    <li><a href="/clarim/adm/times"> Times</a></li>
+                    <?php 
+                    } 
                 ?>
-                <li><a href="/clarim/adm/videos"> Vídeos</a></li>
                 <?php 
-                } 
-            ?>            
+                    if (in_array("list_usuario", $_SESSION['permissoes']['permissao'])) { 
+                    ?>
+                    <li><a href="/clarim/adm/usuarios"> Usuários</a></li>
+                    <?php 
+                    } 
+                ?>
+                <?php 
+                    if (in_array("list_video", $_SESSION['permissoes']['permissao'])) { 
+                    ?>
+                    <li><a href="/clarim/adm/videos"> Vídeos</a></li>
+                    <?php 
+                    } 
+                ?>   
+                <?php
+                    } else {
+                        header('Location: /clarim/adm/login');
+                    }
+                ?>
             <li><a href="/clarim/adm/sair"> Sair</a></li>
         </ul>
     </nav>

@@ -1,5 +1,8 @@
 <?php 
     session_start();
+    if (isset($_SESSION['logado']) && $_SESSION['logado']) {
+        header('Location: /clarim/perfil');
+    } 
 ?>
 <body class="text-center corpoLogin">
     <form class="form-signin" method="POST" action="/clarim/adm/valida">

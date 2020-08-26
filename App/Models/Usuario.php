@@ -269,6 +269,29 @@
             return $permissoes;
         }
 
+        public function getEvents() {
+            $query = "SELECT id, title, color, start, end FROM events";
+            $result = $this->db->query($query)->fetchAll();
+            $eventos = [];
+            foreach($result as $r) {
+                $id = $r['id'];
+                $title = $r['title'];
+                $color = $r['color'];
+                $start = $r['start'];
+                $end = $r['end'];
+                
+                $eventos[] = [
+                    'id' => $id,
+                    'title' => $title,
+                    'color' => $color,
+                    'start' => $start,
+                    'end' => $end
+                ];
+            }
+
+            return $eventos;
+        }
+
 
     }
 
