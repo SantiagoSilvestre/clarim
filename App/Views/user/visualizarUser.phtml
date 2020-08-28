@@ -56,6 +56,11 @@ if(isset($_SESSION)) {
                     </dd>
                     <dt class="col-sm-3">Perfil</dt>
                     <dd class="col-sm-9"><?= $user->__get('perfil') ?></dd>
+
+                    <?php if ($user->__get('time') != ''){ ?>
+                        <dt class="col-sm-3">Meu Time</dt>
+                        <dd class="col-sm-9"><?= $user->__get('time') ?></dd>
+                    <?php } ?>
                 </dl> 
             </div>
         </div>

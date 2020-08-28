@@ -11,6 +11,7 @@
         private $senha = '12345678';
         private $primeiroAcesso;
         private $perfil;
+        private $time;
 
         public function __get($atributo) {
             return $this->$atributo;
@@ -21,12 +22,16 @@
 
         //salvar
         public function salvar() {
-            $query = "INSERT INTO usuario(nome, email, id_perfil) 
-                      VALUES (:nome, :email, :perfil) ";
+            if ( $this->__get('time') == 0) {
+                $id_time = NULL;
+            }
+            $query = "INSERT INTO usuario(nome, email, id_perfil, id_time) 
+                      VALUES (:nome, :email, :perfil, :timee) ";
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':nome', $this->__get('nome'));
             $stmt->bindValue(':email', $this->__get('email'));
             $stmt->bindValue(':perfil', $this->__get('perfil'));
+            $stmt->bindValue(':timee', $id_time);
             $stmt->execute();
             return $this;
         }
@@ -63,8 +68,9 @@
         }
 
         public function buscarPorId(){
-            $query = "SELECT u.*, p.nome as perfil FROM usuario u 
+            $query = "SELECT u.*, p.nome as perfil, t.time as nome_time FROM usuario u 
             INNER JOIN perfil p on u.id_perfil = p.id
+            LEFT JOIN time t on u.id_time = t.id
             where u.id = :id";
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':id', $this->__get('id'));
@@ -75,6 +81,8 @@
                 $this->__set('email', $u['email']);
                 $this->__set('primeiro_acesso', $u['primeiro_acesso']);
                 $this->__set('perfil', $u['perfil']);
+                $this->__set('time', $u['nome_time']);
+                
             } 
             return $this;
 
@@ -124,6 +132,14 @@
                 </button></div>";
             }
 
+            if($this->__get('time') == 0 && $this->__get('perfil') > 1) {
+                
+                $erros[] = "<div class='alert alert-danger'>Selecione um time para o usuário <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                <span aria-hidden='true'>&times;</span>
+            </button></div>";
+                $valido = false;
+            }
+
             if(strlen($this->__get('nome')) < 3 ) {
                 $erros[] = "<div class='alert alert-danger'>O nome de usuário está muito curto <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                 <span aria-hidden='true'>&times;</span>
@@ -164,12 +180,15 @@
                 $erros[] = "<div class='alert alert-danger'>Necessário preencher todos os campos obrigatórios <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                 <span aria-hidden='true'>&times;</span>
                 </button></div>";
+                $valido = false;
             }
 
-            if ($this->__get('perfil') == 0) {
-                $erros[] = "<div class='alert alert-danger'>Necessário selecionar um perfil <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+
+            if ($this->__get('time') == 0 && $this->__get('perfil') > 1 ) {
+                $erros[] = "<div class='alert alert-danger'>Necessário selecionar um time para o usuário <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                 <span aria-hidden='true'>&times;</span>
                 </button></div>";
+                $valido = false;
             }
  
             if(strlen($this->__get('nome')) < 3 ) {
@@ -198,12 +217,15 @@
         }
 
         public function atualizar() {
-            $query = "UPDATE usuario SET nome = :nome, email = :email, id_perfil = :perfil WHERE id = :id";
+            $tim = $this->__get('time');
+            $tim == 0 ? $tim = NULL : $tim = $this->__get('time');
+            $query = "UPDATE usuario SET nome = :nome, email = :email, id_perfil = :perfil, id_time = :timee WHERE id = :id";
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':id', $this->__get('id'));
             $stmt->bindValue(':nome', $this->__get('nome'));
             $stmt->bindValue(':email', $this->__get('email'));
             $stmt->bindValue(':perfil', $this->__get('perfil'));
+            $stmt->bindValue(':timee', $tim);
             $stmt->execute();
             $u = $stmt->fetch(\PDO::FETCH_ASSOC);
             return $this;

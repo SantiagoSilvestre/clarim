@@ -25,7 +25,7 @@ if(isset($_SESSION)) {
                 ?>
                 <form method="POST" action="/clarim/adm/proc_cad_user">
                     <div class="row">
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-8">
                             <span class="text-danger">* </span>
                             <label>
                                 Nome:
@@ -33,15 +33,6 @@ if(isset($_SESSION)) {
                             <input name="nome" type="text" class="form-control" 
                             value="<?php if(isset($_SESSION['dados']['nome'])) { echo $_SESSION['dados']['nome']; } ?>"
                             id="nome" placeholder="Nome do usuário" required>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <span class="text-danger">* </span>
-                            <label>
-                                E-mail:
-                            </label>
-                            <input name="email" type="email" class="form-control" 
-                            value="<?php if(isset($_SESSION['dados']['email'])) { echo $_SESSION['dados']['email']; } ?>"
-                            id="email" placeholder="Digite o e-mail do usuário" required>
                         </div>
                         <div class="form-group col-md-4">
                             <span class="text-danger">* </span>
@@ -65,6 +56,38 @@ if(isset($_SESSION)) {
                             </select>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="form-group col-md-8">
+                            <span class="text-danger">* </span>
+                            <label>
+                                E-mail:
+                            </label>
+                            <input name="email" type="email" class="form-control" 
+                            value="<?php if(isset($_SESSION['dados']['email'])) { echo $_SESSION['dados']['email']; } ?>"
+                            id="email" placeholder="Digite o e-mail do usuário" required>
+                        </div>
+                        <div class="form-group col-md-4" id="div-time">
+                            <span class="text-danger">* </span>
+                            <label>
+                                Time:
+                            </label>
+                            <select class="custom-select" name="time" id="time">
+                                <?php
+                                    $times = Container::getModel('Time');
+                                    $list_times = $times->listarTimesSemFiltro();
+                                    echo "<option value='0' selected>Selecione uma opção</option>";
+                                    foreach($list_times as $p){
+                                        if (isset($_SESSION['dados']['time']) && $_SESSION['dados']['time'] == $p['id']){
+                                            echo "<option value='".$p['id']."' selected >" .$p['time']. "</option>";
+                                        }else {
+                                            echo "<option value='".$p['id']."'>" .$p['time']. "</option>";
+                                        }
+                                        
+                                    }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
                     <p>
                         <span class="text-danger">* </span>Campo obrigatório
                     </p>
@@ -73,6 +96,19 @@ if(isset($_SESSION)) {
             </div>
         </div>
     </div>
+    <script>
+        if($("#perfil").val() == 0){ $("#div-time").css("display", 'none'); } 
+        $("#perfil").on('change', function () {
+            let adm = $("#perfil").val();
+            
+            if(adm > 1) {
+                $("#div-time").css("display", 'block'); 
+            } else {
+                $("#div-time").css("display", 'none');
+            }
+        });
+            
+    </script>
     <?php
      unset($_SESSION['dados']);    
     } else {

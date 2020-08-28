@@ -118,6 +118,7 @@
             $user->__set('nome', $_POST['nome']);
             $user->__set('email', $_POST['email']);
             $user->__set('perfil', $_POST['perfil']);
+            $user->__set('time', $_POST['time']);
             $retorno = $user->validarCadastro();
             if ($retorno['valido']) {
                 $user->salvar();
@@ -131,6 +132,7 @@
                 $_SESSION['dados']['nome'] = $user->__get('nome');
                 $_SESSION['dados']['email'] = $user->__get('email');
                 $_SESSION['dados']['perfil'] = $user->__get('perfil');
+                $_SESSION['dados']['time'] = $user->__get('time');
                 $_SESSION['erros'] = $retorno;
                 header('Location: /clarim/adm/cadastrar/cad_usuario');
             }
@@ -157,6 +159,7 @@
             $user->__set('email', $_POST['email']);
             $user->__set('id', $_POST['id']);
             $user->__set('perfil', $_POST['perfil']);
+            $user->__set('time', $_POST['time']);
             $retorno = $user->validarAtualizacao();
             if ($retorno['valido']) {
                 $user->atualizar();
@@ -170,6 +173,8 @@
                 $_SESSION['dados']['id'] = $user->__get('id');
                 $_SESSION['dados']['nome'] = $user->__get('nome');
                 $_SESSION['dados']['email'] = $user->__get('email');
+                $_SESSION['dados']['perfil'] = $user->__get('perfil');
+                $_SESSION['dados']['time'] = $user->__get('time');
                 $_SESSION['erros'] = $retorno;
                 header('Location: /clarim/adm/usuarios/edit_user');
             }

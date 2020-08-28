@@ -34,7 +34,7 @@ if(isset($_SESSION)) {
                         " hidden>
 
                     <div class="row">
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-8">
                             <span class="text-danger">* </span>
                             <label>
                                 Nome:
@@ -52,6 +52,30 @@ if(isset($_SESSION)) {
                         <div class="form-group col-md-4">
                             <span class="text-danger">* </span>
                             <label>
+                                Perfil:
+                            </label>
+                            <select class="custom-select" name="perfil" id="perfil">
+                                <?php
+                                    $perfis = Container::getModel('Usuario');
+                                    $list_perfis = $perfis->getPerfils();
+                                    foreach($list_perfis as $p){
+                                        if (isset($_SESSION['dados']['perfil']) && $_SESSION['dados']['perfil'] == $p['id']){
+                                            echo "<option value='".$p['id']."' selected >" .$p['nome']. "</option>";
+                                        } else if ($p['nome'] == $usuario->__get('perfil')) {
+                                            echo "<option value='".$p['id']."' selected>" .$p['nome']. "</option>";
+                                        } else {
+                                            echo "<option value='".$p['id']."'>" .$p['nome']. "</option>";
+                                        }
+                                        
+                                    }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-8">
+                            <span class="text-danger">* </span>
+                            <label>
                                 E-mail:
                             </label>
                             <input name="email" type="email" class="form-control" 
@@ -64,23 +88,23 @@ if(isset($_SESSION)) {
                             ?>"
                             id="email" placeholder="Digite o e-mail do usuário" required>
                         </div>
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-4" id="div-time">
                             <span class="text-danger">* </span>
                             <label>
-                                Perfil:
+                                Time:
                             </label>
-                            <select class="custom-select" name="perfil" id="perfil">
+                            <select class="custom-select" name="time" id="time">
                                 <?php
-                                    $perfis = Container::getModel('Usuario');
-                                    $list_perfis = $perfis->getPerfils();
+                                   $times = Container::getModel('Time');
+                                   $list_times = $times->listarTimesSemFiltro();
                                     echo "<option value='0' selected>Selecione uma opção</option>";
-                                    foreach($list_perfis as $p){
-                                        if (isset($_SESSION['dados']['perfil']) && $_SESSION['dados']['perfil'] == $p['id']){
-                                            echo "<option value='".$p['id']."' selected >" .$p['nome']. "</option>";
-                                        } else if ($p['nome'] == $usuario->__get('perfil')) {
-                                            echo "<option value='".$p['id']."' selected>" .$p['nome']. "</option>";
+                                    foreach($list_times as $p){
+                                        if (isset($_SESSION['dados']['time']) && $_SESSION['dados']['time'] == $p['id']){
+                                            echo "<option value='".$p['id']."' selected >" .$p['time']. "</option>";
+                                        } else if ($p['time'] == $usuario->__get('time')) {
+                                            echo "<option value='".$p['id']."' selected>" .$p['time']. "</option>";
                                         } else {
-                                            echo "<option value='".$p['id']."'>" .$p['nome']. "</option>";
+                                            echo "<option value='".$p['id']."'>" .$p['time']. "</option>";
                                         }
                                         
                                     }
@@ -96,6 +120,25 @@ if(isset($_SESSION)) {
             </div>
         </div>
     </div>
+    <script>
+        if($("#perfil").val() == 1) {
+            $("#div-time").css('display', 'none');
+            $("#time").val(0);
+        }else {
+            $("#div-time").css('display', 'block');
+        }
+        
+        $("#perfil").on('change', function() {
+            let id_perfil = $("#perfil").val();
+            if(id_perfil == 1) {
+                $("#div-time").css('display', 'none');
+                $("#time").val(0);
+            } else {
+                $("#div-time").css('display', 'block');
+            }
+        });
+        
+    </script>
     <?php
      unset($_SESSION['dados']);    
     } else {
