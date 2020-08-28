@@ -162,7 +162,6 @@
 
         public function jogo() 
         {   
-            session_start();
             $_SESSION['dados']['id'] = $_GET['id'];
             $camp = Container::getModel('Campeonato');
             $camp->__set('id', $_GET['id']);
