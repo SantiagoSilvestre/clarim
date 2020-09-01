@@ -47,7 +47,7 @@
 
         public function cadCampeonatos() 
         {
-            session_start();
+            
             $camp = Container::getModel('Campeonato');
             $camp->__set('nome', $_POST['nome']);
             $camp->__set('regulamento', $_POST['regulamento']);
@@ -101,7 +101,7 @@
 
         public function procCampeonato() 
         {
-            session_start();
+           
             $camp = Container::getModel('Campeonato');
             $camp->__set('id', $_POST['id']);
             $camp->__set('nome', $_POST['nome']);
@@ -125,7 +125,7 @@
 
         public function apagarCampeonato() 
         {
-            session_start();
+         
             $camp = Container::getModel('Campeonato');
             $camp->__set('id', $_GET['id']);
             $camp->apagar();
@@ -139,7 +139,7 @@
 
         public function finalizarCampeonato()
         {
-            session_start();
+            
             $camp = Container::getModel('Campeonato');
             $camp->__set('id', $_GET['id']);
             $result = $camp->validarFinalizacao();
@@ -320,7 +320,7 @@
         }
 
         public function timeCamp() {
-            session_start();
+            
             $idc = $_POST['idc'];
             $idt = $_POST['idt'];
             $camp = Container::getModel('Campeonato');
@@ -373,7 +373,7 @@
         }
 
         public function buscarTimesMataMata() {
-            session_start();
+           
             $id = null;
             if(isset($_GET['id_time'])) {
                 $id = $_GET['id_time'];
@@ -409,7 +409,7 @@
         }
 
         public function salvarJmata() {
-            session_start();
+            
             $jogos = $_POST['times'];
             $valido = true;
             $erros = [];
@@ -477,7 +477,7 @@
         }
 
         public function confrontoMata() {
-            session_start();
+           
             $_SESSION['dados']['id'] = $_GET['id'];
             $camp = Container::getModel('Campeonato');
             $camp->__set('id', $_GET['id']);
@@ -494,7 +494,7 @@
         }
 
         public function registrarJogoMata() {
-            session_start();
+            
             $camp = Container::getModel('Campeonato');
             $retorno = $camp->registrarJogoMata($_POST['id'], $_POST['resul'], $_POST['id_camp']);
             $_SESSION['msg'] = "<div class='alert alert-success'> O jogo foi registrado

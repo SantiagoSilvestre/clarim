@@ -238,7 +238,6 @@
             ORDER BY id_fase ASC ";
             return $this->db->query($query)->fetchAll();
         }
-
         
     }
 

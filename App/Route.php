@@ -390,6 +390,18 @@
                 'action' => 'eventos'
             );
 
+            $routes['cadEvent'] = array(
+                'route' => '/clarim/cadEventos',
+                'controller' => 'UserController',
+                'action' => 'cadEvent'
+            );
+
+            $routes['buscarHorarios'] = array(
+                'route' => '/clarim/buscarHorarios',
+                'controller' => 'UserController',
+                'action' => 'buscarHorarios'
+            );
+
             $this->setRoutes($routes);
         }
         

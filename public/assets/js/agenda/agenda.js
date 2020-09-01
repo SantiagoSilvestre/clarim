@@ -32,7 +32,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
       selectable: true,
       select: function(info) {
+
+        var dataEvent = info.start.toLocaleString();
+       
+        $.ajax({
+          type: "POST",
+          url: "/clarim/buscarHorarios",
+          data: {
+            'dataEvent': dataEvent
+          },
+          error: function error(data) {
+            console.log(data);
+        },
+          success: function (data) {
+              console.log(data);
+          }
+        });
+
         //alert('Ínicio do evento ' + info.start.toLocaleString());
+        $("#dataEvent").val(info.start.toLocaleString());
         $("#cadastrar").modal('show');
       },
 
@@ -44,4 +62,38 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     calendar.render();
+    
+    $("#cadEvent").on('click', function(event) {
+   
+        var title = $("#titulo").val();
+        let horario = $("#horario").val();
+        let time1 = $("#time1").val();
+        let time2 = $("#time2").val();
+        let dataEvent = $("#dataEvent").val();
+      event.preventDefault();
+      $.ajax({
+        type: "POST",
+        url: "/clarim/cadEventos",
+        data: {
+          'title': title,
+          'horario': horario,
+          'time1': time1,
+          'time2': time2,
+          'dataEvent': dataEvent
+        }, 
+        error: function error(data) {
+          console.log(data);
+      },
+        success: function (retorna) {
+            console.log(retorna);
+            if (retorna['sit']) {
+                $("#msg-cad").html(retorna['msg']);
+                //location.reload();
+            } else {
+                $("#msg-cad").html(retorna['msg']);
+            }
+        }
+      });
+    });
+      
   });

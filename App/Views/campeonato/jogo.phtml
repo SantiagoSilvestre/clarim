@@ -34,7 +34,8 @@ if(isset($_SESSION)) {
                     <div class="row">
                         <?php
                             $time = Container::getModel('Time');
-                            $times = $time->listarTodosTimes($_SESSION['dados']['id']);
+                            $id_camp = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+                            $times = $time->listarTodosTimes($id_camp);
                         ?>
                         <div class="container col-md-6">
                             <div class="row">

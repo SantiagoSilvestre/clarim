@@ -50,6 +50,8 @@
                 $this->__set('email', $u['email']);
                 $this->__set('primeiroAcesso', $u['primeiro_acesso']);
                 $this->__set('senha', $u['senha']);
+                $this->__set('perfil', $u['id_perfil']);
+                $this->__set('time', $u['id_time']);
             }
             return $this;
         }
@@ -281,7 +283,7 @@
             INNER JOIN permissao p on pf.id_permissao = p.id
             WHERE pf.id_perfil = :id";
             $stmt = $this->db->prepare($query);
-            $stmt->bindValue(':id', $this->__get('id'));
+            $stmt->bindValue(':id', $this->__get('perfil'));
             $stmt->execute();
             $u = $stmt->fetchAll(\PDO::FETCH_ASSOC);
             $permissoes['permissao'] = [];
@@ -291,21 +293,34 @@
             return $permissoes;
         }
 
+        public function getTime() {
+            $query = "SELECT t.time as time FROM usuario u
+            INNER JOIN time t ON u.id_time = t.id
+            WHERE u.id = ". $this->__get('id');
+            return $this->db->query($query)->fetchAll();
+        }
+
         public function getEvents() {
-            $query = "SELECT id, title, color, start, end FROM events";
+            $query = "SELECT id, title, time1, time2, id_horario, data, start, end FROM events";
             $result = $this->db->query($query)->fetchAll();
             $eventos = [];
             foreach($result as $r) {
                 $id = $r['id'];
                 $title = $r['title'];
-                $color = $r['color'];
+                $time1 = $r['time1'];
+                $time2 = $r['time2'];
+                $id_horario = $r['id_horario'];
+                $data = $r['data'];
                 $start = $r['start'];
                 $end = $r['end'];
                 
                 $eventos[] = [
                     'id' => $id,
                     'title' => $title,
-                    'color' => $color,
+                    'time1' => $time1,
+                    'time2' => $time2,
+                    'id_horario' => $id_horario,
+                    'data' => $data, 
                     'start' => $start,
                     'end' => $end
                 ];

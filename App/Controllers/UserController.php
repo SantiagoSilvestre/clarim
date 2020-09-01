@@ -98,6 +98,32 @@
             $this->render('agenda', 'head', 'menu_adm', 'body', 'footer');
         }
 
+        public function cadEvent(){
+                        
+            $retorna = ['sit' => true, 'msg' => "<div class='alert alert-success'> Evento Cadastrado  <button type='button' class='close' data-dismiss='alert' aria-label='Close'> <span aria-hidden='true'>&times;</span></button></div>"];
+            
+
+            $agenda = Container::getModel('Agenda');
+
+            $horarioStart = $agenda->getHorarioById($_POST['horario']);
+
+            $dt = $agenda->retornaDtString($_POST['dataEvent']);
+           
+            $start = $agenda->retornaStart($_POST['dataEvent'], $horarioStart);
+            $end = $agenda->retornaEnd($_POST['dataEvent'], $horarioStart);
+            $agenda->__set('title', $_POST['title']);
+            $agenda->__set('time1', $_POST['time1']);
+            $agenda->__set('time2', $_POST['time2']);
+            $agenda->__set('horario', $_POST['horario']);
+            $agenda->__set('data', $dt);
+            $agenda->__set('start', $start);
+            $agenda->__set('end', $end);
+            $agenda->salvar();
+            header('Content-Type: application/json');
+            echo json_encode($retorna);
+           
+        }
+
         public function eventos() {
             $usuario = Container::getModel('Usuario');
             $eventos = $usuario->getEvents();
@@ -263,6 +289,13 @@
                 header('Location: /clarim/adm/login');
             }
 
+        }
+
+        public function buscarHorarios() {
+            $agenda = Container::getModel('Agenda');
+            $data_final = $agenda->getStringDt($_POST['dataEvent']) ;
+            $result = $agenda->getHorariosDisp($data_final) ;
+            echo json_encode($result);
         }
 
     }
