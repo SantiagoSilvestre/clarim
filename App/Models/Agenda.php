@@ -41,6 +41,24 @@
             return $this;
         }
 
+        public function update() {
+            try {
+                $query = "UPDATE events SET title = :title, time1 = :time1, time2 =:time2, gol1 = :gol1, gol2 = :gol2 WHERE id = :id";
+                $stmt = $this->db->prepare($query);
+                $stmt->bindValue(':title', $this->__get('title'));
+                $stmt->bindValue(':time1', $this->__get('time1'));
+                $stmt->bindValue(':time2', $this->__get('time2'));
+                $stmt->bindValue(':gol1', $this->__get('gol1'));
+                $stmt->bindValue(':gol2', $this->__get('gol2'));
+                $stmt->bindValue(':id', $this->__get('id'));
+                $stmt->execute();
+                return $this;
+            } catch( Exception $e) {
+                throw $e;
+                return false;
+            }
+        }
+
         public function retornaDtString($var) {
 
             $string = $this->getStringDt($var);
@@ -111,9 +129,14 @@
             foreach ($result as $r) {
                 $notHour[] = $r['id'];
             }
-            $notHora = implode(",",$notHour);
-            $query = " select * from horarios where id not in ($notHora) ";
-            $todosHoraios = $this->db->query($query)->fetchAll();
+            if(count($notHour) == 0) {
+                $query = " select * from horarios";
+                $todosHoraios = $this->db->query($query)->fetchAll();
+            }else {
+                $notHora = implode(",",$notHour);
+                $query = " select * from horarios where id not in ($notHora) ";
+                $todosHoraios = $this->db->query($query)->fetchAll();
+            }            
             return $todosHoraios;
         }
 

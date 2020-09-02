@@ -402,6 +402,12 @@
                 'action' => 'buscarHorarios'
             );
 
+            $routes['salvarEventos'] = array(
+                'route' => '/clarim/salvaEventos',
+                'controller' => 'UserController',
+                'action' => 'salvarEventos'
+            );
+
             $this->setRoutes($routes);
         }
         

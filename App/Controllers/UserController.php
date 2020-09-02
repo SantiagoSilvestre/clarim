@@ -298,6 +298,27 @@
             echo json_encode($result);
         }
 
+        public function salvarEventos() {
+
+            $retorna = ['sit' => true, 'msg' => "<div class='alert alert-success'> Evento Atualizado com sucesso!  <button type='button' class='close' data-dismiss='alert' aria-label='Close'> <span aria-hidden='true'>&times;</span></button></div>"];
+
+            $agenda = Container::getModel('Agenda');
+
+            $agenda->__set('title', $_POST['title']);
+            $agenda->__set('gol1', $_POST['gol1'] == "" ? 0 : $_POST['gol1']);
+            $agenda->__set('gol2', $_POST['gol2'] == "" ? 0 : $_POST['gol2']);
+            $agenda->__set('time1', $_POST['time1']);
+            $agenda->__set('time2', $_POST['time2']);
+            $agenda->__set('id', $_POST['id']);
+            $result = $agenda->update();
+
+            if(!$result) {
+                $retorna = ['sit' => false, 'msg' => "<div class='alert alert-danger'> Falha ao atualizar o evento <button type='button' class='close' data-dismiss='alert' aria-label='Close'> <span aria-hidden='true'>&times;</span></button></div>"];
+            }
+            header('Content-Type: application/json');
+            echo json_encode($retorna);
+        }
+
     }
 
 ?>

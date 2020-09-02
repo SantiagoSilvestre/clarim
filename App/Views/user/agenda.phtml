@@ -19,19 +19,53 @@ use MF\Model\Container;
           </button>
         </div>
         <div class="modal-body">
-          <dl class="row">
-            <dt class="col-sm-3">ID do evento</dt>
-            <dd class="col-sm-9" id="id"></dd>
-            <dt class="col-sm-3">Título</dt>
-            <dd class="col-sm-9" id="title"></dd>
-            <dt class="col-sm-3">Ínicio</dt>
-            <dd class="col-sm-9" id="start"></dd>
-            <dt class="col-sm-3">Fim</dt>
-            <dd class="col-sm-9" id="end"></dd>
-          </dl>
+        <span id="msg-salv"></span>
+          <div class="form-group">
+            <div class="form-group">
+              <input type="text" value="" id="id" name="id" hidden>
+              <section class="row">
+                <label class="font-weight-bold col-sm-3" for="title">Título: </label>
+                <input type="text" id="title" class="form-control col-sm-5" name="title" readonly>
+                <span class="col-sm-1"></span>
+                <input type="text" id="dataEdit" class="form-control col-sm-2" name="dataEdit" readonly>
+              </section>
+            </div>
+            <div class="form-group">
+              <section class="row">
+                <label class="font-weight-bold col-sm-3" for="mtime1">Time 1: </label>
+                <input type="text" id="mtime1" class="form-control col-sm-4" name="mtime1" readonly>
+                <label class="font-weight-bold col-sm-2" for="gol1">Gol 1: </label>
+                <input type="number" min="0" id="gol1" class="form-control col-sm-2" name="gol1" readonly>
+              </section>
+            </div>
+            <div class="form-group">
+              <section class="row">
+                <label class="font-weight-bold col-sm-3" for="mtime2">Time 2: </label>
+                <input type="text" id="mtime2" class="form-control col-sm-4" name="mtime2" readonly>
+                <label class="font-weight-bold col-sm-2" for="gol2">Gol 2: </label>
+                <input type="number" min="0" id="gol2" class="form-control col-sm-2" name="gol2" readonly>
+              </section>
+            </div>
+            <div class="form-group">
+              <section class="row">
+                <label class="font-weight-bold col-sm-3" for="start">Ínicio </label>
+                <input type="text" id="start" class="form-control col-sm-3" name="start" readonly>
+                <label class="font-weight-bold col-sm-2" for="end">Fim: </label>
+                <input type="text" id="end" class="form-control col-sm-3" name="end" readonly>
+              </section>
+            </div>
+          </div>
+        </div>
+         <!--Implementar permissões para deixar visivel só para administrador-->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" id="editEvent" value="editEvent" class="btn btn-warning">Editar</button>
+            <button type="button" id="salvarEvent" value="salvarEvent" class="btn btn-success">Salvar</button>
+          </div>
         </div>
       </div>
-    </div>
+     
+    
   </div>
 
   <!-- Modal -->
@@ -56,18 +90,6 @@ use MF\Model\Container;
               <div class="col">
                 <label for="horario">Horários disponíveis</label>
                 <select  class="custom-select" id="horario" name="horario">
-                <option value='0'> Selecione um horário disponível</option>
-                <?php
-                /*
-                  $horario = Container::getModel('Time');
-                  $horarios = $horario->getHorariosDisp();
-                  foreach($horarios as $h) {
-                    echo "<option value='{$h['id']}'> {$h['horario']}</option> ";
-                    ?>
-                    <?php
-                  }
-                  */
-                ?>
                 </select>
               </div>
             </div>

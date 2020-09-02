@@ -14,19 +14,27 @@ document.addEventListener('DOMContentLoaded', function() {
       // THIS KEY WON'T WORK IN PRODUCTION!!!
       // To make your own Google API key, follow the directions here:
       // http://fullcalendar.io/docs/google_calendar/
-      googleCalendarApiKey: 'AIzaSyDcnW6WejpTOCffshGDDb4neIrXVUA1EAE',
+      //googleCalendarApiKey: 'AIzaSyDcnW6WejpTOCffshGDDb4neIrXVUA1EAE',
 
       // US Holidays
       events: '/clarim/eventos',
-      //events: 'en.usa#holiday@group.v.calendar.google.com',
 
       eventClick: function(info) {
         info.jsEvent.preventDefault();
-
-        $('#visualizar #id').text(info.event.id);
-        $('#visualizar #title').text(info.event.title);
-        $('#visualizar #start').text(info.event.start.toLocaleString());
-        $('#visualizar #end').text(info.event.end.toLocaleString());
+        $("#salvarEvent").prop('disabled', true);
+        var data = info.event.extendedProps.data;
+        var stringData  = retornaDataFormat(data);
+        let hstart = getHorario(info.event.start.toLocaleString());
+        let hend = getHorario(info.event.end.toLocaleString());
+        $("#id").val(info.event.id);
+        $('#title').val(info.event.title);
+        $('#dataEdit').val(stringData);
+        $('#mtime1').val(info.event.extendedProps.time1);
+        $('#gol1').val(info.event.extendedProps.gol1);
+        $('#mtime2').val(info.event.extendedProps.time2);
+        $('#gol2').val(info.event.extendedProps.gol2);
+        $("#start").val(hstart);
+        $("#end").val(hend);
         $('#visualizar').modal('show');
       },
 
@@ -45,7 +53,11 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log(data);
         },
           success: function (data) {
-              console.log(data);
+            $("#horario").empty();
+            var horarios = JSON.parse(data);
+            horarios.forEach(element => {
+              $("#horario").append('<option value='+element.id+'>'+element.horario+'</option>');   
+            });
           }
         });
 
@@ -85,7 +97,6 @@ document.addEventListener('DOMContentLoaded', function() {
           console.log(data);
       },
         success: function (retorna) {
-            console.log(retorna);
             if (retorna['sit']) {
                 $("#msg-cad").html(retorna['msg']);
                 //location.reload();
@@ -95,5 +106,72 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       });
     });
+
+    $("#editEvent").on('click', function(event) {
+      event.preventDefault();
+      $("#title").removeAttr('readonly', 'readonly');
+      $("#mtime1").removeAttr('readonly', 'readonly');
+      $("#mtime2").removeAttr('readonly', 'readonly');
+      $("#gol1").removeAttr('readonly', 'readonly');
+      $("#gol2").removeAttr('readonly', 'readonly');
+      $("#salvarEvent").prop('disabled', false);
+    });
+
+    $("#salvarEvent").on('click', function(event) {
+      var title = $("#title").val();
+      let time1 = $("#mtime1").val();
+      let time2 = $("#mtime2").val();
+      let gol1 = $("#gol1").val();
+      let gol2 = $("#gol2").val();
+      let id = $("#id").val();
+    event.preventDefault();
+    $.ajax({
+      type: "POST",
+      url: "/clarim/salvaEventos",
+      data: {
+        'title': title,
+        'gol1': gol1,
+        'time1': time1,
+        'time2': time2,
+        'gol2': gol2,
+        'id' : id
+      }, 
+      error: function error(data) {
+        console.log(data);
+    },
+      success: function (retorna) {
+
+          
+          if (retorna['sit']) {
+              $("#msg-salv").html(retorna['msg']);
+              //location.reload();
+          } else {
+              $("#msg-salv").html(retorna['msg']);
+          }
+          
+      }
+    });
+    });
       
   });
+
+  function retornaDataFormat(data) {
+    var arrayData =  data.split(" ");
+    var dataSepara = arrayData[0].split("-");
+    let cont = dataSepara.length;
+    var string = "";
+    while (cont > 0) {
+      if(string.length == 0) {
+        string = dataSepara[cont -1];
+      } else {
+        string = string +"/"+dataSepara[cont -1];
+      }
+      cont --;
+    }
+    return string;
+  }
+
+  function getHorario(horario) {
+    let array_hora = horario.split(" ");
+    return array_hora[1];
+  }

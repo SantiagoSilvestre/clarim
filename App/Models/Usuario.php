@@ -301,7 +301,7 @@
         }
 
         public function getEvents() {
-            $query = "SELECT id, title, time1, time2, id_horario, data, start, end FROM events";
+            $query = "SELECT id, title, time1, time2, id_horario, data, start, end, gol1, gol2 FROM events";
             $result = $this->db->query($query)->fetchAll();
             $eventos = [];
             foreach($result as $r) {
@@ -317,12 +317,16 @@
                 $eventos[] = [
                     'id' => $id,
                     'title' => $title,
-                    'time1' => $time1,
-                    'time2' => $time2,
-                    'id_horario' => $id_horario,
-                    'data' => $data, 
                     'start' => $start,
-                    'end' => $end
+                    'end' => $end,
+                    'extendedProps' => [
+                        'time1' => $time1,
+                        'time2' => $time2,
+                        'id_horario' => $id_horario,
+                        'data' => $data,
+                        'gol1' => $r['gol1'],
+                        'gol2' => $r['gol2']
+                    ]  
                 ];
             }
 
