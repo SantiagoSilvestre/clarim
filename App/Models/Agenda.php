@@ -140,6 +140,22 @@
             return $todosHoraios;
         }
 
+        public function getTotalJogos() {
+            $query = "select count(id) as qtd from events";
+            return $this->db->query($query)->fetchAll();
+        }
+
+        public function listarAgendas($inicio, $qnt_result_pg) {
+            $query = "SELECT * FROM events ORDER BY data desc LIMIT $inicio, $qnt_result_pg ";
+            return $this->db->query($query)->fetchAll();
+        }
+
+        public function buscarPorId() {
+            $query = "SELECT e.* FROM events e
+                    WHERE e.id = '".$this->__get('id')."' ";
+            return $this->db->query($query)->fetchAll();
+        }
+
     }
 
 ?>

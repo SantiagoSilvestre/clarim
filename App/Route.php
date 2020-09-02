@@ -408,6 +408,19 @@
                 'action' => 'salvarEventos'
             );
 
+            $routes['listarAgenda'] = array(
+                'route' => '/clarim/adm/jogos',
+                'controller' => 'AgendaController',
+                'action' => 'listarAgenda'
+            );
+
+            $routes['visAgenda'] = array(
+                'route' => '/clarim/adm/visAgenda',
+                'controller' => 'AgendaController',
+                'action' => 'visAgenda'
+            );
+
+
             $this->setRoutes($routes);
         }
         
