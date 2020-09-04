@@ -85,9 +85,9 @@ if(isset($_SESSION)) {
                                     <label>
                                         Gols:
                                     </label>
-                                    <input name="gol1" type="number" class="form-control" 
+                                    <input name="gol1" type="number" min="0" class="form-control" 
                                     value="<?php if(isset($_SESSION['dados']['gol1'])) { echo $_SESSION['dados']['gol1']; } ?>"
-                                    id="gol1" placeholder="qtd Gol" >
+                                    id="gol1" placeholder="qtd Gol" requided >
                                 </div>
                             </div>
                         </div>
@@ -98,7 +98,7 @@ if(isset($_SESSION)) {
                                     <label>
                                         Gols:
                                     </label>
-                                    <input name="gol2" type="number" class="form-control" 
+                                    <input name="gol2" type="number" min="0" class="form-control" 
                                     value="<?php if(isset($_SESSION['dados']['gol2'])) { echo $_SESSION['dados']['gol2']; } ?>"
                                     id="gol2" placeholder="qtd Gol" required>
                                 </div>

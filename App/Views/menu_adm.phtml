@@ -23,7 +23,10 @@
     <nav class="sidebar">
         <ul class="list-unstyled">
             <?php
-                session_start();
+                if(!isset($_SESSION)) 
+                { 
+                    session_start(); 
+                } 
                 if(isset($_SESSION['logado'])) { 
                     if (in_array("dashboard", $_SESSION['permissoes']['permissao'])) { 
                         ?>

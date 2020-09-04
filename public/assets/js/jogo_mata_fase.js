@@ -36,8 +36,10 @@ $(document).ready(function () {
         var resultado;
         if(gol1 > gol2) {
             resultado = time1;
-        } else {
+        } else if (gol2 > gol1) {
             resultado = time2;
+        } else {
+            resultado = 0;
         }
         $.ajax({
             type: 'POST',
@@ -50,10 +52,11 @@ $(document).ready(function () {
                //window.location.href = "/adm/campeonatos";
             },
             success: function success(data) {
-                console.log(data);
                if(data == 1) {
                 window.location.href = "/clarim/adm/campeonatos";
-               } 
+               } else if (data == 0) {
+                window.location.href = "/clarim/adm/campaonato/jogo?id="+camp;
+               }
             },
             dataType: 'json'
         });

@@ -9,7 +9,7 @@
     // os Models
     class CampeonatoController extends Action 
     {
-        
+     
         public function campeonato() 
         {
             $camp = Container::getModel('Campeonato');
@@ -33,6 +33,7 @@
 
         public function visualizarCampeonato() 
         {
+            
             $campeonato = Container::getModel('Campeonato');
             $campeonato->__set('id', $_GET['id']);
             $camp = $campeonato->buscarPorId();
@@ -47,7 +48,7 @@
 
         public function cadCampeonatos() 
         {
-            
+            session_start();            
             $camp = Container::getModel('Campeonato');
             $camp->__set('nome', $_POST['nome']);
             $camp->__set('regulamento', $_POST['regulamento']);
@@ -86,6 +87,10 @@
 
         public function editCampeonato() 
         {
+            if(!isset($_SESSION)) 
+                { 
+                    session_start(); 
+                } 
             $id = null;
             if(isset($_SESSION['dados']['id'])) {
                 $id = $_SESSION['dados']['id'];
@@ -101,7 +106,7 @@
 
         public function procCampeonato() 
         {
-           
+            session_start();           
             $camp = Container::getModel('Campeonato');
             $camp->__set('id', $_POST['id']);
             $camp->__set('nome', $_POST['nome']);
@@ -125,7 +130,7 @@
 
         public function apagarCampeonato() 
         {
-         
+            session_start();
             $camp = Container::getModel('Campeonato');
             $camp->__set('id', $_GET['id']);
             $camp->apagar();
@@ -139,7 +144,7 @@
 
         public function finalizarCampeonato()
         {
-            
+            session_start();
             $camp = Container::getModel('Campeonato');
             $camp->__set('id', $_GET['id']);
             $result = $camp->validarFinalizacao();
@@ -162,6 +167,7 @@
 
         public function jogo() 
         {   
+            session_start();
             $_SESSION['dados']['id'] = $_GET['id'];
             $camp = Container::getModel('Campeonato');
             $camp->__set('id', $_GET['id']);
@@ -320,7 +326,7 @@
         }
 
         public function timeCamp() {
-            
+            session_start();
             $idc = $_POST['idc'];
             $idt = $_POST['idt'];
             $camp = Container::getModel('Campeonato');
@@ -373,7 +379,7 @@
         }
 
         public function buscarTimesMataMata() {
-           
+            session_start();
             $id = null;
             if(isset($_GET['id_time'])) {
                 $id = $_GET['id_time'];
@@ -390,6 +396,10 @@
                 echo json_encode($times);
             }
             if(isset($_GET['id_cam'])) {
+                if(!isset($_SESSION)) 
+                { 
+                    session_start(); 
+                } 
                 $idc = $_GET['id_cam'];
                 $time = Container::getModel('Time');
                 $cam = Container::getModel('Campeonato');
@@ -397,7 +407,24 @@
                 $retorno = $cam->verificarQtdTimes();
                 if($retorno) {
                     $times = $time->listarTodosTimes($idc);
-                    echo json_encode($times);
+                    if( (count($times) > 0) && (count($times) % 2) == 0 ) {
+                        echo json_encode($times);
+                    } else if((count($times) % 2) == 1  ) {
+                        $_SESSION['msg'] = "<div class='alert alert-danger'> Os jogos da última fase ainda não finalizaram
+                        <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                        <span aria-hidden='true'>&times;</span>
+                        </button></div>";
+                        $retorno = null;
+                        echo json_encode($retorno);
+                    } else  {
+                        $_SESSION['msg'] = "<div class='alert alert-danger'> Os jogos para essa fase ainda não finalizaram
+                        <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                        <span aria-hidden='true'>&times;</span>
+                        </button></div>";
+                        $retorno = null;
+                        echo json_encode($retorno);
+                    }
+                    
                 } else {
                     $_SESSION['msg'] = "<div class='alert alert-danger'> O campeonato ainda não atigiu a quantidade de times nessa fase
                     <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
@@ -409,7 +436,10 @@
         }
 
         public function salvarJmata() {
-            
+            if(!isset($_SESSION)) 
+                { 
+                    session_start(); 
+                } 
             $jogos = $_POST['times'];
             $valido = true;
             $erros = [];
@@ -477,12 +507,15 @@
         }
 
         public function confrontoMata() {
-           
+            if(!isset($_SESSION)) 
+            { 
+                session_start(); 
+            } 
             $_SESSION['dados']['id'] = $_GET['id'];
             $camp = Container::getModel('Campeonato');
             $camp->__set('id', $_GET['id']);
             $campeonato = $camp->buscarPorId();
-            
+           
             if ($campeonato->__get('estilo') == 1 ) {
                 $this->render('jogo_mata', 'head', 'menu_adm', 'body', 'footer');
             }
@@ -494,14 +527,26 @@
         }
 
         public function registrarJogoMata() {
-            
-            $camp = Container::getModel('Campeonato');
-            $retorno = $camp->registrarJogoMata($_POST['id'], $_POST['resul'], $_POST['id_camp']);
-            $_SESSION['msg'] = "<div class='alert alert-success'> O jogo foi registrado
-                    <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-                    <span aria-hidden='true'>&times;</span>
-                    </button></div>";
-            echo json_encode(1);
+            if(!isset($_SESSION)) 
+                { 
+                    session_start(); 
+                } 
+            if ($_POST['resul'] == 0) {
+                $_SESSION['msg'] = "<div class='alert alert-danger'> Os marcadores não podem ficar iguais
+                <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                <span aria-hidden='true'>&times;</span>
+                </button></div>";
+                echo json_encode(0);
+            } else {
+                $camp = Container::getModel('Campeonato');
+                $retorno = $camp->registrarJogoMata($_POST['id'], $_POST['resul'], $_POST['id_camp']);
+                $_SESSION['msg'] = "<div class='alert alert-success'> O jogo foi registrado
+                        <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                        <span aria-hidden='true'>&times;</span>
+                        </button></div>";
+                echo json_encode(1);
+            }
+           
         }
 
         public function listarUltimas() {

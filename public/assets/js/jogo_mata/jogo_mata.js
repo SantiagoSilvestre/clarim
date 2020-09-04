@@ -1,5 +1,9 @@
 $(document).ready(function () {
 
+    $( function() {
+        $( "#datepicker" ).datepicker();
+      } );
+
     idc = $("#id_cam").val();
     contador = $("#contador").val();
     fase = $("#fase").val();
@@ -66,3 +70,5 @@ function montaArray(idc, fase) {
 
     return times;
 }
+
+
