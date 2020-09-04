@@ -1,3 +1,91 @@
-<?php 
+<?php
 
-echo "olá mundo";
+use MF\Model\Container;
+
+if(isset($_SESSION)) {
+    if($_SESSION['logado']) {
+        $usuario = $this->view->dados;
+    ?>
+<div class="d-flex">
+        <div class="content p-1">
+            <div class="list-group-item">
+                <div class="d-flex">
+                
+                    <div class="mr-auto p-2">
+                        <h2 class="display-4 titulo">Detalhes do Usuário</h2>
+                    </div>
+                </div>
+                <hr>
+                <dl class="row">
+                    <dt class="col-sm-3">ID</dt>
+                    <dd class="col-sm-9"><?= $usuario->__get('id') ?></dd>
+
+                    <dt class="col-sm-3">Nome</dt>
+                    <dd class="col-sm-9">
+                        <?php                         
+                            echo $usuario->__get('nome');
+                        ?></dd>
+
+                    <dt class="col-sm-3">E-mail</dt>
+                    <dd class="col-sm-9"> <?=$usuario->__get('email') ?></dd>
+        
+                    <dt class="col-sm-3">Perfil</dt>
+                    <dd class="col-sm-9"><?= $usuario->__get('perfil') ?></dd>
+
+                    <dt class="col-sm-3">Meu Time</dt>
+                    <dd class="col-sm-9"><?= $usuario->__get('time') ?></dd>
+                    
+                </dl> 
+            </div>
+        </div>
+    </div>
+    <?php 
+        $time = Container::getModel('Time');
+        $times = $time->listarTimesSemFiltro();
+    ?>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="cadTime" tabindex="-1" role="dialog" aria-labelledby="regulamentoLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="regulamentoLabel">Cadastrar Novo Time</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                <form method="POST" action="/clarim/adm/campaonato/time">
+                    <input type="text" id="idc" name="idc" value="<?=$usuario->__get('id')?>" hidden>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                    <label>
+                                        Time:
+                                    </label>
+                                    
+                                    <select class="custom-select" name="idt" id="inputGroupSelect01">
+                                        <option selected>Selecione o time</option>
+                                        <?php
+                                            
+                                            foreach($times as $t) {
+                                              echo "<option value='".$t['id']."'>".$t['time']."</option>";
+                                            }
+                                        ?>
+                                </select>
+                            </div>
+                        </div>
+                        <input name="SendCadTime" id="SendCadTime"  type="submit" class="btn btn-success" value="Registrar"></input>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+            
+
+<?php
+    } else {
+        header('Location: /clarim/adm/login');
+    }
+} else {
+    header('Location: /clarim/adm/login');
+}

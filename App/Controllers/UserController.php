@@ -241,6 +241,9 @@
         }
 
         public function perfil() {
+            $user = Container::getModel('Usuario');
+            $user->__set('id', $_GET['id'] );
+            $this->view->dados = $user->buscarPorId();
             $this->render('perfil', 'head', 'menu_adm', 'body', 'footer');
         }
 
