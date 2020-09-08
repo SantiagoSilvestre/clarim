@@ -57,10 +57,12 @@ document.addEventListener('DOMContentLoaded', function() {
             var horarios = JSON.parse(data);
             if(horarios.length > 0) {
               horarios.forEach(element => {
-                $("#horario").append('<option value='+element.id+'>'+element.horario+'</option>');   
+                $("#horario").append('<option value='+element.id+'>'+element.horario+'</option>'); 
+                $("#cadEvent").prop('disabled', false);  
               });
             } else {
                 $("#horario").append("<option value='0'>Nenhum horário disponível</option>");
+                $("#cadEvent").prop('disabled', true);
             }
           }
         });
@@ -101,6 +103,8 @@ document.addEventListener('DOMContentLoaded', function() {
           console.log(data);
       },
         success: function (retorna) {
+            console.log(retorna);
+
             if (retorna['sit']) {
                 $("#msg-cad").html(retorna['msg']);
                 //location.reload();
@@ -109,13 +113,17 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             $("#horario").empty();
             var horarios = retorna['horarios'];
+            
             if(horarios.length > 0) {
               horarios.forEach(element => {
                 $("#horario").append('<option value='+element.id+'>'+element.horario+'</option>');   
+                $("#cadEvent").prop('disabled', false);
               });
             } else {
                 $("#horario").append("<option value='0'>Nenhum horário disponível</option>");
+                $("#cadEvent").prop('disabled', true);
             }
+            
         }
       });
     });

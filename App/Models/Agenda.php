@@ -17,6 +17,7 @@
         private $horario;
         private $start;
         private $end;
+        private $user_check;
 
         public function __get($atributo) {
             return $this->$atributo;
@@ -28,8 +29,8 @@
 
         public function salvar(){
             try{
-                $query = "INSERT INTO events(title, time1, time2, id_horario, data, start, end) 
-                VALUES (:title, :time1, :time2, :horario, :data, :start, :end)";
+                $query = "INSERT INTO events(id_user_check, title, time1, time2, id_horario, data, start, end) 
+                VALUES (:id_user, :title, :time1, :time2, :horario, :data, :start, :end)";
                 $stmt = $this->db->prepare($query);
                 $stmt->bindValue(':title', $this->__get('title'));
                 $stmt->bindValue(':time1', $this->__get('time1'));
@@ -38,6 +39,7 @@
                 $stmt->bindValue(':horario', $this->__get('horario'));
                 $stmt->bindValue(':start', $this->__get('start'));
                 $stmt->bindValue(':end', $this->__get('end'));
+                $stmt->bindValue(':id_user', $this->__get('user_check'));
                 $valida = $stmt->execute();
             } catch(Exception $e) {
                 throw  $e;
@@ -159,6 +161,24 @@
             $query = "SELECT e.* FROM events e
                     WHERE e.id = '".$this->__get('id')."' ";
             return $this->db->query($query)->fetchAll();
+        }
+
+        public function validarDados($id_horario, $data, $id_user) {
+            $id_horario = (int) $id_horario;
+            
+            
+            $dt = $this->retornaDtString($data) ;
+            $dt = new DateTime($dt);
+            $dt->modify('-1 day');
+            $dt = $dt->format('Y-m-d');
+            $query = "SELECT id_horario, data, id_user_check 
+                      FROM events 
+                      WHERE id_horario = $id_horario and id_user_check = $id_user and data = '$dt' and id_user_check > 1 ";
+            $result = $this->db->query($query)->fetchAll();
+            if (count($result) > 0 ) {
+                return false;
+            }
+            return true;
         }
 
     }

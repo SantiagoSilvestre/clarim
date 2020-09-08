@@ -79,7 +79,7 @@
         }
 
         public function buscarPorId(){
-            $query = "SELECT u.*, p.nome as perfil, t.time as nome_time FROM usuario u 
+            $query = "SELECT u.*, p.nome as perfil, t.time as nome_time, creditos FROM usuario u 
             INNER JOIN perfil p on u.id_perfil = p.id
             LEFT JOIN time t on u.id_time = t.id
             where u.id = :id";
@@ -93,6 +93,7 @@
                 $this->__set('primeiro_acesso', $u['primeiro_acesso']);
                 $this->__set('perfil', $u['perfil']);
                 $this->__set('time', $u['nome_time']);
+                $this->__set('creditos', $u['creditos']);
                 
             } 
             return $this;
@@ -229,14 +230,19 @@
 
         public function atualizar() {
             $tim = $this->__get('time');
-            $tim == 0 ? $tim = NULL : $tim = $this->__get('time');
-            $query = "UPDATE usuario SET nome = :nome, email = :email, id_perfil = :perfil, id_time = :timee WHERE id = :id";
+            $cred =  $this->__get('creditos');
+            if ($tim == 0 ) {
+                $tim = NULL;
+                $cred = NULL;
+            } 
+            $query = "UPDATE usuario SET nome = :nome, email = :email, id_perfil = :perfil, id_time = :timee, creditos = :creditos WHERE id = :id";
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':id', $this->__get('id'));
             $stmt->bindValue(':nome', $this->__get('nome'));
             $stmt->bindValue(':email', $this->__get('email'));
             $stmt->bindValue(':perfil', $this->__get('perfil'));
             $stmt->bindValue(':timee', $tim);
+            $stmt->bindValue(':creditos', $cred);
             $stmt->execute();
             $u = $stmt->fetch(\PDO::FETCH_ASSOC);
             return $this;
@@ -340,6 +346,25 @@
             }
 
             return $eventos;
+        }
+
+        public function getCreditos() {
+            $query = "SELECT creditos FROM usuario where id = :id AND id_perfil != 1 ";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':id', $this->__get('id'));
+            $stmt->execute();
+            $u = $stmt->fetch(\PDO::FETCH_ASSOC);
+            return $u;
+        }
+
+        public function atualizarCreditos($creditos) {
+            $query = "UPDATE usuario SET creditos = :creditos WHERE id = :id";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':creditos', $creditos);
+            $stmt->bindValue(':id', $this->__get('id'));
+            $stmt->execute();
+            $u = $stmt->fetch(\PDO::FETCH_ASSOC);
+            return $this;
         }
 
 

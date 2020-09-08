@@ -17,9 +17,6 @@ if(isset($_SESSION)) {
                 </div>
                 <hr>
                 <dl class="row">
-                    <dt class="col-sm-3">ID</dt>
-                    <dd class="col-sm-9"><?= $usuario->__get('id') ?></dd>
-
                     <dt class="col-sm-3">Nome</dt>
                     <dd class="col-sm-9">
                         <?php                         
@@ -34,6 +31,9 @@ if(isset($_SESSION)) {
 
                     <dt class="col-sm-3">Meu Time</dt>
                     <dd class="col-sm-9"><?= $usuario->__get('time') ?></dd>
+
+                    <dt class="col-sm-3">Créditos Restantes</dt>
+                    <dd class="col-sm-9"><?= $usuario->__get('creditos') ?></dd>
                     
                 </dl> 
             </div>

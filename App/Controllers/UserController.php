@@ -65,8 +65,13 @@
                 $_SESSION['nome'] = $user->__get('nome') ;
                 $_SESSION['logado'] = true;
                 $_SESSION['permissoes'] = $permissoes;
+
+
                 if ($user->__get('primeiroAcesso') == 0) {
                     header('Location: /clarim/adm/trocarSenha');
+                } else if ($user->__get('perfil') > 1) {
+                    $id = $user->__get('id');
+                    $this->perfil($id);
                 } else {
                     header('Location: /clarim/adm/home');
                 }
@@ -99,9 +104,34 @@
             $this->render('agenda', 'head', 'menu_adm', 'body', 'footer');
         }
 
-        public function cadEvent(){            
-
+        public function cadEvent(){    
+            
+            session_start();
+            header('Content-Type: application/json');
+            $user = Container::getModel('Usuario');
             $agenda = Container::getModel('Agenda');
+
+            $data_final = $agenda->getStringDt($_POST['dataEvent']) ;
+            $resultado = $agenda->getHorariosDisp($data_final) ;
+            $user->__set('id', $_SESSION['id']);
+           
+            $user_result = $user->getCreditos();
+            
+            if ($user_result['creditos'] != "") {
+                if ($user_result['creditos'] == 0 ) {           
+                    $retorna = [ 
+                        'sit' => false, 
+                        'msg' => "<div class='alert alert-danger'> Usuário sem créditos disponíveis  <button type='button' class='close' data-dismiss='alert' aria-label='Close'> <span aria-hidden='true'>&times;</span></button></div>",
+                        'horarios' => $resultado
+                    ];
+                    echo json_encode($retorna);
+                    die();
+                } else {
+                    $creditos = $user_result['creditos'] - 1 ;
+                    $user->atualizarCreditos($creditos);
+                }
+                
+            }
 
             $horarioStart = $agenda->getHorarioById($_POST['horario']);
             
@@ -117,9 +147,21 @@
             $agenda->__set('data', $dt);
             $agenda->__set('start', $start);
             $agenda->__set('end', $end);
+            $agenda->__set('user_check', $_SESSION['id']);
+           
+            if (!$agenda->validarDados($_POST['horario'], $dt ,$_SESSION['id'])) {
+                $retorna = [ 
+                    'sit' => false, 
+                    'msg' => "<div class='alert alert-danger'> Usuário não pode marcar jogos no mesmo horários em dias seguidos  <button type='button' class='close' data-dismiss='alert' aria-label='Close'> <span aria-hidden='true'>&times;</span></button></div>",
+                    'horarios' => $resultado
+                ];
+                echo json_encode($retorna);
+                die();
+            }
+            
+
             $result = $agenda->salvar();
             
-            $data_final = $agenda->getStringDt($_POST['dataEvent']) ;
             $resultado = $agenda->getHorariosDisp($data_final) ;
             
             $retorna = [ 
@@ -131,7 +173,7 @@
                 $retorna = ['sit' => true, 'msg' => "<div class='alert alert-danger'> Evento Não pode ser cadastrado  <button type='button' class='close' data-dismiss='alert' aria-label='Close'> <span aria-hidden='true'>&times;</span></button></div>"];
             }
             
-            header('Content-Type: application/json');
+            
             echo json_encode($retorna);
            
         }
@@ -173,6 +215,7 @@
                 $_SESSION['dados']['email'] = $user->__get('email');
                 $_SESSION['dados']['perfil'] = $user->__get('perfil');
                 $_SESSION['dados']['time'] = $user->__get('time');
+                $_SESSION['dados']['creditos'] = $user->__get('creditos');
                 $_SESSION['erros'] = $retorno;
                 header('Location: /clarim/adm/cadastrar/cad_usuario');
             }
@@ -200,6 +243,7 @@
             $user->__set('id', $_POST['id']);
             $user->__set('perfil', $_POST['perfil']);
             $user->__set('time', $_POST['time']);
+            $user->__set('creditos', $_POST['creditos']);
             $retorno = $user->validarAtualizacao();
             if ($retorno['valido']) {
                 $user->atualizar();
@@ -215,6 +259,7 @@
                 $_SESSION['dados']['email'] = $user->__get('email');
                 $_SESSION['dados']['perfil'] = $user->__get('perfil');
                 $_SESSION['dados']['time'] = $user->__get('time');
+                $_SESSION['dados']['creditos'] = $user->__get('creditos');
                 $_SESSION['erros'] = $retorno;
                 header('Location: /clarim/adm/usuarios/edit_user');
             }
@@ -254,9 +299,13 @@
             $this->render('trocarSenha', 'head', 'menu_login' ,'body', 'footer_login');
         }
 
-        public function perfil() {
+        public function perfil($id = NULL) {
             $user = Container::getModel('Usuario');
-            $user->__set('id', $_GET['id'] );
+            if($id == null) {
+                $user->__set('id', $_GET['id'] );
+            } else {
+                $user->__set('id', $id);
+            }
             $this->view->dados = $user->buscarPorId();
             $this->render('perfil', 'head', 'menu_adm', 'body', 'footer');
         }
