@@ -50,15 +50,16 @@
 
 
         public function valida(){
+            
             $senha = $_POST['senha'];
             $senha = $senha == '12345678' ? $senha : md5($senha);
             $user = Container::getModel('Usuario');
             $user->__set('email', $_POST['usuario']);
             $user->__set('senha', $senha);
             $user->acessar(); 
+            
             if ( $user->__get('id') && $user->__get('nome')) {
                 $permissoes = $user->getPermissoes();
-
                 session_start();
                 $_SESSION['id'] = $user->__get('id');
                 $_SESSION['nome'] = $user->__get('nome') ;
@@ -98,14 +99,12 @@
             $this->render('agenda', 'head', 'menu_adm', 'body', 'footer');
         }
 
-        public function cadEvent(){
-                        
-            $retorna = ['sit' => true, 'msg' => "<div class='alert alert-success'> Evento Cadastrado  <button type='button' class='close' data-dismiss='alert' aria-label='Close'> <span aria-hidden='true'>&times;</span></button></div>"];
-            
+        public function cadEvent(){            
 
             $agenda = Container::getModel('Agenda');
 
             $horarioStart = $agenda->getHorarioById($_POST['horario']);
+            
 
             $dt = $agenda->retornaDtString($_POST['dataEvent']);
            
@@ -118,7 +117,20 @@
             $agenda->__set('data', $dt);
             $agenda->__set('start', $start);
             $agenda->__set('end', $end);
-            $agenda->salvar();
+            $result = $agenda->salvar();
+            
+            $data_final = $agenda->getStringDt($_POST['dataEvent']) ;
+            $resultado = $agenda->getHorariosDisp($data_final) ;
+            
+            $retorna = [ 
+                'sit' => true, 
+                'msg' => "<div class='alert alert-success'> Evento Cadastrado  <button type='button' class='close' data-dismiss='alert' aria-label='Close'> <span aria-hidden='true'>&times;</span></button></div>",
+                'horarios' => $resultado
+            ];
+            if(!$result) {
+                $retorna = ['sit' => true, 'msg' => "<div class='alert alert-danger'> Evento Não pode ser cadastrado  <button type='button' class='close' data-dismiss='alert' aria-label='Close'> <span aria-hidden='true'>&times;</span></button></div>"];
+            }
+            
             header('Content-Type: application/json');
             echo json_encode($retorna);
            
@@ -145,6 +157,8 @@
             $user->__set('email', $_POST['email']);
             $user->__set('perfil', $_POST['perfil']);
             $user->__set('time', $_POST['time']);
+            $user->__set('creditos', $_POST['creditos'] == "" ? 0 : $_POST['creditos']);
+            
             $retorno = $user->validarCadastro();
             if ($retorno['valido']) {
                 $user->salvar();

@@ -12,6 +12,7 @@
         private $primeiroAcesso;
         private $perfil;
         private $time;
+        private $creditos;
 
         public function __get($atributo) {
             return $this->$atributo;
@@ -24,14 +25,22 @@
         public function salvar() {
             if ( $this->__get('time') == 0) {
                 $id_time = NULL;
+            } else {
+                $id_time = $this->__get('time');
             }
-            $query = "INSERT INTO usuario(nome, email, id_perfil, id_time) 
-                      VALUES (:nome, :email, :perfil, :timee) ";
+            if ( $this->__get('creditos') == 0) {
+                $cred = NULL;
+            } else {
+                $cred = $this->__get('creditos');
+            }
+            $query = "INSERT INTO usuario(nome, email, id_perfil, id_time, creditos) 
+                      VALUES (:nome, :email, :perfil, :timee, :creditos) ";
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':nome', $this->__get('nome'));
             $stmt->bindValue(':email', $this->__get('email'));
             $stmt->bindValue(':perfil', $this->__get('perfil'));
             $stmt->bindValue(':timee', $id_time);
+            $stmt->bindValue(':creditos', $cred);
             $stmt->execute();
             return $this;
         }
@@ -278,7 +287,7 @@
         }
 
         public function getPermissoes() {
-            $query = "SELECT p.nome as permissao 
+            $query = "SELECT p.descricao as permissao 
             FROM perfil_permissao pf
             INNER JOIN permissao p on pf.id_permissao = p.id
             WHERE pf.id_perfil = :id";
@@ -301,7 +310,7 @@
         }
 
         public function getEvents() {
-            $query = "SELECT id, title, time1, time2, id_horario, data, start, end, gol1, gol2 FROM events";
+            $query = "SELECT id, title, time1, time2, id_horario, data, start, end, gol_time1, gol_time2 FROM events";
             $result = $this->db->query($query)->fetchAll();
             $eventos = [];
             foreach($result as $r) {
@@ -324,8 +333,8 @@
                         'time2' => $time2,
                         'id_horario' => $id_horario,
                         'data' => $data,
-                        'gol1' => $r['gol1'],
-                        'gol2' => $r['gol2']
+                        'gol1' => $r['gol_time1'],
+                        'gol2' => $r['gol_time2']
                     ]  
                 ];
             }

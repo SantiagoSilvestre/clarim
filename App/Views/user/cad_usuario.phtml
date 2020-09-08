@@ -57,7 +57,7 @@ if(isset($_SESSION)) {
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group col-md-8">
+                        <div class="form-group col-md-7">
                             <span class="text-danger">* </span>
                             <label>
                                 E-mail:
@@ -66,7 +66,16 @@ if(isset($_SESSION)) {
                             value="<?php if(isset($_SESSION['dados']['email'])) { echo $_SESSION['dados']['email']; } ?>"
                             id="email" placeholder="Digite o e-mail do usuário" required>
                         </div>
-                        <div class="form-group col-md-4" id="div-time">
+                        <div class="form-group col-md-2">
+                            <span class="text-danger">* </span>
+                            <label>
+                                Créditos:
+                            </label>
+                            <input name="creditos" type="number" min="0" class="form-control" 
+                            value="<?php if(isset($_SESSION['dados']['creditos'])) { echo $_SESSION['dados']['creditos']; } ?>"
+                            id="creditos" placeholder="num Jogos" required>
+                        </div>
+                        <div class="form-group col-md-3" id="div-time">
                             <span class="text-danger">* </span>
                             <label>
                                 Time:
@@ -97,14 +106,21 @@ if(isset($_SESSION)) {
         </div>
     </div>
     <script>
-        if($("#perfil").val() == 0){ $("#div-time").css("display", 'none'); } 
+        //if($("#perfil").val() == 0){ $("#div-time").css("display", 'none'); } 
+        $("#time").prop('disabled',true);
+        $("#creditos").prop('readonly', 'readonly');
+        
         $("#perfil").on('change', function () {
             let adm = $("#perfil").val();
             
             if(adm > 1) {
-                $("#div-time").css("display", 'block'); 
+                $("#time").prop('disabled',false);
+                $("#creditos").removeAttr('readonly', 'readonly');
             } else {
-                $("#div-time").css("display", 'none');
+                $("#time").prop('disabled',true);
+                $("#time").val(0);
+                $("#creditos").val(0);
+                $("#creditos").prop('readonly', 'readonly');
             }
         });
             

@@ -27,23 +27,28 @@
         }
 
         public function salvar(){
-            $query = "INSERT INTO events(title, time1, time2, data, id_horario, start, end) 
-                VALUES (:title, :time1, :time2, :data, :horario, :start, :end)";
-            $stmt = $this->db->prepare($query);
-            $stmt->bindValue(':title', $this->__get('title'));
-            $stmt->bindValue(':time1', $this->__get('time1'));
-            $stmt->bindValue(':time2', $this->__get('time2'));
-            $stmt->bindValue(':data', $this->__get('data'));
-            $stmt->bindValue(':horario', $this->__get('horario'));
-            $stmt->bindValue(':start', $this->__get('start'));
-            $stmt->bindValue(':end', $this->__get('end'));
-            $stmt->execute();
-            return $this;
+            try{
+                $query = "INSERT INTO events(title, time1, time2, id_horario, data, start, end) 
+                VALUES (:title, :time1, :time2, :horario, :data, :start, :end)";
+                $stmt = $this->db->prepare($query);
+                $stmt->bindValue(':title', $this->__get('title'));
+                $stmt->bindValue(':time1', $this->__get('time1'));
+                $stmt->bindValue(':time2', $this->__get('time2'));
+                $stmt->bindValue(':data', $this->__get('data'));
+                $stmt->bindValue(':horario', $this->__get('horario'));
+                $stmt->bindValue(':start', $this->__get('start'));
+                $stmt->bindValue(':end', $this->__get('end'));
+                $valida = $stmt->execute();
+            } catch(Exception $e) {
+                throw  $e;
+            }
+            
+            return $valida;
         }
 
         public function update() {
             try {
-                $query = "UPDATE events SET title = :title, time1 = :time1, time2 =:time2, gol1 = :gol1, gol2 = :gol2 WHERE id = :id";
+                $query = "UPDATE events SET title = :title, time1 = :time1, time2 =:time2, gol_time1 = :gol1, gol_time2 = :gol2 WHERE id = :id";
                 $stmt = $this->db->prepare($query);
                 $stmt->bindValue(':title', $this->__get('title'));
                 $stmt->bindValue(':time1', $this->__get('time1'));

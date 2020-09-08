@@ -55,9 +55,13 @@ document.addEventListener('DOMContentLoaded', function() {
           success: function (data) {
             $("#horario").empty();
             var horarios = JSON.parse(data);
-            horarios.forEach(element => {
-              $("#horario").append('<option value='+element.id+'>'+element.horario+'</option>');   
-            });
+            if(horarios.length > 0) {
+              horarios.forEach(element => {
+                $("#horario").append('<option value='+element.id+'>'+element.horario+'</option>');   
+              });
+            } else {
+                $("#horario").append("<option value='0'>Nenhum horário disponível</option>");
+            }
           }
         });
 
@@ -102,6 +106,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 //location.reload();
             } else {
                 $("#msg-cad").html(retorna['msg']);
+            }
+            $("#horario").empty();
+            var horarios = retorna['horarios'];
+            if(horarios.length > 0) {
+              horarios.forEach(element => {
+                $("#horario").append('<option value='+element.id+'>'+element.horario+'</option>');   
+              });
+            } else {
+                $("#horario").append("<option value='0'>Nenhum horário disponível</option>");
             }
         }
       });
