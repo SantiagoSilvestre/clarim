@@ -420,6 +420,12 @@
                 'action' => 'visAgenda'
             );
 
+            $routes['apagarAgenda'] = array(
+                'route' => '/clarim/adm/apagar_agenda',
+                'controller' => 'AgendaController',
+                'action' => 'apagarAgenda'
+            );
+
             $routes['listCampFin'] = array(
                 'route' => '/clarim/adm/campeonatos_fin',
                 'controller' => 'CampeonatoController',

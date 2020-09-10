@@ -79,12 +79,22 @@ use MF\Controller\Action;
             session_start();
             $time = Container::getModel('Time');
             $time->__set('id', $_GET['id']);
-            $time->apagar();
-            $_SESSION['msg'] = "<div class='alert alert-success'> Time apagado com sucesso!
-            <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-           <span aria-hidden='true'>&times;</span>
-           </button></div>";
-           header('Location: /clarim/adm/times');
+            $result = $time->validarApagar();
+            if ($result) {
+                $time->apagar();
+                $_SESSION['msg'] = "<div class='alert alert-success'> Time apagado com sucesso!
+                <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+               <span aria-hidden='true'>&times;</span>
+               </button></div>";
+               header('Location: /clarim/adm/times');
+            } else {
+                $_SESSION['msg'] = "<div class='alert alert-danger'> O time ainda pertence a um campeonato!
+                <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+               <span aria-hidden='true'>&times;</span>
+               </button></div>";
+               header('Location: /clarim/adm/times');
+            }
+            
         }
 
         public function procEdiTimes()

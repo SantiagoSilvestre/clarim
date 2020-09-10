@@ -42,6 +42,36 @@
             return $this;
         }
 
+        public function validarApagar() {
+            $query = "SELECT *  FROM cam_ativo WHERE id_time = :id";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':id', $this->__get('id'));
+            $stmt->execute();
+            $t = $stmt->fetch(\PDO::FETCH_ASSOC);
+            if($t != NULL) {
+                return false;
+            }
+            $query = "SELECT *  FROM jogo_mata WHERE id_time1 = :id or id_time2 = :id";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':id', $this->__get('id'));
+            $stmt->execute();
+            $ti = $stmt->fetch(\PDO::FETCH_ASSOC);
+            if($ti != null) {
+                return false;
+            }
+
+            $query = "SELECT *  FROM usuario WHERE id_time = :id";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':id', $this->__get('id'));
+            $stmt->execute();
+            $tim = $stmt->fetch(\PDO::FETCH_ASSOC);
+            if($tim != NULL) {
+                return false;
+            }
+
+            return true;
+        }
+
         public function listarTimes($inicio, $qtd) {
             $query = "SELECT * FROM time ORDER BY time LIMIT $inicio, $qtd ";
             return $this->db->query($query)->fetchAll();

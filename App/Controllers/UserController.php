@@ -284,12 +284,23 @@
             session_start();
             $user = Container::getModel('Usuario');
             $user->__set('id', $_GET['id']);
-            $user->apagar();
-            $_SESSION['msg'] = "<div class='alert alert-success'> Usuário Deletado com sucesso!
+            $result = $user->validarDel();
+            if($result) {
+                $user->apagar();
+                $_SESSION['msg'] = "<div class='alert alert-success'> Usuário Deletado com sucesso!
                  <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                 <span aria-hidden='true'>&times;</span>
                 </button></div>";
-            header('Location: /clarim/adm/usuarios');
+                header('Location: /clarim/adm/usuarios');
+            } else {
+                $_SESSION['msg'] = "<div class='alert alert-danger'> Existe jogos por esse usuário
+                 <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                <span aria-hidden='true'>&times;</span>
+                </button></div>";
+                header('Location: /clarim/adm/usuarios');
+            }
+            
+            
         }
 
         public function trocarSenha() {

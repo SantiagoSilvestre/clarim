@@ -272,6 +272,19 @@
             return $this;
         }
 
+        public function validarDel() {
+            $query = "SELECT *  FROM events WHERE id_user_check = :id";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':id', $this->__get('id'));
+            $stmt->execute();
+            $u = $stmt->fetch(\PDO::FETCH_ASSOC);
+            if($u != NULL) {
+                return false;
+            }else {
+                return true;
+            }
+        }
+
         public function getPerfils() {
             $query = "SELECT * FROM perfil";
             return $this->db->query($query)->fetchAll();
