@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 08, 2020 at 11:24 PM
+-- Generation Time: Sep 10, 2020 at 11:23 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.2.33
 
@@ -237,7 +237,11 @@ INSERT INTO `perfil_permissao` (`id`, `id_perfil`, `id_permissao`) VALUES
 (6, 1, 6),
 (7, 1, 7),
 (8, 1, 8),
-(9, 2, 2);
+(9, 2, 2),
+(10, 1, 9),
+(11, 2, 3),
+(12, 1, 10),
+(13, 2, 4);
 
 -- --------------------------------------------------------
 
@@ -262,7 +266,9 @@ INSERT INTO `permissao` (`id`, `descricao`) VALUES
 (5, 'list_mensagens'),
 (6, 'list_times'),
 (7, 'list_usuario'),
-(8, 'list_video');
+(8, 'list_video'),
+(9, 'list_camp_finalizado'),
+(10, 'acoes');
 
 -- --------------------------------------------------------
 
@@ -452,13 +458,13 @@ ALTER TABLE `videos`
 -- AUTO_INCREMENT for table `campeonato`
 --
 ALTER TABLE `campeonato`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `campeonato_finalizado`
 --
 ALTER TABLE `campeonato_finalizado`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `cam_ativo`
@@ -470,13 +476,13 @@ ALTER TABLE `cam_ativo`
 -- AUTO_INCREMENT for table `contato`
 --
 ALTER TABLE `contato`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `events`
 --
 ALTER TABLE `events`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT for table `fases`
@@ -494,13 +500,13 @@ ALTER TABLE `horarios`
 -- AUTO_INCREMENT for table `jogos`
 --
 ALTER TABLE `jogos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `jogo_mata`
 --
 ALTER TABLE `jogo_mata`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `perfil`
@@ -512,13 +518,13 @@ ALTER TABLE `perfil`
 -- AUTO_INCREMENT for table `perfil_permissao`
 --
 ALTER TABLE `perfil_permissao`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `permissao`
 --
 ALTER TABLE `permissao`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `solicitacao_senha`
@@ -530,19 +536,19 @@ ALTER TABLE `solicitacao_senha`
 -- AUTO_INCREMENT for table `time`
 --
 ALTER TABLE `time`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `videos`
 --
 ALTER TABLE `videos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
