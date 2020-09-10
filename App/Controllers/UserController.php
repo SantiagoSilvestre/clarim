@@ -68,6 +68,7 @@
                 $_SESSION['nome'] = $user->__get('nome') ;
                 $_SESSION['logado'] = true;
                 $_SESSION['permissoes'] = $permissoes;
+                $_SESSION['perfil'] = $user->__get('perfil') ;
 
 
                 if ($user->__get('primeiroAcesso') == 0) {
@@ -96,6 +97,7 @@
             unset($_SESSION['nome']);
             unset($_SESSION['logado']);
             unset($_SESSION['permissoes']);
+            unset($_SESSION['perfil']);
             header('Location: /clarim/adm/login');
         }
 

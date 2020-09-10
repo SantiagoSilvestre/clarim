@@ -34,9 +34,12 @@ if(isset($_SESSION)) {
                     $inicio = ($qnt_result_pg * $pagina) - $qnt_result_pg;
 
                     $agenda = Container::getModel('Agenda');
-
-                    $lista_agenda = $agenda->listarAgendas($inicio, $qnt_result_pg);
-                    
+                    $lista_agenda = null;
+                    if ($_SESSION['perfil'] == 1 ) {
+                        $lista_agenda = $agenda->listarAgendas($inicio, $qnt_result_pg);
+                    } else {
+                        $lista_agenda = $agenda->listarAgenP($inicio, $qnt_result_pg, $_SESSION['id']);
+                    }
                     if (($lista_agenda) && (count($lista_agenda) != 0)) {
                         ?>
                         <div class="table-responsive">

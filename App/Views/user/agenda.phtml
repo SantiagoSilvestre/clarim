@@ -55,12 +55,17 @@ use MF\Model\Container;
             </div>
           </div>
         </div>
-         <!--Implementar permissões para deixar visivel só para administrador-->
+        <?php
+        if (in_array("acoes", $_SESSION['permissoes']['permissao'])) { 
+            ?>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             <button type="button" id="editEvent" value="editEvent" class="btn btn-warning">Editar</button>
             <button type="button" id="salvarEvent" value="salvarEvent" class="btn btn-success">Salvar</button>
           </div>
+          <?php
+        }
+        ?>
         </div>
       </div>
      

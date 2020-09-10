@@ -59,6 +59,18 @@ use MF\Model\Model;
             return $this->db->query($query)->fetchAll();
         }
 
+        public function listarCampFiltro($inicio, $qnt_result_pg, $id_user) {
+            $query = "SELECT id_time FROM usuario WHERE id = '".$id_user."'";
+            $u = $this->db->query($query)->fetchAll();
+
+            $query = "SELECT c.* FROM campeonato c 
+                    INNER JOIN cam_ativo ca on ca.id_campeonato = c.id  
+                    WHERE ca.id_time = '".$u[0]['id_time']."' and
+                    c.finalizado = 0 ORDER BY nome LIMIT $inicio, $qnt_result_pg ";
+                    
+            return $this->db->query($query)->fetchAll();
+        }
+
         public function listarCamFin($inicio, $qnt_result_pg) {
             $query = "SELECT * FROM campeonato WHERE finalizado = 1 ORDER BY nome LIMIT $inicio, $qnt_result_pg ";
             return $this->db->query($query)->fetchAll();

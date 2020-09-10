@@ -36,8 +36,12 @@ if(isset($_SESSION)) {
                     $inicio = ($qnt_result_pg * $pagina) - $qnt_result_pg;
 
                     $campeonato = Container::getModel('Campeonato');
-
-                    $lista_campeonato = $campeonato->listarCampeonatos($inicio, $qnt_result_pg);
+                    $lista_campeonato = null;
+                    if ($_SESSION['perfil'] == 1 ) {
+                        $lista_campeonato = $campeonato->listarCampeonatos($inicio, $qnt_result_pg);
+                    } else {
+                        $lista_campeonato = $campeonato->listarCampFiltro($inicio, $qnt_result_pg, $_SESSION['id'] );
+                    }
                     
                     if (($lista_campeonato) && (count($lista_campeonato) != 0)) {
                         ?>
@@ -48,7 +52,14 @@ if(isset($_SESSION)) {
                                         <th>ID</th>
                                         <th>Nome</th>
                                         <th>Estilo</th>
-                                        <th class="text-center">Ações</th>
+                                        <?php
+                                            if (in_array("acoes", $_SESSION['permissoes']['permissao'])) { 
+                                                ?>
+                                                <th class='text-center'>Ações</th>
+                                            <?php
+                                            }
+                                        ?>
+                                        
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -64,8 +75,10 @@ if(isset($_SESSION)) {
                                             </td>
                                             <td><?= $campeonato['estilo'] == 1 ? 'Mata-Mata' : 'Pontos Corridos' ?>
                                             </td>
-                                            
-                                            <td class="text-center">
+                                            <?php
+                                            if (in_array("acoes", $_SESSION['permissoes']['permissao'])) { 
+                                                ?>
+                                                <td class="text-center">
                                                 <span class="d-none d-md-block">
                                                     <a href="/clarim/adm/campaonato/jogo?id=<?=$campeonato['id']?>" class='btn btn-outline-success btn-sm'>Novo Jogo</a>
                                                     <a href="/clarim/adm/campeonato/finalizar_campeonato?id=<?=$campeonato['id']?>" class='btn btn-outline-secondary btn-sm'>Finalizar</a>
@@ -84,6 +97,10 @@ if(isset($_SESSION)) {
                                                     </div>
                                                 </div>
                                             </td>
+                                            <?php
+                                            }
+                                            ?>
+                                            
                                         </tr>
                                         <?php
                                     }

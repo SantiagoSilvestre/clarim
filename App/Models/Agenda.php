@@ -157,6 +157,12 @@
             return $this->db->query($query)->fetchAll();
         }
 
+        public function listarAgenP($inicio, $qnt_result_pg, $id_user) {
+            $query = "SELECT * FROM events where id_user_check = '".$id_user."' ORDER BY data desc LIMIT $inicio, $qnt_result_pg ";
+            return $this->db->query($query)->fetchAll();
+        }
+
+
         public function buscarPorId() {
             $query = "SELECT e.* FROM events e
                     WHERE e.id = '".$this->__get('id')."' ";
