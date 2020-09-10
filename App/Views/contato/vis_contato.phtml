@@ -1,5 +1,4 @@
 <?php
-session_start();
 if(isset($_SESSION)) {
     if($_SESSION['logado']) {
         $contato = $this->view->dados;
@@ -24,7 +23,7 @@ if(isset($_SESSION)) {
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="acoesListar">
                                 <a class="dropdown-item" href="/clarim/adm/contato">Listar</a>
                                 <a class="dropdown-item" href="/clarim/adm/contato/visualizarMensagem?id=<?=$contato->__get('id')?>"> Visualizar</a>
-                                <a class="dropdown-item" href="/clarim/adm/contato/responderMensagem?id=<?=$contato->__get('id')?>"> Visualizar</a>
+                                <a class="dropdown-item" href="/clarim/adm/contato/responderMensagem?id=<?=$contato->__get('id')?>"> Responder</a>
                             </div>
                         </div>
                     </div>

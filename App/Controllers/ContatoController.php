@@ -19,7 +19,6 @@
 
         public function salvarContato()
         {
-
             //receber dados do form
             $contato = Container::getModel('Contato');
             $contato->__set('nome', $_POST['nome']);
@@ -77,7 +76,7 @@
             <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
            <span aria-hidden='true'>&times;</span>
            </button></div>";
-           header('Location: /clarim/contato');
+           header('Location: /clarim/adm/contato');
         }
 
         
@@ -91,7 +90,7 @@
             <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
            <span aria-hidden='true'>&times;</span>
            </button></div>";
-           header('Location: /clarim/contato');
+           header('Location: /clarim/adm/contato');
         }
         
         

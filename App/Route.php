@@ -343,7 +343,7 @@
             );
 
             $routes['buscarJogosFase'] = array(
-                'route' => '/clarims/campeonato/ajax/buscaFase',
+                'route' => '/clarim/campeonato/ajax/buscaFase',
                 'controller' => 'CampeonatoController',
                 'action' => 'buscarJogosFase'
             );
@@ -372,6 +372,79 @@
                 'action' => 'listarSolicitacaoSenha'
             );
 
+            $routes['perfil'] = array(
+                'route' => '/clarim/perfil',
+                'controller' => 'UserController',
+                'action' => 'perfil'
+            );
+
+            $routes['agenda'] = array(
+                'route' => '/clarim/adm/agenda',
+                'controller' => 'UserController',
+                'action' => 'agenda'
+            );
+
+            $routes['agendaPublic'] = array(
+                'route' => '/clarim/adm/agendaPublic',
+                'controller' => 'UserController',
+                'action' => 'agendaPublic'
+            );
+
+            $routes['eventos'] = array(
+                'route' => '/clarim/eventos',
+                'controller' => 'UserController',
+                'action' => 'eventos'
+            );
+
+            $routes['cadEvent'] = array(
+                'route' => '/clarim/cadEventos',
+                'controller' => 'UserController',
+                'action' => 'cadEvent'
+            );
+
+            $routes['buscarHorarios'] = array(
+                'route' => '/clarim/buscarHorarios',
+                'controller' => 'UserController',
+                'action' => 'buscarHorarios'
+            );
+
+            $routes['salvarEventos'] = array(
+                'route' => '/clarim/salvaEventos',
+                'controller' => 'UserController',
+                'action' => 'salvarEventos'
+            );
+
+            $routes['listarAgenda'] = array(
+                'route' => '/clarim/adm/jogos',
+                'controller' => 'AgendaController',
+                'action' => 'listarAgenda'
+            );
+
+            $routes['visAgenda'] = array(
+                'route' => '/clarim/adm/visAgenda',
+                'controller' => 'AgendaController',
+                'action' => 'visAgenda'
+            );
+
+            $routes['apagarAgenda'] = array(
+                'route' => '/clarim/adm/apagar_agenda',
+                'controller' => 'AgendaController',
+                'action' => 'apagarAgenda'
+            );
+
+            $routes['listCampFin'] = array(
+                'route' => '/clarim/adm/campeonatos_fin',
+                'controller' => 'CampeonatoController',
+                'action' => 'listCampFin'
+            );
+
+            $routes['visualizarFin'] = array(
+                'route' => '/clarim/adm/campeonatos/visualizar_fin',
+                'controller' => 'CampeonatoController',
+                'action' => 'visualizarFin'
+            );
+
+            
             $this->setRoutes($routes);
         }
         

@@ -1,0 +1,63 @@
+<?php
+use MF\Model\Container;
+?>
+<link href='/clarim/public/assets/css/agenda/agenda.css' rel='stylesheet' />
+
+  <div id='loading'>loading...</div>
+
+  <div id='calendar'></div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="visualizar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Detalhes do evento</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+        <span id="msg-salv"></span>
+          <div class="form-group">
+            <div class="form-group">
+              <input type="text" value="" id="id" name="id" hidden>
+              <section class="row">
+                <label class="font-weight-bold col-sm-3" for="title">Título: </label>
+                <input type="text" id="title" class="form-control col-sm-5" name="title" readonly>
+                <span class="col-sm-1"></span>
+                <input type="text" id="dataEdit" class="form-control col-sm-2" name="dataEdit" readonly>
+              </section>
+            </div>
+            <div class="form-group">
+              <section class="row">
+                <label class="font-weight-bold col-sm-3" for="mtime1">Time 1: </label>
+                <input type="text" id="mtime1" class="form-control col-sm-4" name="mtime1" readonly>
+                <label class="font-weight-bold col-sm-2" for="gol1">Gol 1: </label>
+                <input type="number" min="0" id="gol1" class="form-control col-sm-2" name="gol1" readonly>
+              </section>
+            </div>
+            <div class="form-group">
+              <section class="row">
+                <label class="font-weight-bold col-sm-3" for="mtime2">Time 2: </label>
+                <input type="text" id="mtime2" class="form-control col-sm-4" name="mtime2" readonly>
+                <label class="font-weight-bold col-sm-2" for="gol2">Gol 2: </label>
+                <input type="number" min="0" id="gol2" class="form-control col-sm-2" name="gol2" readonly>
+              </section>
+            </div>
+            <div class="form-group">
+              <section class="row">
+                <label class="font-weight-bold col-sm-3" for="start">Ínicio </label>
+                <input type="text" id="start" class="form-control col-sm-3" name="start" readonly>
+                <label class="font-weight-bold col-sm-2" for="end">Fim: </label>
+                <input type="text" id="end" class="form-control col-sm-3" name="end" readonly>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+     
+    
+  </div>
+<script  src="/clarim/public/assets/js/agenda/agenda.js" ></script>
+

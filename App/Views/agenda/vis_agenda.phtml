@@ -1,0 +1,78 @@
+<?php
+if(isset($_SESSION)) {
+    if($_SESSION['logado']) {
+        $agenda = $this->view->dados[0];
+    ?>
+<div class="d-flex">
+        <div class="content p-1">
+            <div class="list-group-item">
+                <div class="d-flex">
+                    <div class="mr-auto p-2">
+                        <h2 class="display-4 titulo">Detalhes do Jogo</h2>
+                    </div>
+                    <div class="p-2">
+                        <span class="d-none d-md-block">
+                            <a class="btn btn-outline-info btn-sm" href="/clarim/adm/jogos"> Listar</a>
+                        </span>
+                        <div class="dropdown d-block d-md-none">
+                            <button class="btn btn-primary dropdown-toggle btn-sm" type="button" id="acoesListar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Ações
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="acoesListar">
+                                <a class="dropdown-item" href="/clarim/adm/jogos">Listar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <dl class="row">
+                    <dt class="col-sm-3">Título do evento</dt>
+                    <dd class="col-sm-9">
+                        <?php                         
+                            echo $agenda['title'];
+                        ?></dd>
+                    <dt class="col-sm-3">Data</dt>
+                    <dd class="col-sm-9"><?= date('d/m/Y', strtotime( $agenda['data'])) ?></dd>
+                    
+                    <div class="row col-12">
+                        <section class="col-sm-6">
+                            <dt class="col-sm-3">Time 1</dt>
+                            <dd class="col-sm-3"><?= $agenda['time1'] ?></dd>
+                        </section>
+                        <section class="col-sm-6">
+                            <dt class="col-sm-3">Gol time 1</dt>
+                            <dd class="col-sm-3"><?= $agenda['gol_time1'] ?></dd>
+                        </section>
+                    </div>
+                    <div class="row col-12">
+                        <section class="col-sm-6">
+                            <dt class="col-sm-3">Time 2</dt>
+                            <dd class="col-sm-3"><?= $agenda['time2'] ?></dd>
+                        </section>
+                        <section class="col-sm-6">
+                            <dt class="col-sm-3">Gol time 1</dt>
+                            <dd class="col-sm-3"><?= $agenda['gol_time2'] ?></dd>
+                        </section>
+                    </div>
+                    <div class="row col-12">
+                        <section class="col-sm-6">
+                            <dt class="col-sm-3">ínicio</dt>
+                            <dd class="col-sm-3"><?= date('H:s', strtotime( $agenda['start'])) ?></dd>
+                        </section>
+                        <section class="col-sm-6">
+                            <dt class="col-sm-3">Fim</dt>
+                            <dd class="col-sm-3"><?=  date('H:s', strtotime( $agenda['end'])) ?></dd>
+                        </section>
+                    </div>
+                </dl> 
+            </div>
+        </div>
+    </div>
+
+<?php
+    } else {
+        header('Location: /clarim/adm/login');
+    }
+} else {
+    header('Location: /clarim/adm/login');
+}

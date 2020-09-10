@@ -1,0 +1,87 @@
+<?php
+
+use MF\Model\Container;
+
+if(isset($_SESSION)) {
+    if($_SESSION['logado']) {
+        $campeonato = $this->view->dados;
+    ?>
+<div class="d-flex">
+        <div class="content p-1">
+            <div class="list-group-item">
+                <div class="d-flex">
+                
+                    <div class="mr-auto p-2">
+                        <h2 class="display-4 titulo">Detalhes do Campeonato</h2>
+                    </div>
+                   
+                    <div class="p-2">
+                        <span class="d-none d-md-block">
+                            <a class="btn btn-outline-info btn-sm" href="/clarim/adm/campeonatos_fin"> Listar</a>
+                            <a class="btn btn-outline-danger btn-sm" href="/clarim/adm/campeonato/apagar_campeonato?id=<?=$campeonato->__get('id')?>" data-confirm="Tem certeza que deseja excluir o item seleconado?" >Apagar</a>
+                        </span>
+                        <div class="dropdown d-block d-md-none">
+                            <button class="btn btn-primary dropdown-toggle btn-sm" type="button" id="acoesListar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Ações
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="acoesListar">
+                                <a class="dropdown-item" href="/clarim/adm/campeonatos_fins">Listar</a>
+                                <a class="dropdown-item" href="/clarim/adm/campeonato/apagar_campeonato?id=<?=$campeonato->__get('id')?>"  data-confirm="Tem certeza que deseja excluir o item seleconado?">Apagar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <?php
+                        if (isset($_SESSION['msg'])) {
+                            echo $_SESSION['msg'];
+                            unset($_SESSION['msg']);
+                        }
+                    ?>
+                <hr>
+                <dl class="row">
+                    <dt class="col-sm-3">ID</dt>
+                    <dd class="col-sm-9"><?= $campeonato->__get('id') ?></dd>
+
+                    <dt class="col-sm-3">Nome</dt>
+                    <dd class="col-sm-9">
+                        <?php                         
+                            echo $campeonato->__get('nome');
+                        ?></dd>
+
+                    <dt class="col-sm-3">Tipo</dt>
+                    <dd class="col-sm-9">
+                    <?php
+                    if($campeonato->__get('estilo') == 0 ) {
+                        echo 'Pontos Corridos'; 
+                    } else {
+                        echo  'Mata-Mata';
+                        echo '</dd>';
+                    }
+                    ?>
+                
+                    <dt class="col-sm-3">Regulamento</dt>
+                    <dd class="col-sm-9"><?= $campeonato->__get('regulamento') ?></dd>
+
+                    <dt class="col-sm-3">Ativo</dt>
+                    <dd class="col-sm-9"> 
+                    <?php 
+                        if ($campeonato->__get('finalizado') != 0 ) {
+                            echo "<span class='badge badge-pill badge-danger'> Inativo </span>"; 
+
+                        } else {
+                            echo "<span class='badge badge-pill badge-success'> Ativo</span>"; 
+                        }
+                    ?>
+                    </dd>
+                </dl> 
+            </div>
+        </div>
+    </div>
+<?php
+    } else {
+        header('Location: /clarim/adm/login');
+    }
+} else {
+    header('Location: /clarim/adm/login');
+}

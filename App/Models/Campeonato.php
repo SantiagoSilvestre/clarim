@@ -48,8 +48,31 @@ use MF\Model\Model;
             $query = "select count(id) as qtd from campeonato where finalizado = 0";
             return $this->db->query($query)->fetchAll();
         }
+
+        public function getTotCampFin() {
+            $query = "select count(id) as qtd from campeonato where finalizado = 1";
+            return $this->db->query($query)->fetchAll();
+        }
+
         public function listarCampeonatos($inicio, $qnt_result_pg) {
             $query = "SELECT * FROM campeonato WHERE finalizado = 0 ORDER BY nome LIMIT $inicio, $qnt_result_pg ";
+            return $this->db->query($query)->fetchAll();
+        }
+
+        public function listarCampFiltro($inicio, $qnt_result_pg, $id_user) {
+            $query = "SELECT id_time FROM usuario WHERE id = '".$id_user."'";
+            $u = $this->db->query($query)->fetchAll();
+
+            $query = "SELECT c.* FROM campeonato c 
+                    INNER JOIN cam_ativo ca on ca.id_campeonato = c.id  
+                    WHERE ca.id_time = '".$u[0]['id_time']."' and
+                    c.finalizado = 0 ORDER BY nome LIMIT $inicio, $qnt_result_pg ";
+                    
+            return $this->db->query($query)->fetchAll();
+        }
+
+        public function listarCamFin($inicio, $qnt_result_pg) {
+            $query = "SELECT * FROM campeonato WHERE finalizado = 1 ORDER BY nome LIMIT $inicio, $qnt_result_pg ";
             return $this->db->query($query)->fetchAll();
         }
 
@@ -69,7 +92,7 @@ use MF\Model\Model;
             $stmt->bindValue(':id', $this->__get('id'));
             $stmt->execute();
             $c = $stmt->fetch(\PDO::FETCH_ASSOC);
-            if($c['nome'] != '' && $c['finalizado'] == 0) {
+            if($c['nome'] != '') {
                 $this->__set('nome', $c['nome']);
                 $this->__set('finalizado', $c['finalizado']);
                 $this->__set('estilo', $c['estilo']);
@@ -243,6 +266,17 @@ use MF\Model\Model;
         }
 
         public function apagar() {
+            
+            $query = "DELETE FROM campeonato_finalizado WHERE id_campeonato = :id";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':id', $this->__get('id'));
+            $stmt->execute();
+
+            $query = "DELETE FROM jogo_mata WHERE id_campeonato = :id";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':id', $this->__get('id'));
+            $stmt->execute();
+
             $query = "DELETE FROM campeonato WHERE id = :id";
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':id', $this->__get('id'));
@@ -259,6 +293,14 @@ use MF\Model\Model;
                 $erros[] = "<div class='alert alert-danger'>Necessário preencher todos os campos obrigatórios <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                 <span aria-hidden='true'>&times;</span>
                 </button></div>";
+                $valido = false;
+            }
+
+            if($this->__get('estilo') == 1 && $this->__get('qtdtimes') == 0) {
+                $erros[] = "<div class='alert alert-danger'>Necessário preencher todos os campos obrigatórios <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                <span aria-hidden='true'>&times;</span>
+                </button></div>";
+                $valido = false;
             }
 
             if(strlen($this->__get('nome')) < 3 ) {
@@ -323,23 +365,44 @@ use MF\Model\Model;
         }
 
         public function finalizar() {
-            $query = "UPDATE campeonato set finalizado = 1 WHERE id = :id";
+
+            $query = "SELECT c.fase_inicial as faseInicial, j.id_fase, j.resultado as fase 
+            FROM campeonato c left join jogo_mata j on c.id = j.id_campeonato WHERE c.id = :id limit 1";
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':id', $this->__get('id'));
             $stmt->execute();
+            $u = $stmt->fetch((\PDO::FETCH_ASSOC));
+            if ($u['faseInicial'] != "" || ($u['fase'] != 5 && $u['resultado'] != '' ) ) {
+                return true;
+            }else {
+                $query = "UPDATE campeonato set finalizado = 1 WHERE id = :id";
+                $stmt = $this->db->prepare($query);
+                $stmt->bindValue(':id', $this->__get('id'));
+                $stmt->execute();
+    
+                $query = "SELECT id_time FROM cam_ativo where id_campeonato ='".$this->__get('id')."' 
+                ORDER BY pontuacao DESC, vitorias DESC, saldo_gol DESC, gol_pro DESC,
+                 gol_contra, derrotas, cartao_ver, cartao_amer  LIMIT 1";
+                $result = $this->db->query($query)->fetchAll();
+                $time = $result[0]['id_time'];
+    
+                $query = "INSERT INTO  campeonato_finalizado(id_campeonato, id_time_camp, data_finalizado)
+                VALUES ('".$this->__get('id')."', '".$time."', NOW())";
+                $stmt = $this->db->prepare($query);
+                $stmt->execute();
+    
+                $query = "DELETE FROM cam_ativo where id_campeonato = '".$this->__get('id')."' ";
+                $stmt = $this->db->prepare($query);
+                $stmt->execute();
 
-            $query = "SELECT id_time FROM cam_ativo where id_campeonato ='".$this->__get('id')."' 
-            ORDER BY pontuacao DESC, vitorias DESC, saldo_gol DESC, gol_pro DESC,
-             gol_contra, derrotas, cartao_ver, cartao_amer  LIMIT 1";
-            $result = $this->db->query($query)->fetchAll();
-            $time = $result[0]['id_time'];
+                $query = "DELETE FROM jogos where id_campeonato = '".$this->__get('id')."' ";
+                $stmt = $this->db->prepare($query);
+                $stmt->execute();
+                
+            }
+           
 
-            $query = "INSERT INTO  campeonato_finalizado(id_campeonato, id_time_camp, data_finalizado)
-            VALUES ('".$this->__get('id')."', '".$time."', NOW())";
-            $stmt = $this->db->prepare($query);
-            $stmt->execute();
-
-            return $this;
+            return false;
         }
 
         public function getTotalCampFinalizado() {
@@ -441,6 +504,10 @@ use MF\Model\Model;
                     $stmt->execute();
                     $query = "INSERT INTO campeonato_finalizado (id_campeonato, id_time_camp, data_finalizado)
                                 VALUES ('".$id_camp."', '".$vencedor."', NOW())";
+                    $stmt = $this->db->prepare($query);
+                    $stmt->execute();
+
+                    $query = "DELETE FROM cam_ativo WHERE id_campeonato = '".$id_camp."'";
                     $stmt = $this->db->prepare($query);
                     $stmt->execute();
                     

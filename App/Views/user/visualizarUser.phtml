@@ -1,5 +1,4 @@
 <?php 
-session_start();
 if(isset($_SESSION)) {
     if($_SESSION['logado']) {
         $user = $this->view->dados;
@@ -57,6 +56,14 @@ if(isset($_SESSION)) {
                     </dd>
                     <dt class="col-sm-3">Perfil</dt>
                     <dd class="col-sm-9"><?= $user->__get('perfil') ?></dd>
+
+                    <?php if ($user->__get('time') != ''){ ?>
+                        <dt class="col-sm-3">Meu Time</dt>
+                        <dd class="col-sm-9"><?= $user->__get('time') ?></dd>
+                    <?php } ?>
+
+                    <dt class="col-sm-3">Créditos</dt>
+                    <dd class="col-sm-9"><?= $user->__get('creditos') ?></dd>
                 </dl> 
             </div>
         </div>
