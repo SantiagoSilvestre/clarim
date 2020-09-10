@@ -384,6 +384,12 @@
                 'action' => 'agenda'
             );
 
+            $routes['agendaPublic'] = array(
+                'route' => '/clarim/adm/agendaPublic',
+                'controller' => 'UserController',
+                'action' => 'agendaPublic'
+            );
+
             $routes['eventos'] = array(
                 'route' => '/clarim/eventos',
                 'controller' => 'UserController',

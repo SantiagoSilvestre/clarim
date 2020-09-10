@@ -109,6 +109,10 @@
             $this->render('agenda', 'head', 'menu_adm', 'body', 'footer');
         }
 
+        public function agendaPublic() {
+            $this->render('agenda_public', 'head', 'menu', 'body', 'footer');
+        }
+
         public function cadEvent(){    
             
             session_start();
