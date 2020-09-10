@@ -22,7 +22,6 @@ if(isset($_SESSION)) {
                             <a class='btn btn-outline-success btn-sm' role="button" data-toggle="modal" data-target="#cadTime">Novo Time</a>
                             <a class="btn btn-outline-info btn-sm" href="/clarim/adm/campeonatos"> Listar</a>
                             <a class="btn btn-outline-warning btn-sm" href="/clarim/adm/campeonatos/edit_campeonato?id=<?=$campeonato->__get('id')?>"> Editar</a>
-                            <a class="btn btn-outline-danger btn-sm disabled" href="/clarim/adm/campeonato/apagar_campeonato?id=<?=$campeonato->__get('id')?>" data-confirm="Tem certeza que deseja excluir o item seleconado?" >Apagar</a>
                         </span>
                         <div class="dropdown d-block d-md-none">
                             <button class="btn btn-primary dropdown-toggle btn-sm" type="button" id="acoesListar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -32,7 +31,6 @@ if(isset($_SESSION)) {
                                 <a class="dropdown-item" role="button" data-toggle="modal" data-target="#cadTime">Novo Time</a>
                                 <a class="dropdown-item" href="/clarim/adm/campeonatos">Listar</a>
                                 <a class="dropdown-item" href="/clarim/adm/campeonatos/edit_campeonato?id=<?=$campeonato->__get('id')?>">Editar</a>
-                                <a class="dropdown-item disabled" href="/clarim/adm/campeonato/apagar_campeonato?id=<?=$campeonato->__get('id')?>"  data-confirm="Tem certeza que deseja excluir o item seleconado?" disabled >Apagar</a>
                             </div>
                         </div>
                     </div>

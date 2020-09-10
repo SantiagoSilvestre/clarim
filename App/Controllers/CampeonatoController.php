@@ -33,7 +33,6 @@
 
         public function visualizarCampeonato() 
         {
-            
             $campeonato = Container::getModel('Campeonato');
             $campeonato->__set('id', $_GET['id']);
             $camp = $campeonato->buscarPorId();
@@ -58,7 +57,7 @@
 
             $camp->__set('qtdtimes', $_POST['qtdtimes']);
             $retorno = $camp->validarDados();
-
+        
             if($retorno['valido']) {
                $camp->salvar();
                 $_SESSION['msg'] = "<div class='alert alert-success'> Campeonato cadastrado com sucesso!
@@ -139,7 +138,7 @@
             <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
            <span aria-hidden='true'>&times;</span>
            </button></div>";
-           header('Location: /clarim/adm/campeonatos');
+           header('Location: /clarim/adm/campeonatos_fin');
         }
 
         public function finalizarCampeonato()
@@ -149,12 +148,21 @@
             $camp->__set('id', $_GET['id']);
             $result = $camp->validarFinalizacao();
             if($result) {
-                $camp->finalizar();
-                $_SESSION['msg'] = "<div class='alert alert-success'> Campeonato finalizado com sucesso!
-                <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-               <span aria-hidden='true'>&times;</span>
-               </button></div>";
-               header('Location: /clarim/adm/campeonatos');
+                $fin_camp = $camp->finalizar();
+                if ($fin_camp) {
+                    $_SESSION['msg'] = "<div class='alert alert-danger'> O Campeonato ainda não chegou na final!
+                    <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                    <span aria-hidden='true'>&times;</span>
+                    </button></div>";
+                    header('Location: /clarim/adm/campeonatos');
+                } else {
+                    $_SESSION['msg'] = "<div class='alert alert-success'> Campeonato finalizado com sucesso!
+                    <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                   <span aria-hidden='true'>&times;</span>
+                   </button></div>";
+                   header('Location: /clarim/adm/campeonatos');
+                }
+                
             } else {
                 $_SESSION['msg'] = "<div class='alert alert-danger'> O campeonato não teve jogos, logo não é possível finalizar
                 <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
@@ -551,6 +559,20 @@
 
         public function listarUltimas() {
             $this->render('ultimas_edicoes', 'head', 'menu', 'body', 'footer');
+        }
+
+        public function listCampFin() {
+            $campeonato = Container::getModel('Campeonato');
+            $this->view->dados =  $campeonato->getTotCampFin();
+            $this->render('list_camp_fin', 'head','menu_adm' , 'body', 'footer');
+        }
+
+        public function visualizarFin() {
+            $campeonato = Container::getModel('Campeonato');
+            $campeonato->__set('id', $_GET['id']);
+            $camp = $campeonato->buscarPorId();
+            $this->view->dados = $camp;
+            $this->render('vis_campeonato_fin', 'head','menu_adm' , 'body', 'footer');
         }
 
     }

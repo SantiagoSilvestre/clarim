@@ -50,6 +50,10 @@
 
 
         public function valida(){
+            if(!isset($_SESSION)) 
+            { 
+                session_start(); 
+            }
             
             $senha = $_POST['senha'];
             $senha = $senha == '12345678' ? $senha : md5($senha);
@@ -60,7 +64,6 @@
             
             if ( $user->__get('id') && $user->__get('nome')) {
                 $permissoes = $user->getPermissoes();
-                session_start();
                 $_SESSION['id'] = $user->__get('id');
                 $_SESSION['nome'] = $user->__get('nome') ;
                 $_SESSION['logado'] = true;

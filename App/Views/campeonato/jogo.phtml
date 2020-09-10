@@ -59,7 +59,7 @@ if(isset($_SESSION)) {
                                     <label>
                                         Gols:
                                     </label>
-                                    <input name="gol1" type="number" class="form-control" 
+                                    <input name="gol1" type="number" min="0"  class="form-control" 
                                     value="<?php if(isset($_SESSION['dados']['gol1'])) { echo $_SESSION['dados']['gol1']; } ?>"
                                     id="gol1" placeholder="qtd Gol" >
                                 </div>
@@ -68,7 +68,7 @@ if(isset($_SESSION)) {
                                     <label>
                                         Cartão Vermelho:
                                     </label>
-                                    <input name="vermelho1" type="number" class="form-control" 
+                                    <input name="vermelho1" type="number" min="0" class="form-control" 
                                     value="<?php if(isset($_SESSION['dados']['vermelho1'])) { echo $_SESSION['dados']['vermelho1']; } ?>"
                                     id="vermelho1" placeholder="qtd vermelho1" required>
                                 </div>
@@ -77,7 +77,7 @@ if(isset($_SESSION)) {
                                     <label>
                                         Cartão Amarelo:
                                     </label>
-                                    <input name="amarelo1" type="number" class="form-control" 
+                                    <input name="amarelo1" type="number" min="0"  class="form-control" 
                                     value="<?php if(isset($_SESSION['dados']['amarelo1'])) { echo $_SESSION['dados']['amarelo1']; } ?>"
                                     id="amarelo1" placeholder="qtd amarelo1" required>
                                 </div>
@@ -95,7 +95,7 @@ if(isset($_SESSION)) {
                                     <label>
                                         Pontuação do monstro:
                                     </label>
-                                    <input name="pcraque1" type="number" class="form-control" 
+                                    <input name="pcraque1" type="number" min="0"  class="form-control" 
                                     value="<?php if(isset($_SESSION['dados']['pcraque1'])) { echo $_SESSION['dados']['pcraque1']; } ?>"
                                     id="pcraque1" placeholder="pontuação do craque" required>
                                 </div>
@@ -123,7 +123,7 @@ if(isset($_SESSION)) {
                                     <label>
                                         Gols:
                                     </label>
-                                    <input name="gol2" type="number" class="form-control" 
+                                    <input name="gol2" type="number" min="0"  class="form-control" 
                                     value="<?php if(isset($_SESSION['dados']['gol2'])) { echo $_SESSION['dados']['gol2']; } ?>"
                                     id="gol2" placeholder="qtd Gol" required>
                                 </div>
@@ -132,7 +132,7 @@ if(isset($_SESSION)) {
                                     <label>
                                         Cartão Vermelho:
                                     </label>
-                                    <input name="vermelho2" type="number" class="form-control" 
+                                    <input name="vermelho2" type="number"  min="0" class="form-control" 
                                     value="<?php if(isset($_SESSION['dados']['vermelho2'])) { echo $_SESSION['dados']['vermelho2']; } ?>"
                                     id="vermelho2" placeholder="qtd vermelho" required>
                                 </div>
@@ -141,7 +141,7 @@ if(isset($_SESSION)) {
                                     <label>
                                         Cartão Amarelo:
                                     </label>
-                                    <input name="amarelo2" type="number" class="form-control" 
+                                    <input name="amarelo2" type="number" min="0"  class="form-control" 
                                     value="<?php if(isset($_SESSION['dados']['amarelo'])) { echo $_SESSION['dados']['amarelo']; } ?>"
                                     id="amarelo" placeholder="qtd amarelo" required>
                                 </div>
@@ -159,7 +159,7 @@ if(isset($_SESSION)) {
                                     <label>
                                         Pontuação do monstro:
                                     </label>
-                                    <input name="pcraque2" type="number" class="form-control" 
+                                    <input name="pcraque2" type="number" min="0"  class="form-control" 
                                     value="<?php if(isset($_SESSION['dados']['pcraque2'])) { echo $_SESSION['dados']['pcraque2']; } ?>"
                                     id="pcraque2" placeholder="pontuação do craque" required>
                                 </div>

@@ -343,7 +343,7 @@
             );
 
             $routes['buscarJogosFase'] = array(
-                'route' => '/clarims/campeonato/ajax/buscaFase',
+                'route' => '/clarim/campeonato/ajax/buscaFase',
                 'controller' => 'CampeonatoController',
                 'action' => 'buscarJogosFase'
             );
@@ -420,7 +420,19 @@
                 'action' => 'visAgenda'
             );
 
+            $routes['listCampFin'] = array(
+                'route' => '/clarim/adm/campeonatos_fin',
+                'controller' => 'CampeonatoController',
+                'action' => 'listCampFin'
+            );
 
+            $routes['visualizarFin'] = array(
+                'route' => '/clarim/adm/campeonatos/visualizar_fin',
+                'controller' => 'CampeonatoController',
+                'action' => 'visualizarFin'
+            );
+
+            
             $this->setRoutes($routes);
         }
         

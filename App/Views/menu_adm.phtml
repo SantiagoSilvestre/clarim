@@ -46,6 +46,11 @@
                         <li><a href="/clarim/adm/campeonatos"> Campeonatos</a></li>
                         <?php 
                     } 
+                    if (in_array("list_camp_finalizado", $_SESSION['permissoes']['permissao'])) { 
+                        ?>
+                        <li><a href="/clarim/adm/campeonatos_fin"> Campeonatos Finalizados</a></li>
+                        <?php 
+                    } 
                     if (in_array("listar_jogos", $_SESSION['permissoes']['permissao'])) { 
                         ?>
                         <li><a href="/clarim/adm/jogos"> Jogos</a></li>
