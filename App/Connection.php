@@ -9,7 +9,7 @@
             try
             {
                 $conn = new \PDO("mysql:host=localhost;dbname=clarim;charset=utf8",
-                "root", "0caAb1d00000s");
+                "uroot", "0caAb1d00000s");
 
                 return $conn;
 
