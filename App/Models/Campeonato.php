@@ -134,9 +134,10 @@ use MF\Model\Model;
             $query = "INSERT INTO campeonato(nome, regulamento, estilo, qtd_times, fase_inicial, created) 
             VALUES (". $this->__get('nome').", ".$this->__get('regulamento').", 
             ".$this->__get('estilo').", ".$this->__get('qtdtimes').", ".$fase." ,NOW()) ";
+            return $query;
             $stmt = $this->db->prepare($query);
             $stmt->execute();
-            return $query;
+            
         }
 
         public function inserirJogo($time) 
