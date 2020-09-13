@@ -140,7 +140,7 @@ use MF\Model\Model;
             $stmt->bindValue(':qtd_times', $this->__get('qtdtimes'));
             $stmt->bindValue(':fase', $fase);
             $stmt->execute();
-            return $this;
+            return $query;
         }
 
         public function inserirJogo($time) 
