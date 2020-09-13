@@ -132,15 +132,11 @@ use MF\Model\Model;
                 }
             }
             $query = "INSERT INTO campeonato(nome, regulamento, estilo, qtd_times, fase_inicial, created) 
-            VALUES (:nome, :regulamento, :estilo, :qtd_times, :fase ,NOW()) ";
+            VALUES (". $this->__get('nome').", ".$this->__get('regulamento').", 
+            ".$this->__get('estilo').", ".$this->__get('qtdtimes').", ".$fase." ,NOW()) ";
             $stmt = $this->db->prepare($query);
-            $stmt->bindValue(':nome', $this->__get('nome'));
-            $stmt->bindValue(':regulamento', $this->__get('regulamento'));
-            $stmt->bindValue(':estilo', $this->__get('estilo'));
-            $stmt->bindValue(':qtd_times', $this->__get('qtdtimes'));
-            $stmt->bindValue(':fase', $fase);
             $stmt->execute();
-            return $this;
+            return $query;
         }
 
         public function inserirJogo($time) 
