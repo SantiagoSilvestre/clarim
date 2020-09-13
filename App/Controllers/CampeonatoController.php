@@ -57,7 +57,7 @@
             $retorno = $camp->validarDados();
         
             if($retorno['valido']) {
-                var_dum($camp->salvar());
+                var_dump($camp->salvar());
                 $_SESSION['msg'] = "<div class='alert alert-success'> Campeonato cadastrado com sucesso!
                  <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                 <span aria-hidden='true'>&times;</span>
