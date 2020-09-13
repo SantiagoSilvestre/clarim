@@ -55,14 +55,14 @@
             
             $camp->__set('qtdtimes', isset($_POST['qtdtimes']) ? $_POST['qtdtimes'] : NULL);
             $retorno = $camp->validarDados();
-        
+            
             if($retorno['valido']) {
-                var_dump($camp->salvar());
+                $camp->salvar();
                 $_SESSION['msg'] = "<div class='alert alert-success'> Campeonato cadastrado com sucesso!
                  <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                 <span aria-hidden='true'>&times;</span>
                 </button></div>";
-                //header('Location: /clarim/adm/campeonatos');
+                header('Location: /clarim/adm/campeonatos');
             } else {
                 unset($retorno['valido']);
                 $_SESSION['erros'] = $retorno;
