@@ -114,32 +114,33 @@ use MF\Model\Model;
         }
 
         public function salvar() {
+            $qtd_cab = NULL;
+            $fase_cab = NULL;
             $fase = NULL;
             $qtd = NULL;
             if ($this->__get('qtdtimes') != NULL ) {
-                $qtd = $this->__get('qtdtimes');
+                $qtd_cab = "qtd_times, ";
+                $fase_cab = "fase_inicial, ";
+                $qtd = $this->__get('qtdtimes').",";
                 switch($this->__get('qtdtimes')) {
                     case 32:
-                        $fase = 1;
+                        $fase = "1, " ;
                     break;
                     case 16:
-                        $fase = 2;
+                        $fase = "2, ";
                     break;
                     case 8:
-                        $fase = 3;
+                        $fase = "3, ";
                     break;
                     case 4:
-                        $fase = 4;
+                        $fase = "4, ";
                 }
             }
-            $query = "INSERT INTO campeonato(nome, regulamento, estilo, qtd_times, fase_inicial, created) 
-            VALUES (:nome, :regulamento, :estilo, :qtd_times, :fase ,NOW()) ";
+            $query = "INSERT INTO campeonato(nome, regulamento, estilo,".$qtd_cab.$fase_cab." created) 
+            VALUES ('". $this->__get('nome')."', 
+            '".$this->__get('regulamento')."', 
+            '".$this->__get('estilo')."', ".$qtd.$fase." NOW()) ";
             $stmt = $this->db->prepare($query);
-            $stmt->bindValue(':nome', $this->__get('nome'));
-            $stmt->bindValue(':regulamento', $this->__get('regulamento'));
-            $stmt->bindValue(':estilo', $this->__get('estilo'));
-            $stmt->bindValue(':qtd_times', $qtd);
-            $stmt->bindValue(':fase', $fase);
             $stmt->execute();
             return $query;
         }
