@@ -335,34 +335,43 @@
             session_start();
             $idc = $_POST['idc'];
             $idt = $_POST['idt'];
-            $camp = Container::getModel('Campeonato');
-            $camp->__set('id', $idc);
-            $time = Container::getModel('Time');
-            $time->__set('id', $idt);
-            
-            
-            $teste = $time->validarTime($idc, $idt);
-            $qtdTimes = $camp->validaQtdTimes($idc);
-            if ($qtdTimes[0]['times_cadastrados'] == $qtdTimes[0]['qtd_times'] ) {
-                $_SESSION['msg'] = "<div class='alert alert-danger'> Este campeonato já atingiu o número máximo de equipes
+            if ($_POST['idt'] == "Selecione o time") {
+                $_SESSION['msg'] = "<div class='alert alert-danger'> Escolha um time para cadastro
                 <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                 <span aria-hidden='true'>&times;</span>
                 </button></div>";
                 header('Location: /clarim/adm/campeonatos/visualizar?id='.$idc);
-            } else {
-                if (count($teste) > 0 ) {
-                    $_SESSION['msg'] = "<div class='alert alert-danger'> Este time já pertence a esse campeonato
+                
+            }else {
+                $camp = Container::getModel('Campeonato');
+                $camp->__set('id', $idc);
+                $time = Container::getModel('Time');
+                $time->__set('id', $idt);
+                
+                
+                $teste = $time->validarTime($idc, $idt);
+                $qtdTimes = $camp->validaQtdTimes($idc);
+                if ($qtdTimes[0]['times_cadastrados'] == $qtdTimes[0]['qtd_times'] ) {
+                    $_SESSION['msg'] = "<div class='alert alert-danger'> Este campeonato já atingiu o número máximo de equipes
                     <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                     <span aria-hidden='true'>&times;</span>
                     </button></div>";
                     header('Location: /clarim/adm/campeonatos/visualizar?id='.$idc);
                 } else {
-                    $camp->inserirTime($idt, $idc);
-                    $_SESSION['msg'] = "<div class='alert alert-success'> Time Registrado com sucesso!
-                    <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-                    <span aria-hidden='true'>&times;</span>
-                    </button></div>";
-                    header('Location: /clarim/adm/campeonatos/visualizar?id='.$idc);
+                    if (count($teste) > 0 ) {
+                        $_SESSION['msg'] = "<div class='alert alert-danger'> Este time já pertence a esse campeonato
+                        <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                        <span aria-hidden='true'>&times;</span>
+                        </button></div>";
+                        header('Location: /clarim/adm/campeonatos/visualizar?id='.$idc);
+                    } else {
+                        $camp->inserirTime($idt, $idc);
+                        $_SESSION['msg'] = "<div class='alert alert-success'> Time Registrado com sucesso!
+                        <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                        <span aria-hidden='true'>&times;</span>
+                        </button></div>";
+                        header('Location: /clarim/adm/campeonatos/visualizar?id='.$idc);
+                    }
                 }
             }
 
