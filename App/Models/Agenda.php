@@ -87,10 +87,14 @@
         public function retornaEnd($data, $start) {
             $string = $this->getStringDt($data);
             $array_end = explode(":", $start);
-            if ($array_end[0] == 23) {
+            
+            if ($array_end[1] == 10) {
+                $array_end[1] += 30;
+            } else if ($array_end[0] == 23) {
                 $array_end[1] = 59;
             } else {
                 $array_end[0] += 1;
+                $array_end[1] = 10;
             }
             $end = implode(":", $array_end);
             $string = $string." ".$end;

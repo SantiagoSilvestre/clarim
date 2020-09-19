@@ -57,11 +57,11 @@ if(isset($_SESSION)) {
                     <div class="row col-12">
                         <section class="col-sm-6">
                             <dt class="col-sm-3">ínicio</dt>
-                            <dd class="col-sm-3"><?= date('H:s', strtotime( $agenda['start'])) ?></dd>
+                            <dd class="col-sm-3"><?= date('H:i', strtotime( $agenda['start'])) ?></dd>
                         </section>
                         <section class="col-sm-6">
                             <dt class="col-sm-3">Fim</dt>
-                            <dd class="col-sm-3"><?=  date('H:s', strtotime( $agenda['end'])) ?></dd>
+                            <dd class="col-sm-3"><?=  date('H:i', strtotime( $agenda['end'])) ?></dd>
                         </section>
                     </div>
                 </dl> 
