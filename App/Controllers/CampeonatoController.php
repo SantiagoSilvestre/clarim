@@ -365,7 +365,10 @@
                         </button></div>";
                         header('Location: /clarim/adm/campeonatos/visualizar?id='.$idc);
                     } else {
-                        $camp->inserirTime($idt, $idc);
+                        $teste = $camp->inserirTime($idt, $idc);
+                        var_dump($teste);
+                        die();
+
                         $_SESSION['msg'] = "<div class='alert alert-success'> Time Registrado com sucesso!
                         <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                         <span aria-hidden='true'>&times;</span>
