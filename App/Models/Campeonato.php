@@ -434,7 +434,6 @@ use MF\Model\Model;
             $query = "INSERT INTO cam_ativo (id_campeonato, id_time, vitorias, derrotas,
              empates, pontuacao, saldo_gol, gol_pro, gol_contra, cartao_ver, cartao_amer, created) 
              VALUES ('".$idc."', '".$idt."', 0,0,0,0,0,0,0,0,0,NOW())";
-             return $query;
             $stmt = $this->db->prepare($query);
             $stmt->execute();
 
