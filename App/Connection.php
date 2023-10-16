@@ -9,7 +9,7 @@
             try
             {
                 $conn = new \PDO("mysql:host=localhost;dbname=clarim;charset=utf8",
-                "root@177.62.96.82", "s0202903526@");
+                "user", "password");
 
                 return $conn;
 
